@@ -18,8 +18,9 @@ func TestAbbrevName(t *testing.T) {
 
 		testname := fmt.Sprintf(tt.in, tt.out)
 		t.Run(testname, func(t *testing.T) {
-			if AbbrevName(tt.in) != tt.out {
-				t.Errorf("got %s, expext %s", tt.in, tt.out)
+			name := AbbrevName(tt.in)
+			if name != tt.out {
+				t.Errorf("got %s, expext %s", name, tt.out)
 			}
 		})
 	}
