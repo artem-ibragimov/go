@@ -42,7 +42,7 @@ const prefix = "i"
 const content = "a"
 const suffix = "n"
 
-func main() {
+func main__() {
 	s := strings.Replace("ianianian", "ni", "in", 2)
 	fmt.Println(s)
 	reader := bufio.NewReader(os.Stdin)
