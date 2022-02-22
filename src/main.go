@@ -1,28 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"time"
-
-	"github.com/elazarl/goproxy"
+	"net/http/httputil"
+	"net/url"
 )
 
 func main() {
-	proxy := goproxy.NewProxyHttpServer()
-	proxy.OnRequest(goproxy.DstHostIs("www.reddit.com")).DoFunc(
-		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
-			fmt.Println("OnRequest")
-			h, _, _ := time.Now().Clock()
-			if h >= 8 && h <= 17 {
-				return r, goproxy.NewResponse(r,
-					goproxy.ContentTypeText, http.StatusForbidden,
-					"Don't waste your time!")
-			} else {
-				ctx.Warnf("clock: %d, you can waste your time...", h)
-			}
-			return r, nil
-		})
-	log.Fatalln(http.ListenAndServe(":8080", proxy))
+	target, err := url.Parse("https://rs.aspsp.ob.forgerock.financial:443")
+	log.Printf("forwarding to -> %s%s\n", target.Scheme, target.Host)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	proxy := httputil.NewSingleHostReverseProxy(target)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+		req.Host = req.URL.Host
+		proxy.ServeHTTP(w, req)
+	})
+
+	err = http.ListenAndServe(":8989", nil)
+	if err != nil {
+		panic(err)
+	}
 }
