@@ -1,9 +1,28 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/elazarl/goproxy"
+)
 
 func main() {
-	s := make([]int, 0, 3)
-	s = append(s, 100)
-	fmt.Println(s, len(s), cap(s))
+	proxy := goproxy.NewProxyHttpServer()
+	proxy.OnRequest(goproxy.DstHostIs("www.reddit.com")).DoFunc(
+		func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+			fmt.Println("OnRequest")
+			h, _, _ := time.Now().Clock()
+			if h >= 8 && h <= 17 {
+				return r, goproxy.NewResponse(r,
+					goproxy.ContentTypeText, http.StatusForbidden,
+					"Don't waste your time!")
+			} else {
+				ctx.Warnf("clock: %d, you can waste your time...", h)
+			}
+			return r, nil
+		})
+	log.Fatalln(http.ListenAndServe(":8080", proxy))
 }
