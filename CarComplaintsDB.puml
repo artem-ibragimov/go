@@ -1,0 +1,126 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+entity Brand {
+    * id
+    --
+    * name
+}
+
+entity CarModel {
+    * id
+    --
+    * brandId
+    --
+    * name
+}
+
+entity ManufacturingYear {
+    * year
+    --
+    * carModelId
+}
+
+entity DefectCategory {
+    * id
+    --
+    * name
+}
+
+entity Defect {
+    * id
+    --
+    * categoryId
+    --
+    * name
+    --
+    * description
+}
+
+entity Complaint {
+    * id
+    --
+    * userId
+    --
+    * defectId
+    --
+    * carModelId
+    --
+    * manufacturingYear
+    --
+    * message
+    --
+    rating
+    --
+    repairCost
+    --
+    mileage
+    --
+    crashesAmount
+    --
+    firesAmount
+    --
+    injuriesAmount
+    --
+    deathAmount
+}
+
+entity User {
+    * id
+    --
+    name
+    --
+    surname
+    --
+    addressId
+}
+
+entity Address {
+    * id
+    --
+    * userId
+    --
+    * countyId
+    --
+    * districtId
+    --
+    * cityId
+}
+
+entity Country {
+    * id
+    --
+    * name
+}
+
+entity District {
+    * id
+    --
+    * name
+}
+
+entity City {
+    * id
+    --
+    * name
+}
+
+Brand ||--|{ CarModel
+CarModel ||--|{ ManufacturingYear
+
+Defect }|--|| DefectCategory
+
+Complaint }|--|| Defect
+Complaint ||--|| CarModel
+Complaint ||--|| ManufacturingYear
+Complaint ||--|| User
+
+User ||--o| Address
+
+Address }|--|| Country
+Address }|--|| District
+Address }|--|| City
+Country ||--|{ District
+District ||--|{ City
+
+@enduml
