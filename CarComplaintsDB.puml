@@ -70,40 +70,9 @@ entity User {
     --
     name
     --
-    surname
-    --
-    addressId
+    email
 }
 
-entity Address {
-    * id
-    --
-    * userId
-    --
-    * countyId
-    --
-    * districtId
-    --
-    * cityId
-}
-
-entity Country {
-    * id
-    --
-    * name
-}
-
-entity District {
-    * id
-    --
-    * name
-}
-
-entity City {
-    * id
-    --
-    * name
-}
 
 Brand ||--|{ CarModel
 CarModel ||--|{ ManufacturingYear
@@ -114,13 +83,5 @@ Complaint }|--|| Defect
 Complaint ||--|| CarModel
 Complaint ||--|| ManufacturingYear
 Complaint ||--|| User
-
-User ||--o| Address
-
-Address }|--|| Country
-Address }|--|| District
-Address }|--|| City
-Country ||--|{ District
-District ||--|{ City
 
 @enduml

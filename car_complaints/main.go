@@ -8,9 +8,26 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-// const url = "https://www.carcomplaints.com"
+type IDB interface {
+	SaveBrand(string)
+}
 
-func ParseCar() {
+type Problem struct {
+	brand           string
+	model           string
+	year            uint
+	category        string
+	name            string
+	count           uint
+	cost            uint
+	severity_rating uint8
+	repair_cost     uint
+	average_mileage uint
+}
+
+func Parse(db IDB) {
+	// const url = "https://www.carcomplaints.com"
+
 	// document, err := getDocument(url)
 	document, err := getHTML(main_html) //TODO getDocument
 	if err != nil {
@@ -19,6 +36,7 @@ func ParseCar() {
 	}
 	for _, brand_url := range getLinks(document.Selection.Find("#container #makes")) {
 		fmt.Println("Brand: ", brand_url)
+		db.SaveBrand(strings.Trim(brand_url, "/"))
 		brand_doc, err := getHTML(brand_html) //TODO getDocument
 		if err != nil {
 			fmt.Println(err)
@@ -56,7 +74,11 @@ func ParseCar() {
 							fmt.Println(err)
 							continue
 						}
-						parseProblem(problem_doc.Selection.Find("#container"))
+						problem, err := parseProblem(problem_doc.Selection.Find("#container"))
+						if err == nil {
+							fmt.Println("Parsed ", problem.name)
+							// save(&problem)
+						}
 					}
 				}
 			}
@@ -99,7 +121,7 @@ func parseProblem(selection *goquery.Selection) (Problem, error) {
 		year:            uint(year),
 		category:        breadcrumb[3],
 		name:            name,
-		repair_cost:     uint(cost),
+		cost:            uint(cost),
 		average_mileage: uint(average_mileage),
 		count:           uint(count),
 	}, nil

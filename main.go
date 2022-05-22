@@ -1,7 +1,16 @@
 package main
 
-import "main/car_complaints"
+import (
+	"main/automaniac"
+	"main/db"
+)
 
 func main() {
-	car_complaints.ParseCar()
+	db := new(db.DB)
+	err := db.Init()
+	if err != nil {
+		return
+	}
+	// car_complaints.ParseCarComplaints(db)
+	automaniac.Parse(db)
 }
