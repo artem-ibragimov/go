@@ -8289,3 +8289,1516 @@ const model_html = `
 		</div>
 	</body>
 </html>`
+
+const version_html = `
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>
+			Mazda CX-5  SkyActiv-D 2.2 175 4WD (2017 - ) - AutoManiac		</title>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport">
+		<meta content="2017 Mazda CX-5 ,specifications,information,dimensions,consumption,acceleration,top speed,fuel tank volume,reliability,failures,opinions,safety,crash test" name="keywords">
+		<meta content="2017 Mazda CX-5  SkyActiv-D 2.2 175 4WD - Information, specifications and drivers opinions" name="description">
+		<meta http-equiv="Cache-Control" content="no-cache, max-age=0, must-revalidate, no-store">
+		<meta property="og:site_name" content="AutoManiac"/>
+		<meta property="og:image" content="/resources/images/variant/1940/cx-5_2.jpg" />
+		<meta property="og:image:width" content="700"/>
+		<meta property="og:image:height" content="300"/>
+		<meta property="og:description" content="2017 Mazda CX-5  SkyActiv-D 2.2 175 4WD - Information, specifications and drivers opinions" />
+		<meta property="og:title" content="Mazda CX-5  SkyActiv-D 2.2 175 4WD (2017 - )" />
+		<meta property="fb:app_id" content="290604621342699" />
+		<meta property="fb:admins" content="1276696339"/>
+		<link rel="image_src" type="image/jpeg" href="/resources/images/variant/1940/cx-5_2.jpg" />
+		<link rel="shortcut icon" href="/resources/images/gui/favicon.png" type="image/x-icon">
+		<link rel="icon" href="/resources/images/gui/favicon.png" type="image/x-icon">
+			<script type="text/javascript" src="/resources/js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="/resources/js/jquery-ui.js"></script>
+	<script type="text/javascript" src="/resources/js/scripts.js?version=v2.1.0"></script>
+	<script type="text/javascript" src="/resources/js/jquery.chosen.min.js"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+	<!--
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script type="text/javascript" src="/resources/js/adsense.js"></script>
+	-->
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0"></script>
+	
+						
+	<link rel="stylesheet" href="/resources/css/styles.css?version=v2.1.6" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="/resources/css/chosen.css" type="text/css" media="screen" charset="utf-8" />
+	<link rel="stylesheet" href="/resources/css/font-awesome.min.css" >
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800|Montserrat:300,400,700">
+		<link rel="icon" href="/resources/images/gui/favicon.png" >
+		<link rel="shortcut icon" href="/resources/images/gui/favicon.png" type="image/x-icon">
+		<link rel="apple-touch-icon" href="images/gui/apple-touch-icon.png">
+	</head>
+
+	<body root-url="">
+
+		<!-- Load Facebook SDK for JavaScript -->
+		<div id="fb-root"></div>
+		<script>
+		  window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '290604621342699',
+		      xfbml      : true,
+		      version    : 'v2.8'
+		    });
+		  };
+
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "//connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+
+		  (function(w,d,u,h,s){
+		    h=d.getElementsByTagName('head')[0];
+		    s=d.createElement('script');
+		    s.async=1;
+		    s.src=u+'/sdk.js';
+		    h.appendChild(s);
+		  })(window,document,'https://aff.carvertical.com');
+
+			
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			  ga('create', 'UA-75322623-2', 'auto');
+	  		  ga('send', 'pageview');
+
+	  		
+		
+		</script>
+
+		<div class="menu-wrap">
+			<div class="topnav" id="myTopnav">
+				<div class="top-bar">
+					<div class="top-bar-wrap">
+						<div class="top-bar-left">
+							<a href="/about" title="about">about</a>
+							<a href="/legal" title="legal note">legal note</a>
+							<a href="/contact" title="contact us">contact us</a>
+							<span style="color: #fff; font-weight: bold;"></span>
+						</div>
+						<div class="top-bar-right">
+							<a href="#" title="">
+								Login <i class="fa fa-user" aria-hidden="true"></i>
+							</a>
+							<a href="https://www.automanie.org" title="">
+								deutsch (D, AT, CH)<i class="fa fa-globe" aria-hidden="true"></i>
+							</a>
+							<a href="https://www.automanijak.com" title="">
+								srpski (ex-yugoslavia)<i class="fa fa-flag" aria-hidden="true"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<a href="#" class="icon"><i class="fa fa-bars"></i></a>
+				<div class="bottom-bar">
+					<div class="bottom-bar-wrap">
+						<div class="bottom-bar-left">
+							<div class="logo">
+								<a href="/" title="">
+									<img src="/resources/images/gui/logo.png" alt="" title="">
+								</a>
+							</div>
+						</div>
+						<div class="bottom-bar-right">
+							<a href="/virtual-adviser">Virtual adviser</a>
+							<a href="/specs">Specifications by model</a>
+							<a href="/compare">Compare two cars</a>
+							<a href="/badges">Automotive badges</a>
+							<a href="/blog">Blog</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="left-ad">
+				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- branding -->
+<ins class="adsbygoogle branding-ad"
+     style="width:300px;height:600px"
+     data-ad-client="ca-pub-2798966384669812"
+     data-ad-slot="1676022217"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- massive-header -->
+<ins class="adsbygoogle massive-header-ad"
+     data-ad-client="ca-pub-2798966384669812"
+     data-ad-slot="9878901748"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>			</div>
+			<div class="right-ad">
+				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- branding -->
+<ins class="adsbygoogle branding-ad"
+     style="width:300px;height:600px"
+     data-ad-client="ca-pub-2798966384669812"
+     data-ad-slot="1676022217"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>			</div>
+			<div id="wrapper" class="clearfix">	<div id="sidebar">
+		<div class="sidebar-wrap">
+		<div id="sidebar-dodatno" class="search-box">
+	<div class="sidebar-dodatno-wrap">
+		<script async src="https://cse.google.com/cse.js?cx=016645478549947938819:d5ilzoxfr9e"></script>
+		<script>
+			window.onload = function(){
+				$(".gsc-input").attr("placeholder", "Search this website...");
+			}
+		</script>
+		<div class="gcse-search"></div>
+	</div>
+</div>	
+	<div id="sidebar-dodatno">
+		<div class="sidebar-misljenje-naslov">
+			<h2>Have you driven it?</h2>
+		</div>
+		<div class="sidebar-dodatno-wrap">
+			<div class="misljenje-vozaca">
+				<span>Reliability <strong title="- Malfunction frequency&#13;- Malfunction severity&#13;- Spare parts availability">(?)</strong>:</span>
+				<div class="avg" related-field="1">
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='1'
+						 star-no='1'/>
+					 <img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='1'
+						 star-no='2'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='1'
+						 star-no='3'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='1'
+						 star-no='4'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='1'
+						 star-no='5'/>
+					<div class="misljenje-ocena">
+					?					</div>
+				</div>
+				<div id="issues" class="hidden">
+					<form>
+						<br/>
+						Any engine issues?						<br/><br/>
+						<div class='selectable' issue_id='1' engine_id='794'>
+							<div class='class-description'>mechanical / belts</div>
+						</div>
+						<div class='selectable' issue_id='2' engine_id='794'>
+							<div class='class-description'>electrical / ECU</div>
+						</div>
+						<div class='selectable' issue_id='3' engine_id='794'>
+							<div class='class-description'>fuel supply</div>
+						</div>
+						<div class='selectable' issue_id='4' engine_id='794'>
+							<div class='class-description'>air supply</div>
+						</div>
+						<div class='selectable' issue_id='5' engine_id='794'>
+							<div class='class-description'>cooling system</div>
+						</div>
+						<div class='selectable' issue_id='6' engine_id='794'>
+							<div class='class-description'>clutch / flywheel</div>
+						</div>
+						<div class='selectable' issue_id='7' engine_id='794'>
+							<div class='class-description'>exchaust (EGR / DPF)</div>
+						</div>
+						<br/>
+						<div id="report-issue" class='submit-issues' engine_id='794'>
+							<i class="fa fa-wrench" aria-hidden="true"></i>
+							<span>Report</span>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="misljenje-vozaca">
+				<span>Performance <strong title="- Acceleration&#13;- Top speed&#13;- Braking efficiency&#13;- Handling">(?)</strong>:</span>
+				<div class="avg" related-field="2">
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='2'
+						 star-no='1'/>
+					 <img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='2'
+						 star-no='2'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='2'
+						 star-no='3'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='2'
+						 star-no='4'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='2'
+						 star-no='5'/>
+					<div class="misljenje-ocena">
+					?					</div>
+				</div>
+			</div>
+			<div class="misljenje-vozaca">
+				<span>Economy <strong title="- Fuel consumption&#13;- Regular maintenance prices&#13;- Spare parts prices&#13;- Other expenses specific to this car">(?)</strong>:</span>
+				<div class="avg" related-field="3">
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='3'
+						 star-no='1'/>
+					 <img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='3'
+						 star-no='2'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='3'
+						 star-no='3'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='3'
+						 star-no='4'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='3'
+						 star-no='5'/>
+					<div class="misljenje-ocena">
+					?					</div>
+				</div>
+			</div>
+			<div class="misljenje-vozaca">
+				<span>Comfort <strong title="- Suspension quality&#13;- Seats comfort&#13;- Legs and head space&#13;- Driver's position & ergonomy">(?)</strong>:</span>
+				<div class="avg" related-field="4">
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='4'
+						 star-no='1'/>
+					 <img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='4'
+						 star-no='2'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='4'
+						 star-no='3'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='4'
+						 star-no='4'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='4'
+						 star-no='5'/>
+					<div class="misljenje-ocena">
+					?					</div>
+				</div>
+			</div>
+			<div class="misljenje-vozaca">
+				<span>Practicality <strong title="- Easy to use&#13;- Quantity & quality of in-car compartments&#13;- Luggage space access&#13;- Spare parts replacement ease">(?)</strong>:</span>
+				<div class="avg" related-field="5">
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='5'
+						 star-no='1'/>
+					 <img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='5'
+						 star-no='2'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='5'
+						 star-no='3'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='5'
+						 star-no='4'/>
+					<img src='/resources/images/gui/details/star-black-empty.png'
+						 class='rating-star'
+						 car-id='12927'
+						 related-field='5'
+						 star-no='5'/>
+					<div class="misljenje-ocena">
+					?					</div>
+				</div>
+			</div>
+		</div>
+	</div><div id="sidebar-dodatno">
+	<div class="sidebar-sve-varijante-naslov">
+		<h2>All model's variants</h2>
+	</div>
+	<div class="sidebar-dodatno-wrap">
+			
+	<div class="najpop-item">
+		<div class="najpop-item-name">
+			<a href="/model/mazda/1285/mazda-cx-5-2017" title="2017 Mazda CX-5 ">
+				2017 Mazda CX-5 			</a>
+		</div>
+		<div class="najpop-item-img">
+			<a href="/model/mazda/1285/mazda-cx-5-2017" title="2017 Mazda CX-5 ">
+				<img src="/resources/images/variant/1940/thumb_cx-5_2.jpg" 	title="Mazda CX-5"
+					 alt="Mazda CX-5"
+				 	 class="thumb-image">
+			</a>
+			<div class="ocena"><span>4.8</span>
+			</div>
+		</div>
+		<div class="najpop-item-val">
+			from: 			</br>
+			<strong>23.290</strong>
+			</br>EUR</div>
+	</div>	</div>
+</div><div id="sidebar-dodatno">
+	<div class="sidebar-minimalna-cena-naslov">
+		<h2>Starting price</h2>
+	</div>
+	<div class="sidebar-dodatno-wrap">
+		<div class="dodatno-text">
+			<div>
+				from				</br>
+				<strong>23.290</strong>
+				</br>
+				EUR*
+			</div>
+			<span>Starting price is informative only and is being updated using information from leading online yellow pages. Prices of well maintained examples are commonly 20% higher.</span> 
+		</div>
+	</div>
+</div>		</div>
+		<div class="side-ad">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<ins class="adsbygoogle side-ad-vertical"
+	     style="width:160px;height:600px"
+	     data-ad-client="ca-pub-2798966384669812"
+	     data-ad-slot="9565981886"></ins>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+
+	<ins class="adsbygoogle side-ad-horizontal"
+	     data-ad-client="ca-pub-2798966384669812"
+	     data-ad-slot="8347642282"
+	     data-full-width-responsive="true"></ins>
+	<script>
+	     (adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div>
+	</div>
+	<div id="page-wrap">
+<div id="breadcrumb-wrap">
+	<div class="breadcrumb-nav"><a href='/'>HOME page</a> / <a href='/specs'>specifications</a> / <a href='/make/mazda'>Mazda</a> / <a href='/model/mazda/1285/mazda-cx-5-2017'>2017 CX-5</a> /  SkyActiv-D 2.2 175 4WD</div>
+	<div id="sidebar-dodatno" class="search-box">
+	<div class="sidebar-dodatno-wrap">
+		<script async src="https://cse.google.com/cse.js?cx=016645478549947938819:d5ilzoxfr9e"></script>
+		<script>
+			window.onload = function(){
+				$(".gsc-input").attr("placeholder", "Search this website...");
+			}
+		</script>
+		<div class="gcse-search"></div>
+	</div>
+</div>	<div class="facebook">
+				<div class="fb-like" data-href="https://www.automaniac.org/mazda/2017/12927/mazda-cx-5-skyactiv-d-2.2-175-4wd" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+	</div>
+</div>
+	<div id="predlog-auto">
+		<div class="box-wrap">
+			<div class="predlog-auto-logo">
+				<a href="/make/mazda">
+					<img src="/resources/images/make/mazda.jpg" title="Mazda" />
+				</a>
+			</div>
+			<div class="predlog-auto-naslov">
+				Mazda CX-5  SkyActiv-D 2.2 175 4WD				<div class="predlog-auto-stats">
+					Model Year 2017, J - Segment (SUV)				</div>
+			</div>
+			<div class="predlog-auto-slika">
+				<div class="auto-score-wrap">
+										<div class="score-left">
+						<div class="score3b">
+							<p>drivers'</p>
+							<span>3.0</span>
+							<p>rating</p>
+						</div>
+					</div>
+					<div class="score-right clearfix">
+						<div class="score5a"></div>
+						<div class="score4a"></div>
+						<div class="score3a"></div>
+						<div class="score2a"></div>
+						<div class="score1a"></div>
+					</div>
+				</div>
+				<img src="/resources/images/variant/1940/cx-5_2.jpg" />
+										<div class="predlog-auto-oznaka-wrap">
+							<span>Badges:</span>
+															<div class="predlog-auto-oznaka">
+									<a href="/badges/85/mazda-skyactiv">
+										<img src="/resources/images/badge/mazda_skyactiv.jpg"
+											 title="Mazda - SKYACTIV badge"
+											 alt="Mazda - SKYACTIV" />
+									</a>
+								</div>
+													</div>
+								<div class="predlog-auto-uporedi clearfix">
+					<a href='/compare/12927/0/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-'>
+						<span>Compare with</span>
+						<i class="fa fa-exchange" aria-hidden="true"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="box-wrap">
+			<div class="predlog-auto-box-wrap">
+				<div class="predlog-auto-detalj" title="Body style">
+					<div class="predlog-auto-detalj-slika">
+						<img src="/resources/images/gui/details/body_6.jpg"
+							 alt="suv" />
+					</div>
+					<span>suv</span>
+				</div>
+				<div class="predlog-auto-detalj" title="Doors No.">
+					<div class="predlog-auto-detalj-slika">
+						<img src="/resources/images/gui/details/door.jpg"
+							 alt="x 5" />
+					</div>
+					<span>x 5</span>
+				</div>
+				<div class="predlog-auto-detalj" title="Wheel drive">
+										<div class="predlog-auto-detalj-slika">
+						<img src="/resources/images/gui/details/drive_3.jpg"
+							 alt="4 x 4" />
+					</div>
+					<span>
+					4 x 4					</span>
+				</div>
+				<div class="predlog-auto-detalj" title="Engine configuration">
+					<div class="predlog-auto-detalj-slika">
+						<img src="/resources/images/gui/details/configuration.jpg" alt="" />
+					</div>
+					<span>
+						2.2 L4 16v					</span>
+				</div>
+									<div class="predlog-auto-detalj" title="Aspiration">
+						<div class="predlog-auto-detalj-slika">
+							<img src="/resources/images/gui/details/turbo.jpg"
+								 alt="Turbo" />
+						</div>
+						<span>Turbo</span>
+					</div>
+								<div class="predlog-auto-detalj" title="Fuel type">
+					<div class="predlog-auto-detalj-slika">
+						<img src="/resources/images/gui/details/fuel.jpg"
+							 alt="Diesel">
+					</div>
+					<span>Diesel</span>
+				</div>
+			</div>
+		</div>
+<div>
+	<h2><i class="fa fa-info-circle" aria-hidden="true"></i>Basic info on Mazda CX-5  SkyActiv-D 2.2 175 4WD</h2>
+</div>
+<div class="box-wrap">
+	<p>
+		The Japanese car was first shown in year 2017 and powered by a 4 - cylinder turbo diesel unit, produced by Mazda. The engine offers a displacement of  2.2 litre matched to a 4 x 4 wheel drive system and a manual gearbox with 6  or a automatic gearbox with 6 gears. Vehicle in question is a suv with the top speed of 207km/h, reaching the 100km/h (62mph) mark in 8.8s and consuming around 5.2 liters of fuel every 100 kilometers.
+	</p>
+</div>		<div>
+			<h2><i class="fa fa-database" aria-hidden="true"></i>Data</h2>
+		</div>
+		<div class="podaci-box-wrap">
+<div class="podaci-box-left-wrap">
+	<div class="podaci-naslov">
+	Engine info	(<a href="/engine/mazda/794/mazda-2191cc-diesel-2.2-skyactiv-d-16v-175hp" class="orange">
+		 issues & breakdowns 	</a>)
+		</div>
+	<div class="podaci-box-a">
+		<a href="/make/mazda">
+			<img src="/resources/images/make/mazda.jpg"
+				 title="Mazda" />
+		</a>
+	</div>
+	<div class="podaci-box-b">
+		Mazda		<p>
+							<a href="/engine/mazda/794/mazda-2191cc-diesel-2.2-skyactiv-d-16v-175hp" class="orange">2.2 SKYACTIV-D</a>
+					</p>
+	</div>
+	<div class="podaci-box-c">
+			</div>
+			<div class="data">
+			<div class="d1">displacement:</div>
+			<div class="d2"><strong>2191</strong></div>
+			<div class="d3">cc</div>
+		</div>
+		<div class="data">
+			<div class="d1">configuration:</div>
+			<div class="d2"><strong>4  - Inline</strong></div>
+			<div class="d3">&nbsp;</div>
+		</div>
+		<div class="data">
+			<div class="d1">valves:</div>
+			<div class="d2"><strong>16, 4 p/ cylinder</strong></div>
+			<div class="d3">&nbsp;</div>
+		</div>
+		<div class="data">
+			<div class="d1">aspiration:</div>
+			<div class="d2"><strong>Turbo</strong></div>
+		<div class="d3">&nbsp;</div>
+	</div>
+		<div class="data">
+		<div class="d1">fuel type:</div>
+		<div class="d2"><strong>Diesel</strong></div>
+		<div class="d3">&nbsp;</div>
+	</div>
+	<div class="data">
+		<div class="d1">power:</div>
+		<div class="d2"><strong>175</strong></div>
+		<div class="d3">hp</div>
+	</div>
+	<div class="data">
+		<div class="d1">torque:</div>
+		<div class="d2"><strong>420</strong>
+		</div>
+		<div class="d3">Nm</div>
+	</div>
+</div><div class="podaci-box-right-wrap">
+	<div class="podaci-naslov">Vehicle information - Mazda CX-5</div>
+	<div class="podaci-box-a pola">
+		<div class="podaci-euro-ncap">
+			<img src="/resources/images/gui/details/euro-ncap.png">
+		</div>
+	</div>
+	<div class="podaci-box-b pola">
+		<div class="preporuceni-stars">
+			<div class="stars5"></div>
+			<div class="preporuceni-euro-ncap strong">
+				94% score			</div>
+		</div>
+	</div>
+	<div class="data">
+		<div class="d1">produced:</div>
+		<div class="d2"><strong>2017. - </strong></div>
+		<div class="d3">&nbsp;</div>
+	</div>
+	<div class="data">
+		<div class="d1">body style:</div>
+		<div class="d2"><strong>suv</strong></div>
+		<div class="d3">5 door</div>
+	</div>
+	<div class="data">
+		<div class="d1">length:</div>
+		<div class="d2"><strong>4555</strong></div>
+		<div class="d3">mm</div>
+	</div>
+	<div class="data">
+		<div class="d1">width:</div>
+		<div class="d2"><strong>1840</strong></div>
+		<div class="d3">mm</div>
+	</div>
+	<div class="data">
+		<div class="d1">height:</div>
+		<div class="d2"><strong>1710</strong>
+		</div>
+		<div class="d3">mm</div>
+	</div>
+	<div class="data">
+		<div class="d1">boot:</div>
+		<div class="d2"><strong>503 - 1620</strong>
+		</div>
+		<div class="d3">l</div>
+	</div>
+			<div class="data">
+			<div class="d1">fuel tank:</div>
+			<div class="d2"><strong>58</strong>
+			</div>
+			<div class="d3">l</div>
+		</div>
+	</div>		</div>
+		<div>
+			<h2><i class="fa fa-signal" aria-hidden="true"></i>Performance</h2>
+		</div>
+		<div class="podaci-box-wrap">
+<div class="podaci-box-left-wrap">
+			<div class="podaci-naslov">Manual gearbox performance</div>
+		<div class="podaci-box-a">
+			<div class="energy-left ">
+				<div class="energyAb"></div>
+				<div class="energyBb"></div>
+				<div class="energyCb"></div>
+				<div class="energyDb"></div>
+				<div class="energyEb"></div>
+				<div class="energyFb"></div>
+				<div class="energyGb"></div>
+			</div>
+			<div class="energy-right">
+				<div class="energyCa">
+					<p>emission</p>
+					<span>C</span>
+					<p>category</p>
+				</div>
+			</div>
+		</div>
+		<div class="podaci-box-b">
+			manual gearbox			<p>6 gears</p>
+		</div>
+		<div class="podaci-box-c">
+			<div class="podaci-prosek">
+				<p>
+				average				</p>
+				<span>
+				5.2				</span>
+				<p>
+				l/100km				</p>
+			</div>
+		</div>
+		<div class="data">
+			<div class="d1">weight:</div>
+			<div class="d2"><strong>1480</strong></div>
+			<div class="d3">kg</div>
+		</div>
+		<div class="data">
+			<div class="d1">acc. 0-100 km/h:</div>
+			<div class="d2"><strong>8.8</strong></div>
+			<div class="d3">s</div>
+		</div>
+		<div class="data">
+			<div class="d1">top speed:</div>
+			<div class="d2"><strong>207</strong></div>
+			<div class="d3">km/h</div>
+		</div>
+					<div class="data">
+				<div class="d1">cons. (urban):</div>
+				<div class="d2"><strong>6.0</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">cons. (highway):</div>
+				<div class="d2"><strong>4.7</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">cons. (average):</div>
+				<div class="d2"><strong>5.2</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">CO2 emissions:</div>
+				<div class="d2"><strong>136</strong></div>
+				<div class="d3">g/km</div>
+			</div>
+		</div>
+<div class="podaci-box-right-wrap">
+			<div class="podaci-naslov">Automatic gearbox performance</div>
+		<div class="podaci-box-a">
+			<div class="energy-left ">
+				<div class="energyAb"></div>
+				<div class="energyBb"></div>
+				<div class="energyCb"></div>
+				<div class="energyDb"></div>
+				<div class="energyEb"></div>
+				<div class="energyFb"></div>
+				<div class="energyGb"></div>
+			</div>
+			<div class="energy-right">
+				<div class="energyDa">
+					<p>emission</p>
+					<span>D</span>
+					<p>category</p>
+				</div>
+			</div>
+		</div>
+		<div class="podaci-box-b">
+			automatic			<p>6 gears</p>
+		</div>
+		<div class="podaci-box-c">
+			<div class="podaci-prosek">
+				<p>
+				average				</p>
+				<span>
+				5.5				</span>
+				<p>
+				l/100km				</p>
+			</div>
+		</div>
+		<div class="data">
+			<div class="d1">weight:</div>
+			<div class="d2"><strong>1495</strong></div>
+			<div class="d3">kg</div>
+		</div>
+		<div class="data">
+			<div class="d1">acc. 0-100 km/h:</div>
+			<div class="d2"><strong>9.4</strong></div>
+			<div class="d3">s</div>
+		</div>
+		<div class="data">
+			<div class="d1">top speed:</div>
+			<div class="d2"><strong>204</strong></div>
+			<div class="d3">km/h</div>
+		</div>
+					<div class="data">
+				<div class="d1">cons. (urban):</div>
+				<div class="d2"><strong>6.4</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">cons. (highway):</div>
+				<div class="d2"><strong>4.9</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">cons. (average):</div>
+				<div class="d2"><strong>5.5</strong></div>
+				<div class="d3">l/100km</div>
+			</div>
+			<div class="data">
+				<div class="d1">CO2 emissions:</div>
+				<div class="d2"><strong>144</strong></div>
+				<div class="d3">g/km</div>
+			</div>
+		</div>
+		</div>
+	</div>
+<div>
+	<h2><i class="fa fa-sort" aria-hidden="true"></i>Pros & Cons compared to direct rivals</h2>
+</div>
+<div class="box-wrap">
+	
+	<div class="prednosti-nedostaci">
+		<div class="good">
+			safety		</div>
+	</div>
+
+			<div class="prednosti-nedostaci">
+			<div class="good">
+				reliability			</div>
+		</div>
+	
+			<div class="prednosti-nedostaci">
+			<div class="good">
+				comfort			</div>
+		</div>
+	
+			<div class="prednosti-nedostaci">
+			<div class="good">
+				practicality			</div>
+		</div>
+	
+			<div class="prednosti-nedostaci">
+			<div class="good">
+				performance			</div>
+		</div>
+	
+			<div class="prednosti-nedostaci">
+			<div class="good">
+				economy			</div>
+		</div>
+	
+			<div class="prednosti-nedostaci">
+			<div class="bad">
+				boot space			</div>
+		</div>
+	
+	
+	
+	
+	
+	
+	
+	
+</div><div>
+	<h2>
+		<i class="fa fa-shield" aria-hidden="true"></i>
+		Safety results for Mazda CX-5	</h2>
+</div>
+<div class="box-wrap">
+	<div class="euro-ncap-youtube">
+		<div class="ncap-img">
+			<img src="/resources/images/gui/details/euroncap.jpg">
+		</div>
+		<div class="stars">
+			<div class="stars5"></div>
+		</div>
+		<div class="euro-ncap strong">
+			EuroNCAP:
+			94% occupant safety			
+		</div>
+					<iframe width="100%"
+					height="360"
+					src="https://www.youtube.com/embed/BeAqCuLeld0?rel=0"
+					frameborder="0"
+					allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen>
+			</iframe>
+			</div>
+</div>	<div>
+		<h2><i class="fa fa-exchange" aria-hidden="true"></i>Other cars that might interest you...</h2>
+	</div>
+<div class="box-wrap">
+	<div class="preporuka-auto">
+		<div class="preporuka-left">
+			<div class="preporuka-slika">
+				<a href="/compare/12927/11777/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-kia-sportage-2.0-crdi-4wd" title="compare selected cars">
+					<img src="/resources/images/variant/1778/thumb_sportage_5.jpg" class="thumb-image">
+				</a>
+				<div class="preporuka-uporedi">
+					<a href="/compare/12927/11777/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-kia-sportage-2.0-crdi-4wd" title="compare selected cars"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="preporuka-right">
+			<div class="preporuka-naslov">
+				<a href="/kia/2016/11777/kia-sportage-2.0-crdi-4wd" class="orange">KIA Sportage  2.0 CRDi 4WD</a>
+			</div>
+			<div class="preporuka-proizvodnja">
+				produced from 2016. to 2018. &nbsp;			</div>
+			<div class="preporuceni-stars">
+				<div class="stars5"></div>
+			</div>
+			<div class="preporuceni-euro-ncap">
+				EuroNCAP:
+				90% score			</div>
+		</div>
+		<div class="preporuka-data-wrap">
+			<div class="preporuka-data">
+				<p>acceleration</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						7%						</div>
+					</strong>
+				</p>
+				<p>slower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>consumption</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						12%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>power</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						5%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>length</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						2%						</div>
+					</strong>
+				</p>
+				<p>shorter</p>
+			</div>
+			<div class="preporuka-data">
+				<p>weight</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						16%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+							<div class="preporuka-data">
+					<p>fuel tank</p>
+					<p>
+						<strong>
+							<div class="data-good">
+							6%							</div>
+						</strong>
+					</p>
+					<p>larger</p>
+				</div>
+						<div class="preporuka-data">
+				<p>boot</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						2%						</div>
+					</strong>
+				</p>
+				<p>smaller</p>
+			</div>
+						<div class="preporuka-data">
+				<p>boot ext.</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						9%						</div>
+					</strong>
+				</p>
+				<p>smaller</p>
+			</div>		
+						<div class="preporuka-data">
+				<p>price</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						46%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+		</div>
+	</div>
+</div><div class="box-wrap">
+	<div class="preporuka-auto">
+		<div class="preporuka-left">
+			<div class="preporuka-slika">
+				<a href="/compare/12927/11964/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-toyota-rav4-2.0-d-4d" title="compare selected cars">
+					<img src="/resources/images/variant/1792/thumb_rav4_8.jpg" class="thumb-image">
+				</a>
+				<div class="preporuka-uporedi">
+					<a href="/compare/12927/11964/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-toyota-rav4-2.0-d-4d" title="compare selected cars"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="preporuka-right">
+			<div class="preporuka-naslov">
+				<a href="/toyota/2016/11964/toyota-rav4-2.0-d-4d" class="orange">Toyota RAV4  2.0 D-4D</a>
+			</div>
+			<div class="preporuka-proizvodnja">
+				produced from 2016. to 2018. &nbsp;			</div>
+			<div class="preporuceni-stars">
+				<div class="stars5"></div>
+			</div>
+			<div class="preporuceni-euro-ncap">
+				EuroNCAP:
+				89% score			</div>
+		</div>
+		<div class="preporuka-data-wrap">
+			<div class="preporuka-data">
+				<p>acceleration</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						8%						</div>
+					</strong>
+				</p>
+				<p>slower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>consumption</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						11%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>power</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						22%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>length</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						1%						</div>
+					</strong>
+				</p>
+				<p>longer</p>
+			</div>
+			<div class="preporuka-data">
+				<p>weight</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						8%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+							<div class="preporuka-data">
+					<p>fuel tank</p>
+					<p>
+						<strong>
+							<div class="data-good">
+							3%							</div>
+						</strong>
+					</p>
+					<p>larger</p>
+				</div>
+						<div class="preporuka-data">
+				<p>boot</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						8%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>
+						<div class="preporuka-data">
+				<p>boot ext.</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						7%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>		
+						<div class="preporuka-data">
+				<p>price</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						10%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+		</div>
+	</div>
+</div><div class="box-wrap">
+	<div class="preporuka-auto">
+		<div class="preporuka-left">
+			<div class="preporuka-slika">
+				<a href="/compare/12927/12017/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-mitsubishi-outlander-2.2-di-d-4wd" title="compare selected cars">
+					<img src="/resources/images/variant/1801/thumb_outlander_5.jpg" class="thumb-image">
+				</a>
+				<div class="preporuka-uporedi">
+					<a href="/compare/12927/12017/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-mitsubishi-outlander-2.2-di-d-4wd" title="compare selected cars"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="preporuka-right">
+			<div class="preporuka-naslov">
+				<a href="/mitsubishi/2016/12017/mitsubishi-outlander-2.2-di-d-4wd" class="orange">Mitsubishi Outlander  2.2 DI-D 4WD</a>
+			</div>
+			<div class="preporuka-proizvodnja">
+				produced from 2016. to 2018. &nbsp;			</div>
+			<div class="preporuceni-stars">
+				<div class="stars5"></div>
+			</div>
+			<div class="preporuceni-euro-ncap">
+				EuroNCAP:
+				88% score			</div>
+		</div>
+		<div class="preporuka-data-wrap">
+			<div class="preporuka-data">
+				<p>acceleration</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						14%						</div>
+					</strong>
+				</p>
+				<p>slower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>consumption</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						2%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>power</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						17%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>length</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						3%						</div>
+					</strong>
+				</p>
+				<p>longer</p>
+			</div>
+			<div class="preporuka-data">
+				<p>weight</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						5%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+							<div class="preporuka-data">
+					<p>fuel tank</p>
+					<p>
+						<strong>
+							<div class="data-good">
+							3%							</div>
+						</strong>
+					</p>
+					<p>larger</p>
+				</div>
+						<div class="preporuka-data">
+				<p>boot</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						15%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>
+						<div class="preporuka-data">
+				<p>boot ext.</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						59%						</div>
+					</strong>
+				</p>
+				<p>smaller</p>
+			</div>		
+						<div class="preporuka-data">
+				<p>price</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						81%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+		</div>
+	</div>
+</div><div class="box-wrap">
+	<div class="preporuka-auto">
+		<div class="preporuka-left">
+			<div class="preporuka-slika">
+				<a href="/compare/12927/12428/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-subaru-forester-2.0d" title="compare selected cars">
+					<img src="/resources/images/variant/1860/thumb_forester_6.jpg" class="thumb-image">
+				</a>
+				<div class="preporuka-uporedi">
+					<a href="/compare/12927/12428/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-subaru-forester-2.0d" title="compare selected cars"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="preporuka-right">
+			<div class="preporuka-naslov">
+				<a href="/subaru/2015/12428/subaru-forester-2.0d" class="orange">Subaru Forester  2.0D</a>
+			</div>
+			<div class="preporuka-proizvodnja">
+				produced from 2015. to -			</div>
+			<div class="preporuceni-stars">
+				<div class="stars5"></div>
+			</div>
+			<div class="preporuceni-euro-ncap">
+				EuroNCAP:
+				91% score			</div>
+		</div>
+		<div class="preporuka-data-wrap">
+			<div class="preporuka-data">
+				<p>acceleration</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						14%						</div>
+					</strong>
+				</p>
+				<p>slower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>consumption</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						9%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>power</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						17%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>length</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						1%						</div>
+					</strong>
+				</p>
+				<p>longer</p>
+			</div>
+			<div class="preporuka-data">
+				<p>weight</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						4%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+							<div class="preporuka-data">
+					<p>fuel tank</p>
+					<p>
+						<strong>
+							<div class="data-good">
+							3%							</div>
+						</strong>
+					</p>
+					<p>larger</p>
+				</div>
+						<div class="preporuka-data">
+				<p>boot</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						0%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>
+						<div class="preporuka-data">
+				<p>boot ext.</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						2%						</div>
+					</strong>
+				</p>
+				<p>smaller</p>
+			</div>		
+						<div class="preporuka-data">
+				<p>price</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						9%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+		</div>
+	</div>
+</div><div class="box-wrap">
+	<div class="preporuka-auto">
+		<div class="preporuka-left">
+			<div class="preporuka-slika">
+				<a href="/compare/12927/13197/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-renault-koleos-dci-175-4wd" title="compare selected cars">
+					<img src="/resources/images/variant/1971/thumb_koleos_3.jpg" class="thumb-image">
+				</a>
+				<div class="preporuka-uporedi">
+					<a href="/compare/12927/13197/mazda-cx-5-skyactiv-d-2.2-175-4wd-VS-renault-koleos-dci-175-4wd" title="compare selected cars"><i class="fa fa-exchange" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+		<div class="preporuka-right">
+			<div class="preporuka-naslov">
+				<a href="/renault/2017/13197/renault-koleos-dci-175-4wd" class="orange">Renault Koleos  dCi 175 4WD</a>
+			</div>
+			<div class="preporuka-proizvodnja">
+				produced from 2017. to 2020. &nbsp;			</div>
+			<div class="preporuceni-stars">
+				<div class="stars5"></div>
+			</div>
+			<div class="preporuceni-euro-ncap">
+				EuroNCAP:
+				90% score			</div>
+		</div>
+		<div class="preporuka-data-wrap">
+			<div class="preporuka-data">
+				<p>acceleration</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						18%						</div>
+					</strong>
+				</p>
+				<p>slower</p>
+			</div>
+			<div class="preporuka-data">
+				<p>consumption</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						2%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>power</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						2%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+			<div class="preporuka-data">
+				<p>length</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						3%						</div>
+					</strong>
+				</p>
+				<p>longer</p>
+			</div>
+			<div class="preporuka-data">
+				<p>weight</p>
+				<p>
+					<strong>
+						<div class="data-bad">
+						15%						</div>
+					</strong>
+				</p>
+				<p>higher</p>
+			</div>
+							<div class="preporuka-data">
+					<p>fuel tank</p>
+					<p>
+						<strong>
+							<div class="data-good">
+							3%							</div>
+						</strong>
+					</p>
+					<p>larger</p>
+				</div>
+						<div class="preporuka-data">
+				<p>boot</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						5%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>
+						<div class="preporuka-data">
+				<p>boot ext.</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						3%						</div>
+					</strong>
+				</p>
+				<p>larger</p>
+			</div>		
+						<div class="preporuka-data">
+				<p>price</p>
+				<p>
+					<strong>
+						<div class="data-good">
+						20%						</div>
+					</strong>
+				</p>
+				<p>lower</p>
+			</div>
+		</div>
+	</div>
+</div><div>
+	<h2><i class="fa fa-search" aria-hidden="true"></i>Check a car by its VIN number</h2>
+</div>
+<div class="box-wrap" style="height: 250px;">
+	<div
+	  data-cvaff
+	  data-locale="en-EU"
+	  data-a="automanijak"
+	  data-b="81ec5429"
+	  style="width: 100%; height: 100%">
+	</div>
+</div><div>
+	<h2><i class="fa fa-user" aria-hidden="true"></i>Visitor comments</h2>
+</div>
+<div class="box-wrap">
+	<div class="fb-comments" data-href="https://www.automaniac.org/mazda/2017/12927/mazda-cx-5-skyactiv-d-2.2-175-4wd" data-width="670" data-numposts="5"></div>
+</div>
+	</div>
+			</div>
+		</div>
+		<div id="footer">
+			<div class="footer-wrap">
+				Copyright &copy; 2015 - 2022 automaniac.org - All rights reserved.
+				</br>
+				Powered by <strong>Gama1 Solutions</strong>
+				<div class="footer-links">
+					<div class="footer-menu">
+						<ul>
+							<li><a href="/">HOME page</a></li>
+							<li><a href="/about">about</a></li>
+							<li><a href="/terms">terms & conditions</a></li>
+							<li><a href="/legal">legal note</a></li>
+							<li><a href="/faq">frequent questions (FAQ)</a></li>
+							<li><a href="/contact">contact us</a></li>
+						</ul>
+					</div>
+
+					<div class='footer-auto-brend'><ul><li><a href='/make/alfa-romeo'>Alfa Romeo</a></li><li><a href='/make/audi'>Audi</a></li><li><a href='/make/bmw'>BMW</a></li><li><a href='/make/chery'>Chery</a></li><li><a href='/make/chevrolet'>Chevrolet</a></li><li><a href='/make/chrysler'>Chrysler</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/citroen'>Citroen</a></li><li><a href='/make/dacia'>Dacia</a></li><li><a href='/make/daihatsu'>Daihatsu</a></li><li><a href='/make/dodge'>Dodge</a></li><li><a href='/make/fiat'>FIAT</a></li><li><a href='/make/ford'>Ford</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/honda'>Honda</a></li><li><a href='/make/hyundai'>Hyundai</a></li><li><a href='/make/infiniti'>Infiniti</a></li><li><a href='/make/jaguar'>Jaguar</a></li><li><a href='/make/jeep'>Jeep</a></li><li><a href='/make/kia'>KIA</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/lada'>Lada</a></li><li><a href='/make/lancia'>Lancia</a></li><li><a href='/make/land-rover'>Land Rover</a></li><li><a href='/make/lexus'>Lexus</a></li><li><a href='/make/mazda'>Mazda</a></li><li><a href='/make/mercedes-benz'>Mercedes</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/mini'>Mini</a></li><li><a href='/make/mitsubishi'>Mitsubishi</a></li><li><a href='/make/nissan'>Nissan</a></li><li><a href='/make/opel'>Opel</a></li><li><a href='/make/peugeot'>Peugeot</a></li><li><a href='/make/porsche'>Porsche</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/renault'>Renault</a></li><li><a href='/make/rover'>Rover</a></li><li><a href='/make/saab'>SAAB</a></li><li><a href='/make/ssangyong'>SSangYong</a></li><li><a href='/make/seat'>Seat</a></li><li><a href='/make/smart'>Smart</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/subaru'>Subaru</a></li><li><a href='/make/suzuki'>Suzuki</a></li><li><a href='/make/tesla'>Tesla</a></li><li><a href='/make/toyota'>Toyota</a></li><li><a href='/make/volkswagen'>Volkswagen</a></li><li><a href='/make/volvo'>Volvo</a></li></ul></div><div class='footer-auto-brend'><ul><li><a href='/make/zastava'>Zastava</a></li><li><a href='/make/škoda'>Škoda</a></li></ul></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>`

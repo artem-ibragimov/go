@@ -52,13 +52,15 @@ CREATE TABLE
    IF NOT EXISTS PUBLIC.engines (
       id INTEGER NOT NULL DEFAULT NEXTVAL('engines_id_seq'::regclass),
       NAME CHARACTER VARYING(50) COLLATE pg_catalog."default" NOT NULL,
-      component_category_id INTEGER NOT NULL,
+      displacement INTEGER,
+      config CHARACTER VARYING(50) COLLATE pg_catalog."default",
+      valves CHARACTER VARYING(50) COLLATE pg_catalog."default",
+      aspiration CHARACTER VARYING(50) COLLATE pg_catalog."default",
+      fuel_type CHARACTER VARYING(50) COLLATE pg_catalog."default",
+      torque INTEGER,
+      power_hp INTEGER,
       CONSTRAINT engines_pkey PRIMARY KEY (id),
-      CONSTRAINT engines_component_category_id_fkey FOREIGN KEY (component_category_id) REFERENCES PUBLIC.component_category (id) MATCH SIMPLE
-      ON
-      UPDATE NO ACTION
-         ON
-      DELETE CASCADE
+      --  CONSTRAINT engines_name_key UNIQUE (name)
    ) TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS PUBLIC.engines OWNER TO artem;
