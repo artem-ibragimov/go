@@ -32,7 +32,7 @@ func (database *DB) SaveBrand(brand string) (int32, error) {
 
 	err = query.QueryRow(brand).Scan(&id)
 	if err != nil {
-		return 0, err
+		tx.QueryRow(`SELECT id FROM brand WHERE name= $1 `, brand).Scan(&id)
 	}
 
 	err = tx.Commit()
@@ -51,7 +51,7 @@ func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 		return 0, err
 	}
 
-	query, err := tx.Prepare(`INSERT INTO engines (
+	query, err := tx.Prepare(`INSERT INTO engine (
 		name, displacement, config, valves, aspiration, fuel_type, power_hp, torque
 		) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 ) ON CONFLICT DO NOTHING RETURNING id`)
 	if err != nil {
@@ -69,7 +69,7 @@ func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 		engine.Torque,
 	).Scan(&id)
 	if err != nil {
-		return 0, err
+		tx.QueryRow(`SELECT id FROM engine WHERE name= $1 `, engine.Name).Scan(&id)
 	}
 
 	err = tx.Commit()
@@ -87,20 +87,21 @@ func (database *DB) SaveTransmission(trans *TransmissionData) (int32, error) {
 		return 0, err
 	}
 
-	query, err := tx.Prepare(`INSERT INTO transmissions (
-		name, consumption, acceleration
-		) VALUES ( $1, $2, $3 ) ON CONFLICT DO NOTHING RETURNING id`)
+	query, err := tx.Prepare(`INSERT INTO transmission (
+		name, description, consumption, acceleration
+		) VALUES ( $1, $2, $3, $4 ) ON CONFLICT DO NOTHING RETURNING id`)
 	if err != nil {
 		return 0, err
 	}
 
 	err = query.QueryRow(
 		trans.Name,
+		trans.Desc,
 		trans.Consumtion,
 		trans.Acceleration,
 	).Scan(&id)
 	if err != nil {
-		return 0, err
+		tx.QueryRow(`SELECT id FROM transmission WHERE name= $1 AND description=$2`, trans.Name, trans.Desc).Scan(&id)
 	}
 
 	err = tx.Commit()
@@ -119,8 +120,8 @@ func (database *DB) SaveModel(model *ModelData) (int32, error) {
 	}
 
 	query, err := tx.Prepare(`INSERT INTO model (
-		name, version, brand_id, year, transmissoin_id, engine_id
-		) VALUES ( $1, $2, $3 ) ON CONFLICT DO NOTHING RETURNING id`)
+		name, version, brand_id, year, transmission_id, engine_id
+		) VALUES ( $1, $2, $3, $4, $5, $6 ) ON CONFLICT DO NOTHING RETURNING id`)
 	if err != nil {
 		return 0, err
 	}
@@ -148,25 +149,26 @@ func (database *DB) SaveModel(model *ModelData) (int32, error) {
 
 type EngineData struct {
 	Name         string
-	Displacement string
+	Displacement int32
 	Config       string
 	Valves       string
-	Aspiration   string
+	Aspiration   float32
 	Fuel_type    string
-	Power_hp     string
-	Torque       string
+	Power_hp     int32
+	Torque       int32
 }
 
 type TransmissionData struct {
 	Name         string
-	Consumtion   string
-	Acceleration string
+	Desc         string
+	Consumtion   float32
+	Acceleration float32
 }
 
 type ModelData struct {
 	Name     string
 	Version  string
-	Year     string
+	Year     int32
 	BrandID  int32
 	EngineID int32
 	TransID  int32
