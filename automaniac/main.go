@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	DB "main/db"
+	"math"
 	"math/rand"
 	"net/http"
 	"regexp"
@@ -24,7 +25,6 @@ type IDB interface {
 const url = "https://www.automaniac.org"
 
 func Parse(db IDB) {
-
 	document, err := getDocument(url + "/specs")
 	// document, err := getHTML(main_html) //TODO getDocument
 	if err != nil {
@@ -67,7 +67,6 @@ func parseBrand(db IDB, brand_name string, brand_id int32, brand_doc *goquery.Do
 				log.Fatalln(err)
 				continue
 			}
-			time.Sleep(3 * time.Second)
 			parseVersion(db, brand_name, brand_id, version_doc)
 		}
 	}
@@ -109,21 +108,20 @@ func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquer
 				if !strings.Contains(info.Find("div.podaci-naslov").Text(), "gearbox performance") {
 					return
 				}
-				// TODO round
-				cons, _ := strconv.ParseFloat(clean(info.Find("div.podaci-box-c > div > span").Text()), 32)
-				acc, _ := strconv.ParseFloat(clean(info.Find("div:nth-child(6) > div.d2 > strong").Text()), 32)
+				cons, _ := strconv.ParseFloat(clean(info.Find("div.podaci-box-c > div > span").Text()), 64)
+				acc, _ := strconv.ParseFloat(clean(info.Find("div:nth-child(6) > div.d2 > strong").Text()), 64)
 				trans_id, err := db.SaveTransmission((&DB.TransmissionData{
-					Name:         brand_name,
+					BrandID:      brand_id,
 					Desc:         clean(info.Find("div.podaci-box-b").Text()),
-					Consumtion:   float32(cons),
-					Acceleration: float32(acc),
+					Consumtion:   float32(math.Round(cons*100) / 100),
+					Acceleration: float32(math.Round(acc*100) / 100),
 				}))
 
 				if err != nil {
 					log.Fatalln(err)
 				}
 
-				_, err = db.SaveModel(&DB.ModelData{
+				model_id, err := db.SaveModel(&DB.ModelData{
 					Name:     model_name,
 					Year:     int32(model_year),
 					Version:  version,
@@ -135,7 +133,9 @@ func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquer
 				if err != nil {
 					log.Fatalln(err)
 				}
-				fmt.Println(brand_name, model_name, version, model_year)
+				if model_id != 0 {
+					fmt.Println(brand_name, model_name, version, model_year)
+				}
 			})
 		})
 }
@@ -184,7 +184,7 @@ func getDocument(url string) (*goquery.Document, error) {
 		DisableCompression: true,
 	}
 
-	client := &http.Client{Transport: tr, Timeout: 30 * time.Second}
+	client := &http.Client{Transport: tr, Timeout: 60 * time.Second}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -202,6 +202,6 @@ func getDocument(url string) (*goquery.Document, error) {
 	return goquery.NewDocumentFromReader(response.Body)
 }
 
-func getHTML(html string) (*goquery.Document, error) {
-	return goquery.NewDocumentFromReader(strings.NewReader(html))
-}
+// func getHTML(html string) (*goquery.Document, error) {
+// 	return goquery.NewDocumentFromReader(strings.NewReader(html))
+// }

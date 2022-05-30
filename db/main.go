@@ -88,20 +88,20 @@ func (database *DB) SaveTransmission(trans *TransmissionData) (int32, error) {
 	}
 
 	query, err := tx.Prepare(`INSERT INTO transmission (
-		name, description, consumption, acceleration
+		brand_id, description, consumption, acceleration
 		) VALUES ( $1, $2, $3, $4 ) ON CONFLICT DO NOTHING RETURNING id`)
 	if err != nil {
 		return 0, err
 	}
 
 	err = query.QueryRow(
-		trans.Name,
+		trans.BrandID,
 		trans.Desc,
 		trans.Consumtion,
 		trans.Acceleration,
 	).Scan(&id)
 	if err != nil {
-		tx.QueryRow(`SELECT id FROM transmission WHERE name= $1 AND description=$2`, trans.Name, trans.Desc).Scan(&id)
+		tx.QueryRow(`SELECT id FROM transmission WHERE name= $1 AND description=$2`, trans.BrandID, trans.Desc).Scan(&id)
 	}
 
 	err = tx.Commit()
@@ -135,7 +135,11 @@ func (database *DB) SaveModel(model *ModelData) (int32, error) {
 		model.EngineID,
 	).Scan(&id)
 	if err != nil {
-		return 0, err
+		tx.QueryRow(`SELECT id FROM model WHERE name = $1 AND version = $2 AND brand_id = $3`,
+			model.Name,
+			model.Version,
+			model.BrandID,
+		).Scan(&id)
 	}
 
 	err = tx.Commit()
@@ -159,7 +163,7 @@ type EngineData struct {
 }
 
 type TransmissionData struct {
-	Name         string
+	BrandID      int32
 	Desc         string
 	Consumtion   float32
 	Acceleration float32
