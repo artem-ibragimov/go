@@ -2,14 +2,16 @@ module main
 
 go 1.17
 
-require github.com/PuerkitoBio/goquery v1.8.0
+require (
+	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/lib/pq v1.10.6
+)
 
 require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jmoiron/sqlx v1.3.5 // indirect
-	github.com/lib/pq v1.10.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/uptrace/bun v1.1.5 // indirect

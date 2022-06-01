@@ -88,14 +88,15 @@ func (database *DB) SaveTransmission(trans *TransmissionData) (int32, error) {
 	}
 
 	query, err := tx.Prepare(`INSERT INTO transmission (
-		brand_id, description, consumption, acceleration
-		) VALUES ( $1, $2, $3, $4 ) ON CONFLICT DO NOTHING RETURNING id`)
+		brand_id, engine_id, description, consumption, acceleration
+		) VALUES ( $1, $2, $3, $4, $5 ) ON CONFLICT DO NOTHING RETURNING id`)
 	if err != nil {
 		return 0, err
 	}
 
 	err = query.QueryRow(
 		trans.BrandID,
+		trans.EngineID,
 		trans.Desc,
 		trans.Consumtion,
 		trans.Acceleration,
@@ -156,7 +157,7 @@ type EngineData struct {
 	Displacement int32
 	Config       string
 	Valves       string
-	Aspiration   float32
+	Aspiration   string
 	Fuel_type    string
 	Power_hp     int32
 	Torque       int32
@@ -164,6 +165,7 @@ type EngineData struct {
 
 type TransmissionData struct {
 	BrandID      int32
+	EngineID     int32
 	Desc         string
 	Consumtion   float32
 	Acceleration float32

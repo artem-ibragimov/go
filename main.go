@@ -1,8 +1,10 @@
 package main
 
 import (
-	"main/automaniac"
+	// "main/automaniac"
 	"main/db"
+	"main/nhtsa"
+	"main/req"
 )
 
 func main() {
@@ -11,6 +13,9 @@ func main() {
 	if err != nil {
 		return
 	}
+	req := new(req.Req)
+	req.Init()
 	// car_complaints.ParseCarComplaints(db)
-	automaniac.Parse(db)
+	// automaniac.Parse(db, req)
+	nhtsa.Parse()
 }
