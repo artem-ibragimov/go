@@ -20,7 +20,7 @@ type IDB interface {
 	GetEngine(string) (int32, error)
 
 	SaveTransmission(*DB.TransmissionData) (int32, error)
-	GetTransmission(*DB.TransmissionData) (int32, error)
+	GetTransmission(int32, string) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
 	GetModel(int32, string) (int32, error)
@@ -45,9 +45,9 @@ func Parse(db IDB, req IReq) {
 	for _, brand_url := range getLinks(document.Selection.Find("#main-wrapper #modeli div.box-wrap")) {
 		path := strings.Split(brand_url, "/")
 		brand_name := strings.TrimSpace(strings.ReplaceAll(path[len(path)-1], "-", " "))
-		brand_id, err := db.SaveBrand(brand_name)
+		brand_id, err := db.GetBrand(brand_name)
 		if err != nil {
-			brand_id, err = db.GetBrand(brand_name)
+			brand_id, err = db.SaveBrand(brand_name)
 			if err != nil {
 				log.Fatal(err)
 				continue
@@ -94,11 +94,9 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 				Year:    int32(model_year),
 			}
 
-			model_id, err := db.SaveModel(model_data)
-
+			model_id, err := db.GetModel(brand_id, model_name)
 			if err != nil {
-				model_id, err = db.GetModel(brand_id, model_name)
-
+				model_id, err = db.SaveModel(model_data)
 				if err != nil {
 					log.Fatal(err)
 					return
@@ -152,7 +150,11 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 
 				trans_type := regexp.MustCompile(` \d \w+`).ReplaceAllString(gearbox, "")
 
-				gears, _ := strconv.Atoi(regexp.MustCompile(`(\d+)`).FindAllString(gearbox, 1)[0])
+				var gears int = 0
+				gear_data := regexp.MustCompile(`(\d+)`).FindAllString(gearbox, 1)
+				if len(gear_data) != 0 {
+					gears, _ = strconv.Atoi(gear_data[0])
+				}
 				trans_data := &DB.TransmissionData{
 					BrandID:      model_data.BrandID,
 					EngineID:     engine_id,
@@ -162,7 +164,7 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 					Acceleration: float32(math.Round(acc*100) / 100),
 				}
 
-				trans_id, err := db.GetTransmission(trans_data)
+				trans_id, err := db.GetTransmission(model_data.BrandID, trans_type)
 				if err != nil {
 					trans_id, err = db.SaveTransmission(trans_data)
 					if err != nil {

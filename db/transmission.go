@@ -2,20 +2,20 @@ package db
 
 import "database/sql"
 
-func (database *DB) GetTransmission(trans *TransmissionData) (int32, error) {
+func (database *DB) GetTransmission(brand_id int32, trans_type string) (int32, error) {
 	var id sql.NullInt32
 	tx, err := database.db.Begin()
 	if err != nil {
 		return 0, err
 	}
 
-	query, err := tx.Prepare(`SELECT id FROM transmission WHERE name= $1 AND type=$2`)
+	query, err := tx.Prepare(`SELECT id FROM transmission WHERE brand_id = $1 AND type = $2`)
 	if err != nil {
 		return 0, err
 	}
 	defer query.Close()
 
-	err = query.QueryRow(trans.BrandID, trans.Type).Scan(&id)
+	err = query.QueryRow(brand_id, trans_type).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
