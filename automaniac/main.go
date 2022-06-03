@@ -14,9 +14,19 @@ import (
 
 type IDB interface {
 	SaveBrand(string) (int32, error)
+	GetBrand(string) (int32, error)
+
 	SaveEngine(*DB.EngineData) (int32, error)
+	GetEngine(string) (int32, error)
+
 	SaveTransmission(*DB.TransmissionData) (int32, error)
+	GetTransmission(*DB.TransmissionData) (int32, error)
+
 	SaveModel(*DB.ModelData) (int32, error)
+	GetModel(int32, string) (int32, error)
+
+	SaveVersion(*DB.VersionData) (int32, error)
+	// GetVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {
@@ -37,8 +47,11 @@ func Parse(db IDB, req IReq) {
 		brand_name := strings.TrimSpace(strings.ReplaceAll(path[len(path)-1], "-", " "))
 		brand_id, err := db.SaveBrand(brand_name)
 		if err != nil {
-			log.Println(err)
-			continue
+			brand_id, err = db.GetBrand(brand_name)
+			if err != nil {
+				log.Fatal(err)
+				continue
+			}
 		}
 		// fmt.Println("Brand: ", brand_name, brand_url)
 
@@ -70,17 +83,36 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 				log.Println(err)
 				continue
 			}
-			parseVersion(db, brand_name, brand_id, version_doc)
+
+			path := strings.Split(model_doc.Find("#breadcrumb-wrap > div.breadcrumb-nav").Text(), "/")
+			model := strings.Split(clean(path[len(path)-1]), " ")
+			model_name := model[1]
+			model_year, _ := strconv.ParseInt(model[0], 10, 32)
+			model_data := &DB.ModelData{
+				Name:    model_name,
+				BrandID: brand_id,
+				Year:    int32(model_year),
+			}
+
+			model_id, err := db.SaveModel(model_data)
+
+			if err != nil {
+				model_id, err = db.GetModel(brand_id, model_name)
+
+				if err != nil {
+					log.Fatal(err)
+					return
+				}
+			}
+
+			parseVersion(db, model_id, model_data, version_doc)
 		}
 	}
 }
 
-func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquery.Document) {
+func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc *goquery.Document) {
 	path := strings.Split(version_doc.Find("#breadcrumb-wrap > div.breadcrumb-nav").Text(), "/")
 	version := clean(path[len(path)-1])
-	model := strings.Split(clean(path[len(path)-2]), " ")
-	model_name := model[1]
-	model_year, _ := strconv.ParseInt(model[0], 10, 32)
 
 	version_doc.Selection.Find("#predlog-auto > div.podaci-box-wrap > div").Each(
 		func(i int, info *goquery.Selection) {
@@ -91,16 +123,20 @@ func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquer
 			displacement, _ := strconv.ParseInt(clean(info.Find("div:nth-child(5) > div.d2 > strong").Text()), 10, 32)
 			power_hp, _ := strconv.ParseInt(clean(info.Find("div:nth-child(10) > div.d2 > strong").Text()), 10, 32)
 			torque, _ := strconv.ParseInt(clean(info.Find("div:nth-child(11) > div.d2 > strong").Text()), 10, 32)
-			engine_id, err := db.SaveEngine((&DB.EngineData{
-				Name:         clean(info.Find("div.podaci-box-b > p > a").Text()),
-				Displacement: int32(displacement),
-				Config:       clean(info.Find("div:nth-child(6) > div.d2 > strong").Text()),
-				Valves:       clean(info.Find("div:nth-child(7) > div.d2 > strong").Text()),
-				Aspiration:   clean(info.Find("div:nth-child(8) > div.d2 > strong").Text()),
-				Fuel_type:    clean(info.Find("div:nth-child(9) > div.d2 > strong").Text()),
-				Power_hp:     int32(power_hp),
-				Torque:       int32(torque),
-			}))
+			engine_name := clean(info.Find("div.podaci-box-b > p > a").Text())
+			engine_id, err := db.GetEngine(engine_name)
+			if err != nil {
+				engine_id, err = db.SaveEngine((&DB.EngineData{
+					Name:         engine_name,
+					Displacement: int32(displacement),
+					Config:       clean(info.Find("div:nth-child(6) > div.d2 > strong").Text()),
+					Valves:       clean(info.Find("div:nth-child(7) > div.d2 > strong").Text()),
+					Aspiration:   clean(info.Find("div:nth-child(8) > div.d2 > strong").Text()),
+					Fuel_type:    clean(info.Find("div:nth-child(9) > div.d2 > strong").Text()),
+					Power_hp:     int32(power_hp),
+					Torque:       int32(torque),
+				}))
+			}
 
 			if err != nil {
 				log.Println(err)
@@ -112,23 +148,32 @@ func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquer
 				}
 				cons, _ := strconv.ParseFloat(clean(info.Find("div.podaci-box-c > div > span").Text()), 64)
 				acc, _ := strconv.ParseFloat(clean(info.Find("div:nth-child(6) > div.d2 > strong").Text()), 64)
-				trans_id, err := db.SaveTransmission((&DB.TransmissionData{
-					BrandID:      brand_id,
+				gearbox := clean(info.Find("div.podaci-box-b").Text())
+
+				trans_type := regexp.MustCompile(` \d \w+`).ReplaceAllString(gearbox, "")
+
+				gears, _ := strconv.Atoi(regexp.MustCompile(`(\d+)`).FindAllString(gearbox, 1)[0])
+				trans_data := &DB.TransmissionData{
+					BrandID:      model_data.BrandID,
 					EngineID:     engine_id,
-					Desc:         clean(info.Find("div.podaci-box-b").Text()),
+					Type:         trans_type,
+					Gears:        int32(gears),
 					Consumtion:   float32(math.Round(cons*100) / 100),
 					Acceleration: float32(math.Round(acc*100) / 100),
-				}))
-
-				if err != nil {
-					log.Println(err)
 				}
 
-				model_id, err := db.SaveModel(&DB.ModelData{
-					Name:     model_name,
-					Year:     int32(model_year),
-					Version:  version,
-					BrandID:  brand_id,
+				trans_id, err := db.GetTransmission(trans_data)
+				if err != nil {
+					trans_id, err = db.SaveTransmission(trans_data)
+					if err != nil {
+						log.Fatal(err)
+					}
+				}
+
+				version_id, err := db.SaveVersion(&DB.VersionData{
+					Name:     version,
+					ModelID:  model_id,
+					BrandID:  model_data.BrandID,
 					EngineID: engine_id,
 					TransID:  trans_id,
 				})
@@ -136,8 +181,8 @@ func parseVersion(db IDB, brand_name string, brand_id int32, version_doc *goquer
 				if err != nil {
 					log.Println(err)
 				}
-				if model_id != 0 {
-					fmt.Println(brand_name, model_name, version, model_year)
+				if version_id != 0 {
+					fmt.Println(model_data.Name, model_data.Year, version)
 				}
 			})
 		})
