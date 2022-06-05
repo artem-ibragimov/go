@@ -2,9 +2,9 @@ package db
 
 func (database *DB) SaveDefect(d *Defect) (int32, error) {
 	return database.Exec(`INSERT INTO defect (
-		brand_id, 	model_id, description,
-		miles, 		cost, 	country_id,
-		rating, 		year, 	freq,
+		brand_id, model_id, description,
+		miles, cost, country_id,
+		rating, year, freq,
 		major_category_id, minor_category_id, category_id
 		) 
 		VALUES (

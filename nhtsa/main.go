@@ -116,7 +116,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		}
 	}
 
-	return db.SaveDefect(&DB.Defect{
+	_, err = db.SaveDefect(&DB.Defect{
 		BrandID:         brand_id,
 		ModelID:         model_id,
 		Year:            defect.Year,
@@ -130,6 +130,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		Desc:            defect.Desc,
 		Country_ID:      country_id,
 	})
+	return 0, nil
 }
 
 type Defect struct {

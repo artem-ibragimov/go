@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"main/automaniac"
 	"main/db"
+	"main/nhtsa"
 	"main/req"
 )
 
@@ -16,8 +16,8 @@ func main() {
 	req := new(req.Req)
 	req.Init()
 	// car_complaints.ParseCarComplaints(db)
-	automaniac.Parse(db, req)
-	// nhtsa.Parse(db)
+	// automaniac.Parse(db, req)
+	nhtsa.Parse(db)
 	log.Println("Done.")
 	db.Close()
 }
