@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -17,4 +18,22 @@ func (database *DB) Init() error {
 	}
 	database.db = db
 	return nil
+}
+func (database *DB) Close() error {
+	return database.db.Close()
+}
+
+func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
+	var id sql.NullInt32
+	query, err := database.db.Prepare(cmd)
+	if err != nil {
+		log.Println(err)
+	}
+	defer query.Close()
+
+	err = query.QueryRow(args...).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+	return id.Int32, nil
 }

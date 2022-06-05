@@ -20,7 +20,7 @@ type IDB interface {
 	GetEngine(string) (int32, error)
 
 	SaveTransmission(*DB.TransmissionData) (int32, error)
-	GetTransmission(int32, string) (int32, error)
+	GetTransmission(int32, string, int32) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
 	GetModel(int32, string) (int32, error)
@@ -49,8 +49,8 @@ func Parse(db IDB, req IReq) {
 		if err != nil {
 			brand_id, err = db.SaveBrand(brand_name)
 			if err != nil {
-				log.Fatal(err)
-				continue
+				log.Println(err)
+				return
 			}
 		}
 		// fmt.Println("Brand: ", brand_name, brand_url)
@@ -66,7 +66,8 @@ func Parse(db IDB, req IReq) {
 }
 
 func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *goquery.Document) {
-	for _, model_url := range getLinks(brand_doc.Selection.Find("#main-wrapper #modeli-auto-lista")) {
+	model_links := getLinks(brand_doc.Selection.Find("#main-wrapper #modeli-auto-lista"))
+	for _, model_url := range model_links {
 		// fmt.Println("model_url: ", model_url)
 		model_doc, err := req.Get(url + model_url) //TODO req.Get
 		// model_doc, err := getHTML(model_html) //TODO req.Get
@@ -86,8 +87,11 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 
 			path := strings.Split(model_doc.Find("#breadcrumb-wrap > div.breadcrumb-nav").Text(), "/")
 			model := strings.Split(clean(path[len(path)-1]), " ")
-			model_name := model[1]
+			model_name := strings.ToLower(model[1])
 			model_year, _ := strconv.ParseInt(model[0], 10, 32)
+			if model_year < 2000 {
+				continue
+			}
 			model_data := &DB.ModelData{
 				Name:    model_name,
 				BrandID: brand_id,
@@ -98,13 +102,14 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 			if err != nil {
 				model_id, err = db.SaveModel(model_data)
 				if err != nil {
-					log.Fatal(err)
+					log.Println(err)
 					return
 				}
 			}
 
 			parseVersion(db, model_id, model_data, version_doc)
 		}
+		fmt.Println(model_url)
 	}
 }
 
@@ -157,22 +162,22 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 				}
 				trans_data := &DB.TransmissionData{
 					BrandID:      model_data.BrandID,
-					EngineID:     engine_id,
 					Type:         trans_type,
 					Gears:        int32(gears),
 					Consumtion:   float32(math.Round(cons*100) / 100),
 					Acceleration: float32(math.Round(acc*100) / 100),
 				}
 
-				trans_id, err := db.GetTransmission(model_data.BrandID, trans_type)
+				trans_id, err := db.GetTransmission(model_data.BrandID, trans_type, int32(gears))
 				if err != nil {
 					trans_id, err = db.SaveTransmission(trans_data)
 					if err != nil {
-						log.Fatal(err)
+						log.Println(err)
+						return
 					}
 				}
 
-				version_id, err := db.SaveVersion(&DB.VersionData{
+				_, err = db.SaveVersion(&DB.VersionData{
 					Name:     version,
 					ModelID:  model_id,
 					BrandID:  model_data.BrandID,
@@ -182,9 +187,6 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 
 				if err != nil {
 					log.Println(err)
-				}
-				if version_id != 0 {
-					fmt.Println(model_data.Name, model_data.Year, version)
 				}
 			})
 		})
@@ -196,10 +198,16 @@ func clean(s string) string {
 }
 
 func getLinks(selection *goquery.Selection) []string {
-	return selection.Find("a").Map(func(_ int, ahref *goquery.Selection) string {
+	keys := make(map[string]bool, 50)
+	list := []string{}
+	selection.Find("a").Each(func(_ int, ahref *goquery.Selection) {
 		href, _ := ahref.Attr("href")
-		return href
+		if !keys[href] {
+			keys[href] = true
+			list = append(list, href)
+		}
 	})
+	return list
 }
 
 // func getHTML(html string) (*goquery.Document, error) {

@@ -20,7 +20,7 @@
          "request": "launch",
          "mode": "debug",
          "program": "main.go",
-         "console": "integratedTerminal"
+         "console": "internalConsole"
       },
    ]
 }

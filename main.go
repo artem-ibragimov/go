@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "main/automaniac"
+	"log"
 	"main/automaniac"
 	"main/db"
 	"main/req"
@@ -17,5 +17,7 @@ func main() {
 	req.Init()
 	// car_complaints.ParseCarComplaints(db)
 	automaniac.Parse(db, req)
-	// nhtsa.Parse()
+	// nhtsa.Parse(db)
+	log.Println("Done.")
+	db.Close()
 }
