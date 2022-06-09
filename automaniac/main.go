@@ -23,7 +23,7 @@ type IDB interface {
 	GetTransmission(int32, string, int32) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
-	GetModel(int32, string) (int32, error)
+	GetModel(int32, string, int32) (int32, error)
 
 	SaveVersion(*DB.VersionData) (int32, error)
 	// GetVersion(*DB.VersionData) (int32, error)
@@ -98,7 +98,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 				Year:    int32(model_year),
 			}
 
-			model_id, err := db.GetModel(brand_id, model_name)
+			model_id, err := db.GetModel(brand_id, model_name, int32(model_year))
 			if err != nil {
 				model_id, err = db.SaveModel(model_data)
 				if err != nil {

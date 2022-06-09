@@ -16,7 +16,7 @@ type IDB interface {
 	SaveDefect(d *DB.Defect) (int32, error)
 	GetBrand(brand string) (int32, error)
 	SaveBrand(brand string) (int32, error)
-	GetModel(brand_id int32, model_name string) (int32, error)
+	GetModel(brand_id int32, model_name string, year int32) (int32, error)
 	SaveModel(model *DB.ModelData) (int32, error)
 	GetCountry(country string) (int32, error)
 	SaveCountry(country string) (int32, error)
@@ -49,11 +49,14 @@ func Parse(db IDB) {
 		}
 		defect := new(Defect)
 		defect.Init(rec)
-		if defect.ModelYear < 2100 && defect.ModelYear >= 2000 {
+		if defect.ModelYear < 2100 &&
+			defect.ModelYear >= 2000 &&
+			defect.Year >= 2000 &&
+			defect.Year < 2100 &&
+			defect.Category != "" {
 			_, err = storeDefect(db, country_id, defect)
 			if err != nil {
 				log.Fatal(err)
-				return
 			}
 		}
 	}
@@ -102,7 +105,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		}
 	}
 
-	model_id, err := db.GetModel(brand_id, defect.ModelName)
+	model_id, err := db.GetModel(brand_id, defect.ModelName, defect.ModelYear)
 	if err != nil {
 		model := &DB.ModelData{
 			Name:    defect.ModelName,
@@ -130,7 +133,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		Desc:            defect.Desc,
 		Country_ID:      country_id,
 	})
-	return 0, nil
+	return 0, err
 }
 
 type Defect struct {
@@ -154,8 +157,11 @@ func (c *Defect) Init(v []string) {
 	if len(v[3]) > 3 {
 		c.Year, _ = strconv.Atoi(v[3][:4])
 	}
-	categories := strings.Split(strings.ToLower(v[4]), ":")
+	categories := removeEmptyStrings(strings.Split(strings.ToLower(v[4]), ":"))
 	if l := len(categories); l < 3 {
+		if l == 0 {
+			return
+		}
 		add := []string{categories[0], categories[0]}
 		categories = append(add, categories...)
 	}
@@ -169,4 +175,15 @@ func (c *Defect) Init(v []string) {
 	freq, _ := strconv.ParseUint(v[6], 10, 32)
 	c.Freq = int(freq)
 	c.Desc = strings.ToLower(v[7])
+}
+
+func removeEmptyStrings(s []string) []string {
+	var r []string
+	for _, str := range s {
+		str = strings.TrimSpace(str)
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }

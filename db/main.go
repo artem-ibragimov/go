@@ -37,3 +37,29 @@ func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
 	}
 	return id.Int32, nil
 }
+func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) {
+	query, err := database.db.Prepare(cmd)
+	if err != nil {
+		log.Println(err)
+	}
+	defer query.Close()
+	rows, err := query.Query(args...)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var results []string
+	var s string
+	for rows.Next() {
+		err := rows.Scan(&s)
+		if err != nil {
+			log.Fatal(err)
+		}
+		results = append(results, s)
+	}
+	err = rows.Err()
+	if err != nil {
+		return []string{}, err
+	}
+	return results, nil
+}
