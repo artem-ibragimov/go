@@ -1,6 +1,8 @@
 package req
 
 import (
+	"encoding/base64"
+	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"time"
@@ -39,8 +41,6 @@ func (r *Req) Get(url string) (*goquery.Document, error) {
 	if err != nil {
 		return nil, err
 	}
-	// body, _ := io.ReadAll(response.Body)
-	// fmt.Println(string(body))
 	defer response.Body.Close()
 	return goquery.NewDocumentFromReader(response.Body)
 }
@@ -58,4 +58,48 @@ func getUA() string {
 		"Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X)  AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1",
 	}
 	return uas[rand.Intn(len(uas))]
+}
+
+func (r *Req) GetImg(url string) (string, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		time.Sleep(time.Minute * 2)
+		req, err = http.NewRequest("GET", url, nil)
+		if err != nil {
+			return "", err
+		}
+	}
+
+	req.Header.Set("User-Agent", getUA())
+
+	response, err := r.client.Do(req)
+	if err != nil {
+		return "", err
+	}
+	defer response.Body.Close()
+
+	bytes, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return "", err
+	}
+	var base64Encoding string
+
+	// Determine the content type of the image file
+	mimeType := http.DetectContentType(bytes)
+
+	// Prepend the appropriate URI scheme header depending
+	// on the MIME type
+	switch mimeType {
+	case "image/jpeg":
+		base64Encoding = "data:image/jpeg;base64,"
+	case "image/png":
+		base64Encoding = "data:image/png;base64,"
+	}
+
+	// Append the base64 encoded output
+	return base64Encoding + toBase64(bytes), nil
+}
+
+func toBase64(b []byte) string {
+	return base64.StdEncoding.EncodeToString(b)
 }

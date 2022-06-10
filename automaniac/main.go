@@ -95,7 +95,6 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 			model_data := &DB.ModelData{
 				Name:    model_name,
 				BrandID: brand_id,
-				Year:    int32(model_year),
 			}
 
 			model_id, err := db.GetModel(brand_id, model_name, int32(model_year))
@@ -162,7 +161,7 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 				}
 				trans_data := &DB.TransmissionData{
 					BrandID:      model_data.BrandID,
-					Type:         trans_type,
+					Name:         trans_type,
 					Gears:        int32(gears),
 					Consumtion:   float32(math.Round(cons*100) / 100),
 					Acceleration: float32(math.Round(acc*100) / 100),
@@ -178,11 +177,11 @@ func parseVersion(db IDB, model_id int32, model_data *DB.ModelData, version_doc 
 				}
 
 				_, err = db.SaveVersion(&DB.VersionData{
-					Name:     version,
-					ModelID:  model_id,
-					BrandID:  model_data.BrandID,
-					EngineID: engine_id,
-					TransID:  trans_id,
+					Name:         version,
+					GenerationID: model_id,
+					BrandID:      model_data.BrandID,
+					EngineID:     engine_id,
+					TransID:      trans_id,
 				})
 
 				if err != nil {
