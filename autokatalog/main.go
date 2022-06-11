@@ -39,8 +39,8 @@ type IReq interface {
 const url = "https://www.adac.de/rund-ums-fahrzeug/autokatalog/marken-modelle/"
 
 func Parse(db IDB, req IReq) {
-	// document, err := req.Get(url + "?filter=ONLY_RECENT&sort=NAME_ASC")
-	document, err := getHTML(main_html) //TODO req.Get
+	document, err := req.Get(url + "?filter=ONLY_RECENT&sort=NAME_ASC")
+	// document, err := getHTML(main_html) //TODO req.Get
 	if err != nil {
 		log.Println(err)
 		return
@@ -50,10 +50,10 @@ func Parse(db IDB, req IReq) {
 	for _, brand_name := range brand_names {
 
 		brand_url := url + brand_name
-		fmt.Println("Brand: ", brand_url)
+		// fmt.Println("Brand: ", brand_url)
 
-		// brand_doc, err := req.Get(url + brand_url)
-		brand_doc, err := getHTML(brand_html) //TODO req.Get
+		brand_doc, err := req.Get(brand_url + "?filter=NONE&sort=NAME_ASC")
+		// brand_doc, err := getHTML(brand_html) //TODO req.Get
 		if err != nil {
 			log.Println(err)
 			continue
@@ -73,8 +73,9 @@ func Parse(db IDB, req IReq) {
 		for _, model_name := range model_names {
 
 			model_url := brand_url + "/" + model_name
-			fmt.Println("Model: ", model_url)
-			model_doc, err := getHTML(model_html) //TODO req.Get
+			// fmt.Println("Model: ", model_url)
+			model_doc, err := req.Get(model_url)
+			// model_doc, err := getHTML(model_html) //TODO req.Get
 			if err != nil {
 				log.Println(err)
 				continue
@@ -89,33 +90,38 @@ func Parse(db IDB, req IReq) {
 				}
 			}
 
-			generation_names := extractTags("slug", extractState(model_doc))
+			state := extractState(model_doc)
+			generation_names := extractTags("slug", state)
 			generation_names = generation_names[:len(generation_names)-2]
+			gen_starts := extractTags("manufacturedFrom", state)
+			gen_ends := extractTags("manufacturedUntil", state)
+			gen_img_urls := extractTags(`defaultImageUrl`, state)
 
 			for i, gen_name := range generation_names {
+				gen_start := parseDigit(strings.TrimSpace(strings.ReplaceAll(gen_starts[i], ",", "")))
+				gen_end := parseDigit(strings.TrimSpace(strings.ReplaceAll(gen_ends[i], ",", "")))
+				gen_img_url := gen_img_urls[i]
+				if gen_start < 2000 {
+					continue
+				}
 
 				gen_url := model_url + "/" + gen_name
-				fmt.Println("Version: ", gen_url)
-				gen_doc, err := getHTML(generation_html) //TODO req.Get
+				// fmt.Println("Version: ", gen_url)
+				gen_doc, err := req.Get(gen_url)
+				// gen_doc, err := getHTML(generation_html) //TODO req.Get
 				if err != nil {
 					log.Println(err)
 					continue
 				}
 
-				state := extractState(gen_doc)
-				println(strings.Contains(state, "manufacturedFrom"))
-				// TODO не достает года
-				gen_start := extractTags("manufacturedFrom", state)[i]
-				gen_end := extractTags(`manufacturedUntil`, state)[i]
-				gen_img_url := extractTag(`caption":"`+gen_name+`","defaultImageUrl`, state)
 				gen_img, _ := req.GetImg(gen_img_url)
-				gen_id, _ := db.GetGeneration(model_id, gen_name)
+				gen_id, err := db.GetGeneration(model_id, gen_name)
 				if err != nil {
 					gen_id, err = db.SaveGeneration(&DB.GenerationData{
 						Name:    gen_name,
 						ModelID: model_id,
 						Start:   gen_start,
-						End:     gen_end,
+						Finish:  gen_end,
 						Img:     gen_img,
 					})
 					if err != nil {
@@ -130,8 +136,9 @@ func Parse(db IDB, req IReq) {
 					if len(id) == 6 {
 
 						version_url := gen_url + "/" + id + "/#technische-daten"
-						fmt.Println("version_url: ", version_url)
-						version_doc, err := getHTML(version_html) //TODO req.Get
+						// fmt.Println("version_url: ", version_url)
+						version_doc, err := req.Get(version_url)
+						// version_doc, err := getHTML(version_html) //TODO req.Get
 						if err != nil {
 							log.Println(err)
 							continue
@@ -143,11 +150,11 @@ func Parse(db IDB, req IReq) {
 						engine_id, err := db.GetEngine(engine_name)
 
 						if err != nil {
-							displacement, _ := strconv.Atoi(extractTag(`name":"Hubraum (Verbrennungsmotor)","value`, state))
-							cylinders, _ := strconv.Atoi(extractTag(`name":"Anzahl Zylinder (Verbrennungsmotor)","value`, state))
-							valves, _ := strconv.Atoi(extractTag(`name":"Anzahl Ventile (Verbrennungsmotor)","value`, state))
-							power_hp, _ := strconv.Atoi(extractTag(`Leistung maximal in PS (Systemleistung)","value`, state))
-							torque, _ := strconv.Atoi(strings.ReplaceAll(extractTag(`name":"Drehmoment (Systemleistung)","value`, state), " Nm", ""))
+							displacement := parseDigit(extractTag(`name":"Hubraum \(Verbrennungsmotor\)","value`, state))
+							cylinders := parseDigit(extractTag(`name":"Anzahl Zylinder \(Verbrennungsmotor\)","value`, state))
+							valves := parseDigit(extractTag(`name":"Anzahl Ventile \(Verbrennungsmotor\)","value`, state))
+							power_hp := parseDigit(extractTag(`Leistung maximal in PS \(Systemleistung\)","value`, state))
+							torque := parseDigit(strings.ReplaceAll(extractTag(`name":"Drehmoment \(Systemleistung\)","value`, state), " Nm", ""))
 
 							engine := DB.EngineData{
 								Name:         engine_name,
@@ -169,7 +176,8 @@ func Parse(db IDB, req IReq) {
 						trans_name = strings.ReplaceAll(trans_name, "-Getriebe", "")
 						trans_name = strings.ReplaceAll(trans_name, "Automatikgetriebe", "auto")
 						trans_name = strings.ReplaceAll(trans_name, "Schaltgetriebe", "manual")
-						gears, _ := strconv.Atoi(extractTag(`name":"Anzahl Gänge","value`, state))
+						trans_name = strings.ReplaceAll(trans_name, "Automatisiertes manual", "amt")
+						gears := parseDigit(extractTag(`name":"Anzahl Gänge","value`, state))
 
 						trans_id, err := db.GetTransmission(brand_id, trans_name, int32(gears))
 						if err != nil {
@@ -192,7 +200,7 @@ func Parse(db IDB, req IReq) {
 						version_id, err := db.GetVersion(version_name, gen_id)
 						if err != nil {
 							version_id, err = db.SaveVersion(&DB.VersionData{
-								Name:         gen_name,
+								Name:         version_name,
 								GenerationID: gen_id,
 								EngineID:     engine_id,
 								TransID:      trans_id,
@@ -216,8 +224,8 @@ func getHTML(html string) (*goquery.Document, error) {
 }
 
 func extractTags(tag string, s string) []string {
-	slugs := regexp.MustCompile(`"`+tag+`":"[\w|\-|\s|\(|\)|\.|\/]+"`).FindAllString(s, -1)
-	extract_slug := regexp.MustCompile(`"` + tag + `":"([\w|\-|\s|\(|\)|\.|\/]+)"`)
+	slugs := regexp.MustCompile(`"`+tag+`":["]?[\w|\-|\s|\(|\)|\.|\/|:|\,|_]+["]?`).FindAllString(s, -1)
+	extract_slug := regexp.MustCompile(`"` + tag + `":["]?([\w|\-|\s|\(|\)|\.|\/|:|\,|_]+)["]?`)
 	for i, str := range slugs {
 		slugs[i] = extract_slug.ReplaceAllString(str, "$1")
 	}
@@ -232,4 +240,13 @@ func extractTag(tag string, s string) string {
 func extractState(doc *goquery.Document) string {
 	html := doc.Selection.Find("body > script:nth-child(2)").Text()
 	return html[strings.Index(html, "window.__APOLLO_STATE__=")+len("window.__APOLLO_STATE__="):]
+}
+
+func parseDigit(s string) int {
+	str := regexp.MustCompile(`\d+`).FindString(s)
+	d, err := strconv.Atoi(str)
+	if err != nil {
+		return 0
+	}
+	return d
 }

@@ -6,20 +6,20 @@ func (database *DB) GetGeneration(model_id int32, name string) (int32, error) {
 
 func (database *DB) SaveGeneration(data *GenerationData) (int32, error) {
 	return database.Exec(`INSERT INTO generation (
-		name, model_id, start, end, img
-		) VALUES ( $1, $2, $3, $4,$5 ) ON CONFLICT DO NOTHING RETURNING id`,
+		name, model_id,  img, start, finish
+		) VALUES ( $1, $2, $3, $4, $5 ) ON CONFLICT DO NOTHING RETURNING id`,
 		data.Name,
 		data.ModelID,
-		data.Start,
-		data.End,
 		data.Img,
+		data.Start,
+		data.Finish,
 	)
 }
 
 type GenerationData struct {
 	Name    string
 	ModelID int32
-	Start   string
-	End     string
+	Start   int
+	Finish  int
 	Img     string
 }

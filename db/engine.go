@@ -6,13 +6,12 @@ func (database *DB) GetEngine(name string) (int32, error) {
 
 func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 	return database.Exec(`INSERT INTO engine (
-		name, displacement, cylinders, valves, aspiration, fuel_type, power_hp, torque
-		) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 ) ON CONFLICT DO NOTHING RETURNING id`,
+		name, displacement, cylinders, valves, fuel_type, power_hp, torque
+		) VALUES ( $1, $2, $3, $4, $5, $6, $7 ) ON CONFLICT DO NOTHING RETURNING id`,
 		engine.Name,
 		engine.Displacement,
 		engine.Cylinders,
 		engine.Valves,
-		engine.Aspiration,
 		engine.Fuel_type,
 		engine.Power_hp,
 		engine.Torque,

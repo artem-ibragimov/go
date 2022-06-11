@@ -2,7 +2,7 @@ package db
 
 func (database *DB) GetVersion(name string, generation_id int32) (int32, error) {
 	return database.Exec(
-		`SELECT id FROM version WHERE name = $1 AND generation_id = $3`,
+		`SELECT id FROM version WHERE name = $1 AND generation_id = $2`,
 		name, generation_id)
 }
 
