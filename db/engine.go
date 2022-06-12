@@ -3,6 +3,10 @@ package db
 func (database *DB) GetEngine(name string) (int32, error) {
 	return database.Exec(`SELECT id FROM engine WHERE name= $1 `, name)
 }
+func (database *DB) GetEngineByParams(displacement int, valves int, power_hp int, torque int) (int32, error) {
+	return database.Exec(`SELECT id FROM engine WHERE displacement= $1 AND valves=$2 AND power_hp=$3 AND torque=$4`,
+		displacement, valves, power_hp, torque)
+}
 
 func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 	return database.Exec(`INSERT INTO engine (
@@ -23,7 +27,6 @@ type EngineData struct {
 	Displacement int
 	Valves       int
 	Cylinders    int
-	Aspiration   string
 	Fuel_type    string
 	Power_hp     int
 	Torque       int

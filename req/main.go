@@ -15,6 +15,17 @@ type Req struct {
 	client *http.Client
 }
 
+type IReq interface {
+	Get(url string) (*goquery.Document, error)
+	GetImg(url string) (string, error)
+}
+
+func New() IReq {
+	request := new(Req)
+	request.Init()
+	return request
+}
+
 func (r *Req) Init() {
 	r.tr = &http.Transport{
 		MaxIdleConns:       10,
@@ -66,7 +77,11 @@ func (r *Req) GetImg(url string) (string, error) {
 		time.Sleep(time.Minute * 2)
 		req, err = http.NewRequest("GET", url, nil)
 		if err != nil {
-			return "", err
+			time.Sleep(time.Minute * 5)
+			req, err = http.NewRequest("GET", url, nil)
+			if err != nil {
+				return "", err
+			}
 		}
 	}
 

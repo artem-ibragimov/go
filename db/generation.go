@@ -3,6 +3,9 @@ package db
 func (database *DB) GetGeneration(model_id int32, name string) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE name = $1 AND model_id = $2 `, name, model_id)
 }
+func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
+	return database.Exec(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
+}
 
 func (database *DB) SaveGeneration(data *GenerationData) (int32, error) {
 	return database.Exec(`INSERT INTO generation (
