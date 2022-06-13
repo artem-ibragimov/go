@@ -30,8 +30,8 @@ type IDB interface {
 	GetGeneration(model_id int32, name string) (int32, error)
 	SaveGeneration(data *DB.GenerationData) (int32, error)
 
+	GetVersion(name string, generation_id int32) (int32, error)
 	SaveVersion(*DB.VersionData) (int32, error)
-	// GetVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {
@@ -93,6 +93,9 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 
 		path := strings.Split(model_doc.Find("#breadcrumb-wrap > div.breadcrumb-nav").Text(), "/")
 		model := strings.Split(clean(path[len(path)-1]), " ")
+		if len(model) < 2 {
+			continue
+		}
 		model_name := strings.ToLower(model[1])
 
 		model_id, err := db.GetModel(brand_id, model_name)
@@ -164,7 +167,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 
 func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Document) {
 	path := strings.Split(version_doc.Find("#breadcrumb-wrap > div.breadcrumb-nav").Text(), "/")
-	version := clean(path[len(path)-1])
+	version_name := clean(path[len(path)-1])
 
 	version_doc.Selection.Find("#predlog-auto > div.podaci-box-wrap > div").Each(
 		func(i int, info *goquery.Selection) {
@@ -172,20 +175,27 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 			if !strings.Contains(info.Find("div.podaci-naslov").Text(), "Engine") {
 				return
 			}
-			displacement, _ := strconv.Atoi(clean(info.Find("div:nth-child(5) > div.d2 > strong").Text()))
-			valves, _ := strconv.Atoi(clean(info.Find("div:nth-child(7) > div.d2 > strong").Text()))
-			power_hp, _ := strconv.Atoi(clean(info.Find("div:nth-child(10) > div.d2 > strong").Text()))
-			torque, _ := strconv.Atoi(clean(info.Find("div:nth-child(11) > div.d2 > strong").Text()))
 			engine_name := clean(info.Find("div.podaci-box-b > p > a").Text())
 			engine_id, err := db.GetEngine(engine_name)
 			if err != nil {
+				displacement, _ := strconv.Atoi(clean(info.Find("div:nth-child(5) > div.d2 > strong").Text()))
+				cfg := clean(info.Find("div:nth-child(7) > div.d2 > strong").Text())
+				params := regexp.MustCompile(`\d+`).FindAllString(cfg, -1)
+				var valves, cylinders int
+				if len(params) == 2 {
+					valves, _ = strconv.Atoi(params[0])
+					cylinders, _ = strconv.Atoi(params[1])
+				}
+				power_hp, _ := strconv.Atoi(clean(info.Find("div:nth-child(10) > div.d2 > strong").Text()))
+				torque, _ := strconv.Atoi(clean(info.Find("div:nth-child(11) > div.d2 > strong").Text()))
 				engine_id, err = db.GetEngineByParams(displacement, valves, power_hp, torque)
 				if err != nil {
 					engine_id, err = db.SaveEngine((&DB.EngineData{
 						Name:         engine_name,
 						Displacement: displacement,
+						Cylinders:    cylinders,
 						Valves:       valves,
-						Fuel_type:    clean(info.Find("div:nth-child(9) > div.d2 > strong").Text()),
+						Fuel_type:    strings.ToLower(clean(info.Find("div:nth-child(9) > div.d2 > strong").Text())),
 						Power_hp:     power_hp,
 						Torque:       torque,
 					}))
@@ -230,16 +240,19 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 					}
 				}
 
-				version_id, err := db.SaveVersion(&DB.VersionData{
-					Name:         version,
-					GenerationID: gen_id,
-					EngineID:     engine_id,
-					TransID:      trans_id,
-				})
-
+				version_id, err := db.GetVersion(version_name, gen_id)
 				if err != nil {
-					log.Println(err)
-					return
+					version_id, err = db.SaveVersion(&DB.VersionData{
+						Name:         version_name,
+						GenerationID: gen_id,
+						EngineID:     engine_id,
+						TransID:      trans_id,
+					})
+
+					if err != nil {
+						log.Println(err)
+						return
+					}
 				}
 				log.Println(version_id)
 			})

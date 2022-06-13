@@ -10,8 +10,13 @@ func (database *DB) GetEngineByParams(displacement int, valves int, power_hp int
 
 func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 	return database.Exec(`INSERT INTO engine (
-		name, displacement, cylinders, valves, fuel_type, power_hp, torque
-		) VALUES ( $1, $2, $3, $4, $5, $6, $7 ) ON CONFLICT DO NOTHING RETURNING id`,
+		name, displacement, cylinders, valves, fuel_type, power_hp, torque, img
+		) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 ) 
+		ON CONFLICT (name) DO UPDATE 
+		SET (
+		name, displacement, cylinders, valves, fuel_type, power_hp, torque, img
+		) = ( $1, $2, $3, $4, $5, $6, $7, $8 )
+		RETURNING id`,
 		engine.Name,
 		engine.Displacement,
 		engine.Cylinders,
@@ -19,6 +24,7 @@ func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 		engine.Fuel_type,
 		engine.Power_hp,
 		engine.Torque,
+		engine.Img,
 	)
 }
 
@@ -30,4 +36,5 @@ type EngineData struct {
 	Fuel_type    string
 	Power_hp     int
 	Torque       int
+	Img          string
 }

@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"main/automaniac"
 	"main/db"
+	"main/motorreviewer"
 	"main/req"
 )
 
@@ -18,9 +18,10 @@ func main() {
 
 	// autokatalog.Parse(db, func() autokatalog.IReq { return req.New() })
 	// car_complaints.ParseCarComplaints(db)
-	automaniac.Parse(db, func() automaniac.IReq { return req.New() })
+	// automaniac.Parse(db, func() automaniac.IReq { return req.New() })
+	motorreviewer.Parse(db, func() motorreviewer.IReq { return req.New() })
 	// nhtsa.Parse(db)
-	// carproblemzoo.Parse(db, req)
+	// carproblemzoo.Parse(db, func() carproblemzoo.IReq { return req.New() })
 	log.Println("Done.")
 	db.Close()
 }

@@ -14,10 +14,13 @@ type IDB interface {
 	GetDefectCategory(category string) (int32, error)
 	SaveDefectCategory(category string) (int32, error)
 	SaveDefect(d *DB.Defect) (int32, error)
+
 	GetBrand(brand string) (int32, error)
 	SaveBrand(brand string) (int32, error)
-	GetModel(brand_id int32, model_name string, year int32) (int32, error)
+
+	GetModel(brand_id int32, model_name string) (int32, error)
 	SaveModel(model *DB.ModelData) (int32, error)
+
 	GetCountry(country string) (int32, error)
 	SaveCountry(country string) (int32, error)
 }
@@ -105,15 +108,13 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		}
 	}
 
-	model_id, err := db.GetModel(brand_id, defect.ModelName, defect.ModelYear)
+	model_id, err := db.GetModel(brand_id, defect.ModelName)
 	if err != nil {
 		model := &DB.ModelData{
 			Name:    defect.ModelName,
 			BrandID: brand_id,
-			Year:    defect.ModelYear,
 		}
 		model_id, err = db.SaveModel(model)
-		log.Println("Saved", model)
 		if err != nil {
 			return 0, err
 		}
