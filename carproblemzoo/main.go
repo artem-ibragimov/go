@@ -17,7 +17,7 @@ type IDB interface {
 	GetBrand(string) (int32, error)
 	SaveBrand(brand string) (int32, error)
 
-	GetModel(brand_id int32, model_name string) (int32, error)
+	GetModelID(brand_id int32, model_name string) (int32, error)
 	SaveModel(model *DB.ModelData) (int32, error)
 
 	SaveVersion(*DB.VersionData) (int32, error)
@@ -81,7 +81,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 		)
 		model_name = strings.TrimSpace(strings.ReplaceAll(model_name, brand_name, ""))
 
-		model_id, err := db.GetModel(brand_id, model_name)
+		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
 			model_id, err = db.SaveModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
 			if err != nil {
@@ -153,7 +153,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_id int32, brand_doc *
 					defect_cat := path[5]
 					println(brand_name, model_name, car_year, defect_min_cat, defect_cat)
 
-					// model_years, err := db.GetModelYears(brand_id, model_name)
+					// model_years, err := db.GetModelIDYears(brand_id, model_name)
 					if err != nil {
 						println(err)
 						continue

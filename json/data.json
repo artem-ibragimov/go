@@ -1,0 +1,23 @@
+{
+   "toyota": {
+      "models": {
+         "camry": {
+            "xv40":{
+               "start": 2006,
+               "finish":2013,
+               "img_url":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/2006-2009_Toyota_Camry_%28ACV40R%29_Altise_sedan_05.jpg/1199px-2006-2009_Toyota_Camry_%28ACV40R%29_Altise_sedan_05.jpg",
+               "engines":{
+                  "2AZ-FE":{
+                     "displacement":2362,
+                     "fuel-type":"petrol",
+                     "torque":220,
+                     "power_hp":162,
+                     "valves":16,
+                     "cylinders":4
+                  }
+               }
+            }
+         }
+      }
+   }
+}

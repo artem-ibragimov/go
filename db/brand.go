@@ -8,8 +8,8 @@ func (database *DB) GetLastBrands() ([]string, error) {
 	return database.ExecRows(`SELECT name FROM brand ORDER BY id DESC`)
 }
 
-func (database *DB) GetBrands() ([]string, error) {
-	return database.ExecRows(`SELECT name FROM brand ORDER BY id INC`)
+func (database *DB) GetBrands() (map[string]string, error) {
+	return database.ExecMap(`SELECT id, name FROM brand`)
 }
 
 func (database *DB) SaveBrand(brand string) (int32, error) {

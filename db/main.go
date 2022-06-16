@@ -63,3 +63,29 @@ func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) 
 	}
 	return results, nil
 }
+func (database *DB) ExecMap(cmd string, args ...interface{}) (map[string]string, error) {
+	query, err := database.db.Prepare(cmd)
+	if err != nil {
+		log.Println(err)
+	}
+	defer query.Close()
+	rows, err := query.Query(args...)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var results map[string]string = make(map[string]string)
+	var k, v string
+	for rows.Next() {
+		err := rows.Scan(&k, &v)
+		if err != nil {
+			log.Fatal(err)
+		}
+		results[k] = v
+	}
+	err = rows.Err()
+	if err != nil {
+		return make(map[string]string), err
+	}
+	return results, nil
+}

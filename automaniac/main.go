@@ -24,13 +24,13 @@ type IDB interface {
 	GetTransmission(int32, string, int32) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
-	GetModel(brand_id int32, model_name string) (int32, error)
+	GetModelID(brand_id int32, model_name string) (int32, error)
 
 	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
-	GetGeneration(model_id int32, name string) (int32, error)
+	GetGenerationID(model_id int32, name string) (int32, error)
 	SaveGeneration(data *DB.GenerationData) (int32, error)
 
-	GetVersion(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, generation_id int32) (int32, error)
 	SaveVersion(*DB.VersionData) (int32, error)
 }
 
@@ -98,7 +98,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 		}
 		model_name := strings.ToLower(model[1])
 
-		model_id, err := db.GetModel(brand_id, model_name)
+		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
 			model_data := &DB.ModelData{
 				Name:    model_name,
@@ -131,7 +131,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 		if len(years) > 1 {
 			gen_end, _ = strconv.Atoi(years[1])
 		}
-		gen_id, err := db.GetGeneration(model_id, gen_name)
+		gen_id, err := db.GetGenerationID(model_id, gen_name)
 		if err != nil {
 			gen_id, err = db.GetGenerationByStartYear(model_id, int32(gen_star))
 			if err != nil {
@@ -240,7 +240,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 					}
 				}
 
-				version_id, err := db.GetVersion(version_name, gen_id)
+				version_id, err := db.GetVersionID(version_name, gen_id)
 				if err != nil {
 					version_id, err = db.SaveVersion(&DB.VersionData{
 						Name:         version_name,

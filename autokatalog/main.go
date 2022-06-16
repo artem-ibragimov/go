@@ -26,14 +26,14 @@ type IDB interface {
 	GetTransmission(brand_id int32, name string, gears int32) (int32, error)
 	SaveTransmission(*DB.TransmissionData) (int32, error)
 
-	GetModel(brand_id int32, model_name string) (int32, error)
-	GetModelNamesByBrand(brand_id int32) ([]string, error)
+	GetModelID(brand_id int32, model_name string) (int32, error)
+	GetLastModelNamesByBrand(brand_id int32) ([]string, error)
 	SaveModel(*DB.ModelData) (int32, error)
 
-	GetGeneration(model_id int32, name string) (int32, error)
+	GetGenerationID(model_id int32, name string) (int32, error)
 	SaveGeneration(data *DB.GenerationData) (int32, error)
 
-	GetVersion(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, generation_id int32) (int32, error)
 	SaveVersion(*DB.VersionData) (int32, error)
 }
 
@@ -113,7 +113,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 	}
 	model_slugs := extractTags("slug", state)
 	model_names := extractTags("name", state)
-	parsed_model_names, err := db.GetModelNamesByBrand(brand_id)
+	parsed_model_names, err := db.GetLastModelNamesByBrand(brand_id)
 	if err == nil && len(parsed_model_names) > 1 {
 		// не уверены что последнюю модель спарсили до конца, поэтому выкидываем его
 		parsed_model_names = parsed_model_names[1:]
@@ -134,7 +134,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 		}
 
 		model_name = strings.ToLower(model_name)
-		model_id, err := db.GetModel(brand_id, model_name)
+		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
 			model_id, err = db.SaveModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
 			if err != nil {
@@ -175,7 +175,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 			}
 
 			gen_name := strings.ToLower(generation_names[i])
-			gen_id, err := db.GetGeneration(model_id, gen_name)
+			gen_id, err := db.GetGenerationID(model_id, gen_name)
 			if err != nil {
 				gen_img, _ := req.GetImg(gen_img_url)
 				gen_id, err = db.SaveGeneration(&DB.GenerationData{
@@ -279,7 +279,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 						}
 					}
 
-					version_id, err := db.GetVersion(version_name, gen_id)
+					version_id, err := db.GetVersionID(version_name, gen_id)
 					if err != nil {
 						version_id, err = db.SaveVersion(&DB.VersionData{
 							Name:         version_name,

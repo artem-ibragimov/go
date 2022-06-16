@@ -1,9 +1,15 @@
 package db
 
-func (database *DB) GetVersion(name string, generation_id int32) (int32, error) {
+func (database *DB) GetVersionID(name string, generation_id int32) (int32, error) {
 	return database.Exec(
 		`SELECT id FROM version WHERE name = $1 AND generation_id = $2`,
 		name, generation_id)
+}
+
+func (database *DB) GetVersions(generation_id int32) (map[string]string, error) {
+	return database.ExecMap(
+		`SELECT id,name FROM version WHERE generation_id = $1`,
+		generation_id)
 }
 
 func (database *DB) SaveVersion(version *VersionData) (int32, error) {
