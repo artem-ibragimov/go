@@ -14,7 +14,7 @@ func main() {
 		return
 	}
 
-	server.Run("8080", db)
+	server.Run("8081", db)
 
 	request := new(req.Req)
 	request.Init()

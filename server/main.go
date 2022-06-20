@@ -15,6 +15,7 @@ type IDB interface {
 
 func Run(port string, db IDB) {
 	router := gin.Default()
+	// router.Use(allowCORS)
 	data_group := router.Group("/data")
 	{
 		data_group.GET("/brand/", CreateBrandsListGetter(db))
@@ -28,3 +29,8 @@ func Run(port string, db IDB) {
 	router.Static("/static", "./server/static/index.html")
 	router.Run(":" + port)
 }
+
+// func allowCORS(ctx *gin.Context) {
+// 	ctx.Header("Access-Control-Allow-Origin", "*")
+// 	ctx.Next()
+// }
