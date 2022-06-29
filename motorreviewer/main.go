@@ -12,7 +12,7 @@ import (
 )
 
 type IDB interface {
-	GetBrand(string) (int32, error)
+	GetBrandByName(string) (int32, error)
 	GetLastBrands() ([]string, error)
 	SaveBrand(string) (int32, error)
 

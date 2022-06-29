@@ -11,7 +11,7 @@ type IDB interface {
 	SaveDefectCategory(category string) (int32, error)
 	SaveDefect(d *DB.Defect) (int32, error)
 
-	GetBrand(brand string) (int32, error)
+	GetBrandByName(brand string) (int32, error)
 	SaveBrand(brand string) (int32, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)

@@ -14,7 +14,7 @@ import (
 type IDB interface {
 	SaveDefect(d *DB.Defect) (int32, error)
 
-	GetBrand(string) (int32, error)
+	GetBrandByName(string) (int32, error)
 	SaveBrand(brand string) (int32, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
@@ -51,7 +51,7 @@ func Parse(db IDB, getReq func() IReq) {
 				brand_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > h1").Text(),
 				" - ")[0],
 		)
-		brand_id, err := db.GetBrand(brand_name)
+		brand_id, err := db.GetBrandByName(brand_name)
 		if err != nil {
 			brand_id, err = db.SaveBrand(brand_name)
 			if err != nil {

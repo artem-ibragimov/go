@@ -1,6 +1,6 @@
 package db
 
-func (database *DB) GetBrand(brand string) (int32, error) {
+func (database *DB) GetBrandByName(brand string) (int32, error) {
 	return database.Exec(`SELECT id FROM brand WHERE name= $1 `, brand)
 }
 
@@ -10,6 +10,9 @@ func (database *DB) GetLastBrands() ([]string, error) {
 
 func (database *DB) GetBrands() (map[string]string, error) {
 	return database.ExecMap(`SELECT id, name FROM brand`)
+}
+func (database *DB) SearchBrands(query string, limit uint) (map[string]string, error) {
+	return database.ExecMap(`SELECT id, name FROM brand WHERE name LIKE $1 LIMIT $2`, query+"%", limit)
 }
 
 func (database *DB) SaveBrand(brand string) (int32, error) {

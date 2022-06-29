@@ -16,7 +16,7 @@ import (
 )
 
 type IDB interface {
-	GetBrand(string) (int32, error)
+	GetBrandByName(string) (int32, error)
 	GetLastBrands() ([]string, error)
 	SaveBrand(string) (int32, error)
 
@@ -95,7 +95,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 		return
 	}
 
-	brand_id, err := db.GetBrand(brand_name)
+	brand_id, err := db.GetBrandByName(brand_name)
 	if err != nil {
 		brand_id, err = db.SaveBrand(brand_name)
 		if err != nil {
@@ -134,6 +134,9 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 		}
 
 		model_name = strings.ToLower(model_name)
+		if model_name == brand_name {
+			continue
+		}
 		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
 			model_id, err = db.SaveModel(&DB.ModelData{Name: model_name, BrandID: brand_id})

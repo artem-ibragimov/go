@@ -14,7 +14,7 @@ import (
 
 type IDB interface {
 	SaveBrand(string) (int32, error)
-	GetBrand(string) (int32, error)
+	GetBrandByName(string) (int32, error)
 
 	GetEngine(string) (int32, error)
 	GetEngineByParams(displacement int, valves int, power_hp int, torque int) (int32, error)
@@ -63,7 +63,7 @@ func Parse(db IDB, getReq func() IReq) {
 func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 	path := strings.Split(brand_url, "/")
 	brand_name := strings.TrimSpace(strings.ReplaceAll(path[len(path)-1], "-", " "))
-	brand_id, err := db.GetBrand(brand_name)
+	brand_id, err := db.GetBrandByName(brand_name)
 	if err != nil {
 		brand_id, err = db.SaveBrand(brand_name)
 		if err != nil {

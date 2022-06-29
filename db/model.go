@@ -10,7 +10,20 @@ func (database *DB) GetLastModelNamesByBrand(brand_id int32) ([]string, error) {
 func (database *DB) GetModelsByBrand(brand_id int32) (map[string]string, error) {
 	return database.ExecMap(`SELECT id, name FROM model WHERE brand_id = $1 `, brand_id)
 }
-
+func (database *DB) SearchModels(query string, limit uint) (map[string]string, error) {
+	return database.ExecMap(`
+	SELECT 
+		model.id, brand.name || ' ' || model.name 
+	FROM 
+		model 
+	LEFT JOIN 
+		brand ON brand.id = model.brand_id 
+	WHERE 
+		model.name 
+	LIKE 
+		$1
+	LIMIT $2`, query+"%", limit)
+}
 func (database *DB) SaveModel(model *ModelData) (int32, error) {
 	return database.Exec(`INSERT INTO model (
 		name, brand_id

@@ -10,6 +10,21 @@ func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32
 	return database.Exec(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
 }
 
+func (database *DB) SearchGenerations(query string, limit uint) (map[string]string, error) {
+	return database.ExecMap(`
+	SELECT 
+	generation.id, model.name || ' ' || generation.name 
+	FROM 
+		generation 
+	LEFT JOIN 
+		model ON model.id = generation.model_id 
+	WHERE 
+		generation.name 
+	LIKE 
+		$1
+	LIMIT $2`, query+"%", limit)
+}
+
 // func (database *DB) GetGenerationStartByYear(model_id int32, year int32) (int32, error) {
 // 	database.ExecRows(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
 // }
