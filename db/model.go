@@ -8,10 +8,10 @@ func (database *DB) GetLastModelNamesByBrand(brand_id int32) ([]string, error) {
 	return database.ExecRows(`SELECT name FROM model WHERE brand_id = $1 ORDER BY id DESC`, brand_id)
 }
 func (database *DB) GetModelsByBrand(brand_id int32) (map[string]string, error) {
-	return database.ExecMap(`SELECT id, name FROM model WHERE brand_id = $1 `, brand_id)
+	return database.ExecMapRows(`SELECT id, name FROM model WHERE brand_id = $1 `, brand_id)
 }
 func (database *DB) SearchModels(query string, limit uint) (map[string]string, error) {
-	return database.ExecMap(`
+	return database.ExecMapRows(`
 	SELECT 
 		model.id, brand.name || ' ' || model.name 
 	FROM 

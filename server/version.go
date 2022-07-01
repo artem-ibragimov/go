@@ -9,12 +9,27 @@ import (
 
 func CreateVersionsListGetter(db IDB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
-		generation_id, err := strconv.Atoi(ctx.Query("generation_id"))
+		generationID, err := strconv.Atoi(ctx.Query("genID"))
 		if err != nil {
-			ctx.JSON(http.StatusBadRequest, "Parameter generation_id is missing")
+			ctx.JSON(http.StatusBadRequest, "Parameter genID is missing")
 			return
 		}
-		data, err := db.GetVersions(int32(generation_id))
+		data, err := db.GetVersions(int32(generationID))
+		if err != nil {
+			ctx.JSON(http.StatusServiceUnavailable, err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK, data)
+	}
+}
+func CreateVersionDescriptionGetter(db IDB) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		versionID, err := strconv.Atoi(ctx.Param("versionID"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, "Parameter versionID is missing")
+			return
+		}
+		data, err := db.GetVersion(int32(versionID))
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return

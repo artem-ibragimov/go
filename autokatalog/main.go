@@ -20,7 +20,7 @@ type IDB interface {
 	GetLastBrands() ([]string, error)
 	SaveBrand(string) (int32, error)
 
-	GetEngine(name string) (int32, error)
+	GetEngineID(name string) (int32, error)
 	SaveEngine(*DB.EngineData) (int32, error)
 
 	GetTransmission(brand_id int32, name string, gears int32) (int32, error)
@@ -225,7 +225,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 					if engine_name == "" {
 						engine_name = brand_name
 					}
-					engine_id, err := db.GetEngine(engine_name)
+					engine_id, err := db.GetEngineID(engine_name)
 
 					if err != nil {
 						displacement := parseDigit(extractTag(`name":"Hubraum \(Verbrennungsmotor\)","value`, state))

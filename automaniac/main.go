@@ -16,7 +16,7 @@ type IDB interface {
 	SaveBrand(string) (int32, error)
 	GetBrandByName(string) (int32, error)
 
-	GetEngine(string) (int32, error)
+	GetEngineID(string) (int32, error)
 	GetEngineByParams(displacement int, valves int, power_hp int, torque int) (int32, error)
 	SaveEngine(*DB.EngineData) (int32, error)
 
@@ -176,7 +176,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 				return
 			}
 			engine_name := clean(info.Find("div.podaci-box-b > p > a").Text())
-			engine_id, err := db.GetEngine(engine_name)
+			engine_id, err := db.GetEngineID(engine_name)
 			if err != nil {
 				displacement, _ := strconv.Atoi(clean(info.Find("div:nth-child(5) > div.d2 > strong").Text()))
 				cfg := clean(info.Find("div:nth-child(7) > div.d2 > strong").Text())

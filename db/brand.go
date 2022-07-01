@@ -9,10 +9,10 @@ func (database *DB) GetLastBrands() ([]string, error) {
 }
 
 func (database *DB) GetBrands() (map[string]string, error) {
-	return database.ExecMap(`SELECT id, name FROM brand`)
+	return database.ExecMapRows(`SELECT id, name FROM brand`)
 }
 func (database *DB) SearchBrands(query string, limit uint) (map[string]string, error) {
-	return database.ExecMap(`SELECT id, name FROM brand WHERE name LIKE $1 LIMIT $2`, query+"%", limit)
+	return database.ExecMapRows(`SELECT id, name FROM brand WHERE name LIKE $1 LIMIT $2`, query+"%", limit)
 }
 
 func (database *DB) SaveBrand(brand string) (int32, error) {

@@ -16,7 +16,7 @@ type IDB interface {
 	GetLastBrands() ([]string, error)
 	SaveBrand(string) (int32, error)
 
-	GetEngine(name string) (int32, error)
+	GetEngineID(name string) (int32, error)
 	SaveEngine(*DB.EngineData) (int32, error)
 }
 

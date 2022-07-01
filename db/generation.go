@@ -1,17 +1,42 @@
 package db
 
+import "log"
+
 func (database *DB) GetGenerationID(model_id int32, name string) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE name = $1 AND model_id = $2 `, name, model_id)
 }
 func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
-	return database.ExecMap(`SELECT id, name FROM generation WHERE model_id = $1`, model_id)
+	return database.ExecMapRows(`SELECT id, name FROM generation WHERE model_id = $1`, model_id)
+}
+func (database *DB) GetGeneration(gen_id int32) (map[string]string, error) {
+	query, err := database.db.Prepare(`SELECT name, img, start, finish FROM generation WHERE id = $1`)
+	if err != nil {
+		log.Println(err)
+	}
+	defer query.Close()
+
+	if err != nil {
+		log.Println(err)
+	}
+	var results map[string]string = make(map[string]string)
+	var name, img, start, finish string
+	err = query.QueryRow(gen_id).Scan(&name, &img, &start, &finish)
+	if err != nil {
+		log.Fatal(err)
+		return make(map[string]string), err
+	}
+	results["name"] = name
+	results["img"] = img
+	results["start"] = start
+	results["finish"] = finish
+	return results, nil
 }
 func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
 }
 
 func (database *DB) SearchGenerations(query string, limit uint) (map[string]string, error) {
-	return database.ExecMap(`
+	return database.ExecMapRows(`
 	SELECT 
 	generation.id, model.name || ' ' || generation.name 
 	FROM 

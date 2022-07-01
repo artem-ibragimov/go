@@ -63,7 +63,7 @@ func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) 
 	}
 	return results, nil
 }
-func (database *DB) ExecMap(cmd string, args ...interface{}) (map[string]string, error) {
+func (database *DB) ExecMapRows(cmd string, args ...interface{}) (map[string]string, error) {
 	query, err := database.db.Prepare(cmd)
 	if err != nil {
 		log.Println(err)
