@@ -23,7 +23,7 @@ type IDB interface {
 	GetEngineID(name string) (int32, error)
 	SaveEngine(*DB.EngineData) (int32, error)
 
-	GetTransmission(brand_id int32, name string, gears int32) (int32, error)
+	GetTransmissionID(brand_id int32, name string, gears int32) (int32, error)
 	SaveTransmission(*DB.TransmissionData) (int32, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
@@ -262,7 +262,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 					trans_name = strings.ReplaceAll(trans_name, "Reduktionsgetriebe", "reduction")
 					gears := parseDigit(extractTag(`name":"Anzahl Gänge","value`, state))
 
-					trans_id, err := db.GetTransmission(brand_id, trans_name, int32(gears))
+					trans_id, err := db.GetTransmissionID(brand_id, trans_name, int32(gears))
 					if err != nil {
 						consumtion_s := strings.ReplaceAll(extractTag(`name":"Verbrauch Gesamt \(NEFZ\)","value`, state), " l/100 km", "")
 						consumtion, _ := strconv.ParseFloat(strings.ReplaceAll(consumtion_s, ",", "."), 32)

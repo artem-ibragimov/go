@@ -1,6 +1,9 @@
 package db
 
-import "log"
+import (
+	"fmt"
+	"log"
+)
 
 func (database *DB) GetEngineID(name string) (int32, error) {
 	return database.Exec(`SELECT id FROM engine WHERE name= $1 `, name)
@@ -9,7 +12,7 @@ func (database *DB) GetEngines() (map[string]string, error) {
 	return database.ExecMapRows(`SELECT id, name FROM engine`)
 }
 
-func (database *DB) GetEngine(engineID int32) (map[string]string, error) {
+func (database *DB) GetEngine(engineID int32) (*EngineData, error) {
 	query, err := database.db.Prepare(`SELECT name, displacement, cylinders, valves, fuel_type, power_hp, torque, img FROM engine WHERE id = $1`)
 	if err != nil {
 		log.Println(err)
@@ -19,23 +22,28 @@ func (database *DB) GetEngine(engineID int32) (map[string]string, error) {
 	if err != nil {
 		log.Println(err)
 	}
-	var results map[string]string = make(map[string]string)
 	var img interface{}
-	var name, displacement, cylinders, valves, fuel_type, power_hp, torque string
+	var name, fuel_type string
+	var displacement, cylinders, valves, power_hp, torque int
 	err = query.QueryRow(engineID).Scan(&name, &displacement, &cylinders, &valves, &fuel_type, &power_hp, &torque, &img)
 	if err != nil {
 		log.Fatal(err)
-		return make(map[string]string), err
+		return new(EngineData), err
 	}
-	results["name"] = name
-	results["displacement"] = displacement
-	results["cylinders"] = cylinders
-	results["valves"] = valves
-	results["fuel_type"] = fuel_type
-	results["power_hp"] = power_hp
-	results["torque"] = torque
-	// results["img"] = img
-	return results, nil
+	var img_s string
+	if img != nil {
+		img_s = fmt.Sprintf("%v", img)
+	}
+	return &EngineData{
+		Name:         name,
+		Displacement: displacement,
+		Valves:       valves,
+		Cylinders:    cylinders,
+		Fuel_type:    fuel_type,
+		Power_hp:     power_hp,
+		Torque:       torque,
+		Img:          img_s,
+	}, nil
 }
 
 func (database *DB) GetEngineByParams(displacement int, valves int, power_hp int, torque int) (int32, error) {

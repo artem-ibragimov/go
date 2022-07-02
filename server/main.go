@@ -1,6 +1,7 @@
 package server
 
 import (
+	DB "main/db"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,15 +14,18 @@ type IDB interface {
 	GetModelsByBrand(brandID int32) (map[string]string, error)
 	SearchModels(query string, limit uint) (map[string]string, error)
 
-	GetGeneration(genID int32) (map[string]string, error)
+	GetGeneration(genID int32) (*DB.GenerationData, error)
 	GetGenerations(modelID int32) (map[string]string, error)
 	SearchGenerations(query string, limit uint) (map[string]string, error)
 
 	GetVersions(generationID int32) (map[string]string, error)
-	GetVersion(versionID int32) (map[string]string, error)
+	GetVersion(versionID int32) (*DB.VersionData, error)
 
 	GetEngines() (map[string]string, error)
-	GetEngine(engineID int32) (map[string]string, error)
+	GetEngine(engineID int32) (*DB.EngineData, error)
+
+	GetTransmissions(brandID int32) (map[string]string, error)
+	GetTransmission(id int32) (*DB.TransmissionData, error)
 }
 
 func Run(port string, db IDB) {
@@ -42,6 +46,9 @@ func Run(port string, db IDB) {
 
 		data_group.GET("/engine/:engineID", CreateEngineDescriptionGetter(db))
 		data_group.GET("/engine/", CreateEngineListGetter(db))
+
+		data_group.GET("/transmission/:transmissionID", CreateTransmissionDescriptionGetter(db))
+		data_group.GET("/transmission/", CreateTransmissionListGetter(db))
 	}
 	router.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/static")

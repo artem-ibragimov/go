@@ -21,7 +21,7 @@ type IDB interface {
 	SaveEngine(*DB.EngineData) (int32, error)
 
 	SaveTransmission(*DB.TransmissionData) (int32, error)
-	GetTransmission(int32, string, int32) (int32, error)
+	GetTransmissionID(int32, string, int32) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
 	GetModelID(brand_id int32, model_name string) (int32, error)
@@ -231,7 +231,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 					Acceleration: float32(math.Round(acc*100) / 100),
 				}
 
-				trans_id, err := db.GetTransmission(brand_id, trans_type, int32(gears))
+				trans_id, err := db.GetTransmissionID(brand_id, trans_type, int32(gears))
 				if err != nil {
 					trans_id, err = db.SaveTransmission(trans_data)
 					if err != nil {

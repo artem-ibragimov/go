@@ -8,7 +8,7 @@ func (database *DB) GetVersionID(name string, generation_id int32) (int32, error
 		name, generation_id)
 }
 
-func (database *DB) GetVersion(version_id int32) (map[string]string, error) {
+func (database *DB) GetVersion(version_id int32) (*VersionData, error) {
 	query, err := database.db.Prepare(`SELECT name, transmission_id, engine_id FROM version WHERE id = $1`)
 	if err != nil {
 		log.Println(err)
@@ -18,17 +18,18 @@ func (database *DB) GetVersion(version_id int32) (map[string]string, error) {
 	if err != nil {
 		log.Println(err)
 	}
-	var results map[string]string = make(map[string]string)
-	var name, transmissionID, engineID string
+	var name string
+	var transmissionID, engineID int32
 	err = query.QueryRow(version_id).Scan(&name, &transmissionID, &engineID)
 	if err != nil {
 		log.Fatal(err)
-		return make(map[string]string), err
+		return new(VersionData), err
 	}
-	results["name"] = name
-	results["transmissionID"] = transmissionID
-	results["engineID"] = engineID
-	return results, nil
+	return &VersionData{
+		Name:     name,
+		EngineID: engineID,
+		TransID:  transmissionID,
+	}, nil
 }
 
 func (database *DB) GetVersions(generation_id int32) (map[string]string, error) {

@@ -8,7 +8,7 @@ func (database *DB) GetGenerationID(model_id int32, name string) (int32, error) 
 func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
 	return database.ExecMapRows(`SELECT id, name FROM generation WHERE model_id = $1`, model_id)
 }
-func (database *DB) GetGeneration(gen_id int32) (map[string]string, error) {
+func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 	query, err := database.db.Prepare(`SELECT name, img, start, finish FROM generation WHERE id = $1`)
 	if err != nil {
 		log.Println(err)
@@ -18,18 +18,19 @@ func (database *DB) GetGeneration(gen_id int32) (map[string]string, error) {
 	if err != nil {
 		log.Println(err)
 	}
-	var results map[string]string = make(map[string]string)
-	var name, img, start, finish string
+	var name, img string
+	var start, finish int
 	err = query.QueryRow(gen_id).Scan(&name, &img, &start, &finish)
 	if err != nil {
 		log.Fatal(err)
-		return make(map[string]string), err
+		return new(GenerationData), err
 	}
-	results["name"] = name
-	results["img"] = img
-	results["start"] = start
-	results["finish"] = finish
-	return results, nil
+	return &GenerationData{
+		Name:   name,
+		Img:    img,
+		Start:  start,
+		Finish: finish,
+	}, nil
 }
 func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
