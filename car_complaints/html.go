@@ -1318,7 +1318,7 @@ const model_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Volvo/S40/2005/transmission/transmission_failure",
 					"url":"https://www.carcomplaints.com/Volvo/S40/2005/transmission/transmission_failure.shtml",
-					"headline":"Transmission Failure - 2005 S40",
+					"headline":"Trans Failure - 2005 S40",
 					"position":"1",
 					"datePublished":"2010-11-03",
 					"dateModified":"2010-11-03",
@@ -1622,12 +1622,12 @@ const model_html = `<!DOCTYPE html>
 			<h3 class="heading">Worst Volvo S40 Problems</h3>
 			<ul class="complaints worst p3">
 				 <li id="w0">
- 		<h4><a href="/Volvo/S40/2005/transmission/transmission_failure.shtml" title="2005 Volvo S40 Transmission Failure"><span class="count">#1:</span> <span class="problem">Transmission Failure</span> <span class="vehicle">2005 S40</span></a></h4>
+ 		<h4><a href="/Volvo/S40/2005/transmission/transmission_failure.shtml" title="2005 Volvo S40 Trans Failure"><span class="count">#1:</span> <span class="problem">Trans Failure</span> <span class="vehicle">2005 S40</span></a></h4>
  		<dl>
  			<dt>Average Cost to Fix:</dt><dd>$3,200</dd>
  			<dt>Average Mileage:</dt><dd>50,000 mi</dd>
  		</dl>
-  	<p><a class="button learnmore" href="/Volvo/S40/2005/transmission/transmission_failure.shtml" title="2005 S40: Transmission Failure"><span>Learn More</span></a></p>
+  	<p><a class="button learnmore" href="/Volvo/S40/2005/transmission/transmission_failure.shtml" title="2005 S40: Trans Failure"><span>Learn More</span></a></p>
   </li>
   <li id="w1">
  		<h4><a href="/Volvo/S40/2007/windows_windshield/water_leaking_into_cabin.shtml" title="2007 Volvo S40 Water Leaking Into Cabin"><span class="count">#2:</span> <span class="problem">Water Leaking Into Cabin</span> <span class="vehicle">2007 S40</span></a></h4>
@@ -1926,7 +1926,7 @@ div#ratingtabs a#nhtsatab,section#ratings div#nhtsaratings { display: block; }
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml",
-					"headline":"Transmission Failure in the 2002 Ford Explorer",
+					"headline":"Trans Failure in the 2002 Ford Explorer",
 					"position":"1",
 					"datePublished":"2004-12-14",
 					"dateModified":"2017-11-15",
@@ -2379,12 +2379,12 @@ div#ratingtabs a#nhtsatab,section#ratings div#nhtsaratings { display: block; }
 			<h3 class="heading">Worst 2002 Ford Explorer Problems</h3>
 			<ul class="complaints worst p3">
 				 <li id="w0">
- 		<h4><a href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Ford Explorer Transmission Failure"><span class="count">#1:</span> <span class="problem">Transmission Failure</span> <span class="vehicle">2002 Explorer</span></a></h4>
+ 		<h4><a href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Ford Explorer Trans Failure"><span class="count">#1:</span> <span class="problem">Trans Failure</span> <span class="vehicle">2002 Explorer</span></a></h4>
  		<dl>
  			<dt>Average Cost to Fix:</dt><dd>$2,800</dd>
  			<dt>Average Mileage:</dt><dd>94,000 mi</dd>
  		</dl>
-  	<p><a class="button learnmore" href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Explorer: Transmission Failure"><span>Learn More</span></a></p>
+  	<p><a class="button learnmore" href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Explorer: Trans Failure"><span>Learn More</span></a></p>
   </li>
   <li id="w1">
  		<h4><a href="/Ford/Explorer/2002/transmission/o_d_light_is_blinking.shtml" title="2002 Ford Explorer O/D Light Is Blinking"><span class="count">#2:</span> <span class="problem">O/D Light Is Blinking</span> <span class="vehicle">2002 Explorer</span></a></h4>
@@ -2621,11 +2621,11 @@ const category_html = `<!DOCTYPE html>
     });
 </script>
 
-	<title>2002 Ford Explorer Transmission Problems | CarComplaints.com</title>
+	<title>2002 Ford Explorer Trans Problems | CarComplaints.com</title>
 	<meta name="keywords" content="2002 Ford Explorer transmission problem, 2002, Ford, Explorer, transmission complaint, transmission defect, transmission, problems, complaints, defects" />
 	<meta name="description" content="2002 Ford Explorer transmission problems with 2481 complaints from Explorer owners. The worst complaints are transmission failure, o/d light is blinking, and transmission slips when shifting and clunks." />
 	<meta name="robots" content="index,follow" />
-	<meta property="og:title" content="2002 Ford Explorer Transmission problems" />
+	<meta property="og:title" content="2002 Ford Explorer Trans problems" />
 	<meta property="og:url" content="https://www.carcomplaints.com/Ford/Explorer/2002/transmission/" />
 	<meta property="og:description" content="2002 Ford Explorer transmission problems with 2481 complaints from Explorer owners. The worst complaints are transmission failure, o/d light is blinking, and transmission slips when shifting and clunks." />
 	<meta property="og:type" content="website" />
@@ -2686,7 +2686,7 @@ const category_html = `<!DOCTYPE html>
 		[	{
 				"@context":"http://schema.org",
 				"@type":"ItemList",
-				"name":"2002 Ford Explorer Transmission Problems",
+				"name":"2002 Ford Explorer Trans Problems",
 				"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/",
 				"mainEntityOfPage":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/",
 				"itemListElement":[
@@ -2694,7 +2694,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml",
-					"headline":"Transmission Failure",
+					"headline":"Trans Failure",
 					"position":"1",
 					"datePublished":"2004-12-14",
 					"dateModified":"2017-11-15",
@@ -2714,7 +2714,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_slips_when_shifting_and_clunks",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_slips_when_shifting_and_clunks.shtml",
-					"headline":"Transmission Slips When Shifting And Clunks",
+					"headline":"Trans Slips When Shifting And Clunks",
 					"position":"3",
 					"datePublished":"2006-09-28",
 					"dateModified":"2017-10-13",
@@ -2724,7 +2724,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/enclosed_transmission_had_to_be_overhauled",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/enclosed_transmission_had_to_be_overhauled.shtml",
-					"headline":"Enclosed Transmission Had To Be Overhauled",
+					"headline":"Enclosed Trans Had To Be Overhauled",
 					"position":"4",
 					"datePublished":"2005-03-07",
 					"dateModified":"2016-11-17",
@@ -2764,7 +2764,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_hesitates",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_hesitates.shtml",
-					"headline":"Transmission Hesitates",
+					"headline":"Trans Hesitates",
 					"position":"8",
 					"datePublished":"2008-10-12",
 					"dateModified":"2016-03-04",
@@ -2784,7 +2784,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/rattling_noise_from_transmission",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/rattling_noise_from_transmission.shtml",
-					"headline":"Rattling Noise From Transmission",
+					"headline":"Rattling Noise From Trans",
 					"position":"10",
 					"datePublished":"2006-12-26",
 					"dateModified":"2015-01-01",
@@ -2794,7 +2794,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_shutters",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_shutters.shtml",
-					"headline":"Transmission Shutters",
+					"headline":"Trans Shutters",
 					"position":"11",
 					"datePublished":"2008-12-11",
 					"dateModified":"2014-11-11",
@@ -2854,7 +2854,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/grinding_noise_from_transmission",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/grinding_noise_from_transmission.shtml",
-					"headline":"Grinding Noise From Transmission",
+					"headline":"Grinding Noise From Trans",
 					"position":"17",
 					"datePublished":"2010-12-22",
 					"dateModified":"2014-12-17",
@@ -2864,7 +2864,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_fluid_leaking",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_fluid_leaking.shtml",
-					"headline":"Transmission Fluid Leaking",
+					"headline":"Trans Fluid Leaking",
 					"position":"18",
 					"datePublished":"2008-05-23",
 					"dateModified":"2012-03-19",
@@ -2904,7 +2904,7 @@ const category_html = `<!DOCTYPE html>
 					"@type":"DiscussionForumPosting",
 					"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_whines",
 					"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_whines.shtml",
-					"headline":"Transmission Whines",
+					"headline":"Trans Whines",
 					"position":"22",
 					"datePublished":"2009-07-01",
 					"dateModified":"2015-03-27",
@@ -2989,7 +2989,7 @@ const category_html = `<!DOCTYPE html>
 					{"@type":"ListItem","position":1,"item":{"@id":"https://www.carcomplaints.com/Ford/","name":"Ford"}},
 					{"@type":"ListItem","position":2,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/","name":"Explorer"}},
 					{"@type":"ListItem","position":3,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/","name":"2002"}},
-					{"@type":"ListItem","position":4,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/","name":"Transmission Problems"}}
+					{"@type":"ListItem","position":4,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/","name":"Trans Problems"}}
 				]
 		}	]
 	</script>
@@ -3102,7 +3102,7 @@ const category_html = `<!DOCTYPE html>
 				<li><a href="/Ford/"><span>Ford</span></a> &raquo;</li>
 				<li><a href="/Ford/Explorer/"><span>Explorer</span></a> &raquo;</li>
 				<li><a href="/Ford/Explorer/2002/"><span>2002</span></a> &raquo;</li>
-				<li><a href="#"><span>Transmission Problems</span></a></li>
+				<li><a href="#"><span>Trans Problems</span></a></li>
 			</ol>
 			<div id="ymselector">
 				<ul class="menu">
@@ -3322,7 +3322,7 @@ const category_html = `<!DOCTYPE html>
 				</div>
 				<h1>2002 Ford Explorer</h1>
 				<div id="subtitle">
-					<h2>Transmission Problems</h2>
+					<h2>Trans Problems</h2>
 				</div>
 				<div id="vehicleseal"><img src="//cdn2.carcomplaints.com/img/seals/worst.png" alt="CarComplaints.com Seal Of Avoid Like The Plague" /></div>
 			</div>
@@ -3347,7 +3347,7 @@ const category_html = `<!DOCTYPE html>
 
 </section>
 		<div id="graphcontainer" class="l38">
-			<h3>2002 Ford Explorer Transmission Problems</h3>
+			<h3>2002 Ford Explorer Trans Problems</h3>
 			<div id="sharebar" class="wide">
 				<em>Find something helpful? Spread the word.</em>
 				<a class="facebook" target="_blank" rel="nofollow" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2F&amp;t=2002%20Ford%20Explorer%20transmission%20problems" title="Share on Facebook"><span>Share on Facebook</span><strong></strong></a>
@@ -3358,16 +3358,16 @@ const category_html = `<!DOCTYPE html>
 				<h4 id="graphtop">Click on a problem below to read more.</h4>
 				<ul>
 					<li id="bar0" class="">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Ford Explorer Transmission Failure"><strong>Transmission Failure</strong><em class="ab"><span class="bar d3"><span>441</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_failure.shtml" title="2002 Ford Explorer Trans Failure"><strong>Trans Failure</strong><em class="ab"><span class="bar d3"><span>441</span></span></em></a>
  	</li>
  	<li id="bar1" class="">
  		<a href="/Ford/Explorer/2002/transmission/o_d_light_is_blinking.shtml" title="2002 Ford Explorer O/D Light Is Blinking"><strong>O/D Light Is Blinking</strong><em class="ab"><span class="bar d3"><span>386</span></span></em></a>
  	</li>
  	<li id="bar2" class="l2">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_slips_when_shifting_and_clunks.shtml" title="2002 Ford Explorer Transmission Slips When Shifting And Clunks"><strong>Transmission Slips When Shifting And Clunks</strong><em class="ab"><span class="bar d3"><span>151</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_slips_when_shifting_and_clunks.shtml" title="2002 Ford Explorer Trans Slips When Shifting And Clunks"><strong>Trans Slips When Shifting And Clunks</strong><em class="ab"><span class="bar d3"><span>151</span></span></em></a>
  	</li>
  	<li id="bar3" class="l2">
- 		<a href="/Ford/Explorer/2002/transmission/enclosed_transmission_had_to_be_overhauled.shtml" title="2002 Ford Explorer Enclosed Transmission Had To Be Overhauled"><strong>Enclosed Transmission Had To Be Overhauled</strong><em class="ab"><span class="bar d3"><span>136</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/enclosed_transmission_had_to_be_overhauled.shtml" title="2002 Ford Explorer Enclosed Trans Had To Be Overhauled"><strong>Enclosed Trans Had To Be Overhauled</strong><em class="ab"><span class="bar d3"><span>136</span></span></em></a>
  	</li>
  	<li id="bar4" class="">
  		<a href="/Ford/Explorer/2002/transmission/difficulties_shifting.shtml" title="2002 Ford Explorer Difficulties Shifting"><strong>Difficulties Shifting</strong><em class="ab"><span class="bar d3"><span>101</span></span></em></a>
@@ -3379,16 +3379,16 @@ const category_html = `<!DOCTYPE html>
  		<a href="/Ford/Explorer/2002/transmission/wont_shift_into_3rd_gear.shtml" title="2002 Ford Explorer Won't Shift Into 3rd Gear"><strong>Won't Shift Into 3rd Gear</strong><em class="ab"><span class="bar d2"><span>52</span></span></em></a>
  	</li>
  	<li id="bar7" class="">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_hesitates.shtml" title="2002 Ford Explorer Transmission Hesitates"><strong>Transmission Hesitates</strong><em class="ab"><span class="bar d2"><span>28</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_hesitates.shtml" title="2002 Ford Explorer Trans Hesitates"><strong>Trans Hesitates</strong><em class="ab"><span class="bar d2"><span>28</span></span></em></a>
  	</li>
  	<li id="bar8" class="">
  		<a href="/Ford/Explorer/2002/transmission/shifts_into_gear_but_wont_go.shtml" title="2002 Ford Explorer Shifts Into Gear But Won't Go"><strong>Shifts Into Gear But Won't Go</strong><em class="ab"><span class="bar d2"><span>24</span></span></em></a>
  	</li>
  	<li id="bar9" class="">
- 		<a href="/Ford/Explorer/2002/transmission/rattling_noise_from_transmission.shtml" title="2002 Ford Explorer Rattling Noise From Transmission"><strong>Rattling Noise From Transmission</strong><em class="ab"><span class="bar d2"><span>18</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/rattling_noise_from_transmission.shtml" title="2002 Ford Explorer Rattling Noise From Trans"><strong>Rattling Noise From Trans</strong><em class="ab"><span class="bar d2"><span>18</span></span></em></a>
  	</li>
  	<li id="bar10" class="">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_shutters.shtml" title="2002 Ford Explorer Transmission Shutters"><strong>Transmission Shutters</strong><em class="ab"><span class="bar d2"><span>16</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_shutters.shtml" title="2002 Ford Explorer Trans Shutters"><strong>Trans Shutters</strong><em class="ab"><span class="bar d2"><span>16</span></span></em></a>
  	</li>
  	<li id="bar11" class="">
  		<a href="/Ford/Explorer/2002/transmission/solenoid_failure.shtml" title="2002 Ford Explorer Solenoid Failure"><strong>Solenoid Failure</strong><em class="ab"><span class="bar d2"><span>15</span></span></em></a>
@@ -3406,10 +3406,10 @@ const category_html = `<!DOCTYPE html>
  		<a href="/Ford/Explorer/2002/transmission/servo_plug_casting_broke.shtml" title="2002 Ford Explorer Servo Plug Casting Broke"><strong>Servo Plug Casting Broke</strong><em class="ab"><span class="bar d1"><span>9</span></span></em></a>
  	</li>
  	<li id="bar16" class="">
- 		<a href="/Ford/Explorer/2002/transmission/grinding_noise_from_transmission.shtml" title="2002 Ford Explorer Grinding Noise From Transmission"><strong>Grinding Noise From Transmission</strong><em class="ab"><span class="bar d1"><span>8</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/grinding_noise_from_transmission.shtml" title="2002 Ford Explorer Grinding Noise From Trans"><strong>Grinding Noise From Trans</strong><em class="ab"><span class="bar d1"><span>8</span></span></em></a>
  	</li>
  	<li id="bar17" class="">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_fluid_leaking.shtml" title="2002 Ford Explorer Transmission Fluid Leaking"><strong>Transmission Fluid Leaking</strong><em class="ab"><span class="bar d1"><span>8</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_fluid_leaking.shtml" title="2002 Ford Explorer Trans Fluid Leaking"><strong>Trans Fluid Leaking</strong><em class="ab"><span class="bar d1"><span>8</span></span></em></a>
  	</li>
  	<li id="bar18" class="">
  		<a href="/Ford/Explorer/2002/transmission/intermittent_jerking.shtml" title="2002 Ford Explorer Intermittent Jerking"><strong>Intermittent Jerking</strong><em class="ab"><span class="bar d1"><span>7</span></span></em></a>
@@ -3421,7 +3421,7 @@ const category_html = `<!DOCTYPE html>
  		<a href="/Ford/Explorer/2002/transmission/defective_valve_body.shtml" title="2002 Ford Explorer Defective Valve Body"><strong>Defective Valve Body</strong><em class="ab"><span class="bar d1"><span>6</span></span></em></a>
  	</li>
  	<li id="bar21" class="">
- 		<a href="/Ford/Explorer/2002/transmission/transmission_whines.shtml" title="2002 Ford Explorer Transmission Whines"><strong>Transmission Whines</strong><em class="ab"><span class="bar d1"><span>5</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/transmission_whines.shtml" title="2002 Ford Explorer Trans Whines"><strong>Trans Whines</strong><em class="ab"><span class="bar d1"><span>5</span></span></em></a>
  	</li>
  	<li id="bar22" class="l1">
  		<a href="/Ford/Explorer/2002/transmission/rolls_a_bit_after_shifting_into_park.shtml" title="2002 Ford Explorer Rolls A Bit After Shifting Into Park"><strong>Rolls A Bit After Shifting Into Park</strong><em class="ab"><span class="bar d1"><span>4</span></span></em></a>
@@ -3445,31 +3445,31 @@ const category_html = `<!DOCTYPE html>
  		<a href="/Ford/Explorer/2002/transmission/surges_forward_when_brakes_applied.shtml" title="2002 Ford Explorer Surges Forward When Brakes Applied"><strong>Surges Forward When Brakes Applied</strong><em class="ab"><span class="bar d1"><span>1</span></span></em></a>
  	</li>
  	<li id="bar29" class="nhtsa l2">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission"><strong>NHTSA: Power Train: Automatic Transmission</strong><em class="nhtsa"><span class="bar"><span>865</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans"><strong>NHTSA: Power Train: Automatic Trans</strong><em class="nhtsa"><span class="bar"><span>865</span></span></em></a>
  	</li>
  	<li id="bar30" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-lever_and_linkage-column_shift.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Lever And Linkage:Column Shift"><strong>NHTSA: Power Train: Automatic Transmission: Lever And Linkage: Column ...</strong><em class="nhtsa"><span class="bar"><span>44</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-lever_and_linkage-column_shift.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Lever And Linkage:Column Shift"><strong>NHTSA: Power Train: Automatic Trans: Lever And Linkage: Column ...</strong><em class="nhtsa"><span class="bar"><span>44</span></span></em></a>
  	</li>
  	<li id="bar31" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-gear_position_indication_prndl.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Gear Position Indication (Prndl)"><strong>NHTSA: Power Train: Automatic Transmission: Gear Position Indication ...</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-gear_position_indication_prndl.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Gear Position Indication (Prndl)"><strong>NHTSA: Power Train: Automatic Trans: Gear Position Indication ...</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
  	</li>
  	<li id="bar32" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-torque_converter.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Torque Converter"><strong>NHTSA: Power Train: Automatic Transmission: Torque Converter</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-torque_converter.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Torque Converter"><strong>NHTSA: Power Train: Automatic Trans: Torque Converter</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
  	</li>
  	<li id="bar33" class="nhtsa l1">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-manual_transmission.shtml" title="2002 Ford Explorer: Power Train:Manual Transmission"><strong>NHTSA: Power Train: Manual Transmission</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-manual_transmission.shtml" title="2002 Ford Explorer: Power Train:Manual Trans"><strong>NHTSA: Power Train: Manual Trans</strong><em class="nhtsa"><span class="bar"><span>13</span></span></em></a>
  	</li>
  	<li id="bar34" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-control_module_tcm_pcm.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Control Module (Tcm, Pcm)"><strong>NHTSA: Power Train: Automatic Transmission: Control Module (Tcm, ...</strong><em class="nhtsa"><span class="bar"><span>6</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-control_module_tcm_pcm.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Control Module (Tcm, Pcm)"><strong>NHTSA: Power Train: Automatic Trans: Control Module (Tcm, ...</strong><em class="nhtsa"><span class="bar"><span>6</span></span></em></a>
  	</li>
  	<li id="bar35" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-park_neutral_start_interlock_switch.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Park/Neutral Start Interlock Switch"><strong>NHTSA: Power Train: Automatic Transmission: Park/Neutral Start Interlock ...</strong><em class="nhtsa"><span class="bar"><span>2</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-park_neutral_start_interlock_switch.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Park/Neutral Start Interlock Switch"><strong>NHTSA: Power Train: Automatic Trans: Park/Neutral Start Interlock ...</strong><em class="nhtsa"><span class="bar"><span>2</span></span></em></a>
  	</li>
  	<li id="bar36" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-manual_transmission-floor_shift_assembly.shtml" title="2002 Ford Explorer: Power Train:Manual Transmission:Floor Shift Assembly"><strong>NHTSA: Power Train: Manual Transmission: Floor Shift ...</strong><em class="nhtsa"><span class="bar"><span>2</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-manual_transmission-floor_shift_assembly.shtml" title="2002 Ford Explorer: Power Train:Manual Trans:Floor Shift Assembly"><strong>NHTSA: Power Train: Manual Trans: Floor Shift ...</strong><em class="nhtsa"><span class="bar"><span>2</span></span></em></a>
  	</li>
  	<li id="bar37" class="nhtsa l5">
- 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-cooling_unit_and_lines.shtml" title="2002 Ford Explorer: Power Train:Automatic Transmission:Cooling Unit And Lines"><strong>NHTSA: Power Train: Automatic Transmission: Cooling Unit And ...</strong><em class="nhtsa"><span class="bar"><span>1</span></span></em></a>
+ 		<a href="/Ford/Explorer/2002/transmission/power_train-automatic_transmission-cooling_unit_and_lines.shtml" title="2002 Ford Explorer: Power Train:Automatic Trans:Cooling Unit And Lines"><strong>NHTSA: Power Train: Automatic Trans: Cooling Unit And ...</strong><em class="nhtsa"><span class="bar"><span>1</span></span></em></a>
  	</li>
  
 				</ul>
@@ -3720,11 +3720,11 @@ const problem_html = `
     });
 </script>
 
-	<title>2002 Ford Explorer Transmission Failure: 441 Complaints</title>
+	<title>2002 Ford Explorer Trans Failure: 441 Complaints</title>
 	<meta name="keywords" content="2002 Ford Explorer, transmission failure, 2002, Ford, Explorer, transmission problem, transmission complaint, transmission defect, transmission, failure" />
 	<meta name="description" content="The 2002 Ford Explorer has 441 problems reported for transmission failure. Average repair cost is $2,840 at 94,800 miles. (Page 1 of 23)" />
 	<meta name="robots" content="index,follow" />
-	<meta property="og:title" content="2002 Ford Explorer Transmission Failure" />
+	<meta property="og:title" content="2002 Ford Explorer Trans Failure" />
 	<meta property="og:url" content="https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml" />
 	<meta property="og:description" content="The 2002 Ford Explorer has 441 problems reported for transmission failure. Average repair cost is $2,840 at 94,800 miles. (Page 1 of 23)" />
 	<meta property="og:type" content="website" />
@@ -3788,8 +3788,8 @@ const problem_html = `
 				"@context":"http://schema.org",
 				"@type":"DiscussionForumPosting",
 				"@id": "https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure",
-				"name":"2002 Ford Explorer Transmission Failure",
-				"headline":"2002 Ford Explorer Transmission Failure",
+				"name":"2002 Ford Explorer Trans Failure",
+				"headline":"2002 Ford Explorer Trans Failure",
 				"url":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml",
 				"mainEntityOfPage":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml",
 				"datePublished":"2004-12-14",
@@ -4250,7 +4250,7 @@ const problem_html = `
 					{"@type":"ListItem","position":1,"item":{"@id":"https://www.carcomplaints.com/Ford/","name":"Ford"}},
 					{"@type":"ListItem","position":2,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/","name":"Explorer"}},
 					{"@type":"ListItem","position":3,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/","name":"2002"}},
-					{"@type":"ListItem","position":4,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/","name":"Transmission"}},
+					{"@type":"ListItem","position":4,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/","name":"Trans"}},
 					{"@type":"ListItem","position":5,"item":{"@id":"https://www.carcomplaints.com/Ford/Explorer/2002/transmission/transmission_failure.shtml","name":"Problem"}}
 				]
 		}	]
@@ -4566,7 +4566,7 @@ const problem_html = `
 				<div id="modelimg">
 					
 				</div>
-				<h1 class="">Transmission Failure</h1>
+				<h1 class="">Trans Failure</h1>
 				<div id="subtitle">
 					<h2><a href="/Ford/Explorer/2002/">2002 Ford Explorer</a> <span> (Page 1 of 23)</span></h2>
 					<p id="warrantymsg">This problem may be covered under warranty. Ask your Ford dealer.</p>
@@ -4631,9 +4631,9 @@ const problem_html = `
 
 		<div id="sharebar" class="wide">
 			<em>Find something helpful? Spread the word.</em>
-			<a class="facebook" target="_blank" rel="nofollow" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;t=Transmission%20failure%20-%202002%20Ford%20Explorer" title="Share on Facebook"><span>Share on Facebook</span><strong></strong></a>
-			<a class="twitter" target="_blank" rel="nofollow" href="https://twitter.com/share?url=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;text=Transmission%20failure%20-%202002%20Ford%20Explorer&amp;via=carcomplaints" title="Share on Twitter"><span>Retweet this page</span><strong></strong></a>
-			<a class="email" target="_blank" rel="nofollow" href="/emailpage.shtml?url=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;title=Transmission%20failure%20-%202002%20Ford%20Explorer" title="Email this page"><span>Email this page</span></a>
+			<a class="facebook" target="_blank" rel="nofollow" href="http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;t=Trans%20failure%20-%202002%20Ford%20Explorer" title="Share on Facebook"><span>Share on Facebook</span><strong></strong></a>
+			<a class="twitter" target="_blank" rel="nofollow" href="https://twitter.com/share?url=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;text=Trans%20failure%20-%202002%20Ford%20Explorer&amp;via=carcomplaints" title="Share on Twitter"><span>Retweet this page</span><strong></strong></a>
+			<a class="email" target="_blank" rel="nofollow" href="/emailpage.shtml?url=https%3A%2F%2Fwww%2Ecarcomplaints%2Ecom%2FFord%2FExplorer%2F2002%2Ftransmission%2Ftransmission%5Ffailure%2Eshtml&amp;title=Trans%20failure%20-%202002%20Ford%20Explorer" title="Email this page"><span>Email this page</span></a>
 		</div>
 
 		<div id="alertsignup" class="bar">
@@ -4655,7 +4655,7 @@ const problem_html = `
 			<div id="helpfulsites">
 				<h3>Helpful websites</h3>
 				<ul>
-				  <li><a href="http://fordproblems.com/Explorer/transmission-failure.shtml">Ford Explorer Transmission Problems</a> - Information on what to look for and actions your can take if your transmission fails.</li>
+				  <li><a href="http://fordproblems.com/Explorer/transmission-failure.shtml">Ford Explorer Trans Problems</a> - Information on what to look for and actions your can take if your transmission fails.</li>
 				</ul>
 				<button class="addLink">Add a site <span>&raquo;</span></button>
 			</div>
@@ -4792,7 +4792,7 @@ const problem_html = `
 		googletag.cmd.push(function() { googletag.display('div-gpt-ad-1319716927473-7'); });
 	</script>
 </div>
-</div>			<div><p>Transmission just blew. I don't have money to fix this! My wife and I are older. We can't get to the Doctor or groceries or anything!</p>
+</div>			<div><p>Trans just blew. I don't have money to fix this! My wife and I are older. We can't get to the Doctor or groceries or anything!</p>
 </div>
 			<p class="userinfo">
 				- <strong>Elise S.</strong>,
@@ -5095,7 +5095,7 @@ const problem_html = `
 			<ul><li>Automatic transmission</li><li>135,000 miles</li></ul>
 		</div>
 		<div class="comments">
-			<div><p>I bought mine for $6k out the door in 2013. It lasted me 8 lonnngggg nasty months of doom and gloom and about 4 or 5 long periods of being without it for repairs. I seriously thought this truck was possessed. The transmission had just been rebuilt before I bought it. I had all the paperwork. The night I brought it home I was stranded out of town. Transmission again. <p>The dealership towed it, and fixed it under warranty in a couple days. Ok, cool, I thought. Let me tell you...The lights would randomly go on and off while I was driving. Constantly. Doors ajar constantly for no reason. The power windows would just stop working, then work again. Weird noises coming from absolutely everywhere. I had to fix something about "coil packs?" (I know nothing about vehicles...) Bangs, dings, grinding...The 4x4 didn't work which I found out in a blizzard.... The doors were grinding and dropping chunks of rust. The running boards were falling off. <p>So one night it started making the dreaded ticking/banging from the timing chain. The oil pressure was dipping. I didn't have enough time to repair it. BANG.....BANG......BAAAANG....and dead on the highway. I guess the plastic tensioners broke? I ended up selling her to a friend's uncle with a blown motor. I even had a bunch of people look to buy her, as well as my family look at it, and the engine was toast. I sell it.....It started right up for him. They're possessed. Period. Apparently the oil dipstick harness had completely ripped off. Lord knows if it had any oil in it. <p>Owning one of these is like being that little kid trying to run from hole to hole at a dam sticking his fingers in to save to town from flooding....except it's not fingers, it's money.</p>
+			<div><p>I bought mine for $6k out the door in 2013. It lasted me 8 lonnngggg nasty months of doom and gloom and about 4 or 5 long periods of being without it for repairs. I seriously thought this truck was possessed. The transmission had just been rebuilt before I bought it. I had all the paperwork. The night I brought it home I was stranded out of town. Trans again. <p>The dealership towed it, and fixed it under warranty in a couple days. Ok, cool, I thought. Let me tell you...The lights would randomly go on and off while I was driving. Constantly. Doors ajar constantly for no reason. The power windows would just stop working, then work again. Weird noises coming from absolutely everywhere. I had to fix something about "coil packs?" (I know nothing about vehicles...) Bangs, dings, grinding...The 4x4 didn't work which I found out in a blizzard.... The doors were grinding and dropping chunks of rust. The running boards were falling off. <p>So one night it started making the dreaded ticking/banging from the timing chain. The oil pressure was dipping. I didn't have enough time to repair it. BANG.....BANG......BAAAANG....and dead on the highway. I guess the plastic tensioners broke? I ended up selling her to a friend's uncle with a blown motor. I even had a bunch of people look to buy her, as well as my family look at it, and the engine was toast. I sell it.....It started right up for him. They're possessed. Period. Apparently the oil dipstick harness had completely ripped off. Lord knows if it had any oil in it. <p>Owning one of these is like being that little kid trying to run from hole to hole at a dam sticking his fingers in to save to town from flooding....except it's not fingers, it's money.</p>
 </div>
 			<p class="userinfo">
 				- <strong>artalli</strong>,

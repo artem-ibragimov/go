@@ -21,10 +21,10 @@ type IDB interface {
 	SaveBrand(string) (int32, error)
 
 	GetEngineID(name string) (int32, error)
-	SaveEngine(*DB.EngineData) (int32, error)
+	PostEngine(*DB.EngineData) (int32, error)
 
-	GetTransmissionID(brand_id int32, name string, gears int32) (int32, error)
-	SaveTransmission(*DB.TransmissionData) (int32, error)
+	GetTransID(brand_id int32, name string, gears int32) (int32, error)
+	PostTrans(*DB.TransData) (int32, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
 	GetLastModelNamesByBrand(brand_id int32) ([]string, error)
@@ -34,7 +34,7 @@ type IDB interface {
 	PostGeneration(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
-	SaveVersion(*DB.VersionData) (int32, error)
+	PostVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {
@@ -246,7 +246,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 							Power_hp:     power_hp,
 							Torque:       torque,
 						}
-						engine_id, err = db.SaveEngine(&engine)
+						engine_id, err = db.PostEngine(&engine)
 						if err != nil {
 							log.Println(err)
 							continue
@@ -262,20 +262,20 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 					trans_name = strings.ReplaceAll(trans_name, "Reduktionsgetriebe", "reduction")
 					gears := parseDigit(extractTag(`name":"Anzahl Gänge","value`, state))
 
-					trans_id, err := db.GetTransmissionID(brand_id, trans_name, int32(gears))
+					trans_id, err := db.GetTransID(brand_id, trans_name, int32(gears))
 					if err != nil {
 						consumtion_s := strings.ReplaceAll(extractTag(`name":"Verbrauch Gesamt \(NEFZ\)","value`, state), " l/100 km", "")
 						consumtion, _ := strconv.ParseFloat(strings.ReplaceAll(consumtion_s, ",", "."), 32)
 						acceleration_s := strings.ReplaceAll(extractTag(`name":"Beschleunigung 0-100km\/h","value`, state), " s", "")
 						acceleration, _ := strconv.ParseFloat(strings.ReplaceAll(acceleration_s, ",", "."), 32)
-						transmission := &DB.TransmissionData{
+						transmission := &DB.TransData{
 							BrandID:      brand_id,
 							Name:         trans_name,
 							Gears:        gears,
 							Consumtion:   float32(consumtion),
 							Acceleration: float32(acceleration),
 						}
-						trans_id, err = db.SaveTransmission(transmission)
+						trans_id, err = db.PostTrans(transmission)
 						if err != nil {
 							log.Println(err)
 							continue
@@ -284,7 +284,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 
 					version_id, err := db.GetVersionID(version_name, gen_id)
 					if err != nil {
-						version_id, err = db.SaveVersion(&DB.VersionData{
+						version_id, err = db.PostVersion(&DB.VersionData{
 							Name:         version_name,
 							GenerationID: gen_id,
 							EngineID:     engine_id,

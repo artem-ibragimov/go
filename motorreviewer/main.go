@@ -17,7 +17,7 @@ type IDB interface {
 	SaveBrand(string) (int32, error)
 
 	GetEngineID(name string) (int32, error)
-	SaveEngine(*DB.EngineData) (int32, error)
+	PostEngine(*DB.EngineData) (int32, error)
 }
 
 type IReq interface {
@@ -87,7 +87,7 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 		torque_str = regexp.MustCompile(`[0-9]{2,3}`).FindString(torque_str)
 		torque, _ := strconv.Atoi(torque_str)
 
-		engine_id, err := db.SaveEngine(&DB.EngineData{
+		engine_id, err := db.PostEngine(&DB.EngineData{
 			Name:         engine_name,
 			Displacement: displacement,
 			Valves:       valves_per_cylinder * cylinders,

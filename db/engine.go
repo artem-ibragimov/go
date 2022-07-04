@@ -51,7 +51,7 @@ func (database *DB) GetEngineByParams(displacement int, valves int, power_hp int
 		displacement, valves, power_hp, torque)
 }
 
-func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
+func (database *DB) PostEngine(engine *EngineData) (int32, error) {
 	return database.Exec(`INSERT INTO engine (
 		name, displacement, cylinders, valves, fuel_type, power_hp, torque, img
 		) VALUES ( $1, $2, $3, $4, $5, $6, $7, $8 ) 
@@ -68,6 +68,27 @@ func (database *DB) SaveEngine(engine *EngineData) (int32, error) {
 		engine.Power_hp,
 		engine.Torque,
 		engine.Img,
+	)
+}
+func (database *DB) PatchEngine(id int32, engine *EngineData) (int32, error) {
+	return database.Exec(`
+	UPDATE 
+		engine 
+	SET (
+		name, displacement, cylinders, valves, fuel_type, power_hp, torque, img
+	) = ( $1, $2, $3, $4, $5, $6, $7, $8 )
+	WHERE
+		id = $9
+	RETURNING id`,
+		engine.Name,
+		engine.Displacement,
+		engine.Cylinders,
+		engine.Valves,
+		engine.Fuel_type,
+		engine.Power_hp,
+		engine.Torque,
+		engine.Img,
+		id,
 	)
 }
 

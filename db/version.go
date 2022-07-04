@@ -19,8 +19,8 @@ func (database *DB) GetVersion(version_id int32) (*VersionData, error) {
 		log.Println(err)
 	}
 	var name string
-	var transmissionID, engineID, generationID int32
-	err = query.QueryRow(version_id).Scan(&name, &transmissionID, &engineID, &generationID)
+	var transID, engineID, generationID int32
+	err = query.QueryRow(version_id).Scan(&name, &transID, &engineID, &generationID)
 	if err != nil {
 		log.Fatal(err)
 		return new(VersionData), err
@@ -28,7 +28,7 @@ func (database *DB) GetVersion(version_id int32) (*VersionData, error) {
 	return &VersionData{
 		Name:         name,
 		EngineID:     engineID,
-		TransID:      transmissionID,
+		TransID:      transID,
 		GenerationID: generationID,
 	}, nil
 }
@@ -39,7 +39,7 @@ func (database *DB) GetVersions(generation_id int32) (map[string]string, error) 
 		generation_id)
 }
 
-func (database *DB) SaveVersion(version *VersionData) (int32, error) {
+func (database *DB) PostVersion(version *VersionData) (int32, error) {
 	return database.Exec(`INSERT INTO version (
 		name, generation_id, transmission_id, engine_id
 		) VALUES ( $1, $2, $3, $4 ) ON CONFLICT DO NOTHING RETURNING id`,
@@ -47,6 +47,25 @@ func (database *DB) SaveVersion(version *VersionData) (int32, error) {
 		version.GenerationID,
 		version.TransID,
 		version.EngineID,
+	)
+}
+func (database *DB) PatchVersion(id int32, version *VersionData) (int32, error) {
+	return database.Exec(`
+	UPDATE
+		version 
+	SET
+		name = $1, 
+		generation_id = $2,
+		transmission_id = $3,
+		engine_id = $4
+	WHERE
+		id = $5
+	RETURNING id`,
+		version.Name,
+		version.GenerationID,
+		version.TransID,
+		version.EngineID,
+		id,
 	)
 }
 

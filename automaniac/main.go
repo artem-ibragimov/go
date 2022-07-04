@@ -18,10 +18,10 @@ type IDB interface {
 
 	GetEngineID(string) (int32, error)
 	GetEngineByParams(displacement int, valves int, power_hp int, torque int) (int32, error)
-	SaveEngine(*DB.EngineData) (int32, error)
+	PostEngine(*DB.EngineData) (int32, error)
 
-	SaveTransmission(*DB.TransmissionData) (int32, error)
-	GetTransmissionID(int32, string, int32) (int32, error)
+	PostTrans(*DB.TransData) (int32, error)
+	GetTransID(int32, string, int32) (int32, error)
 
 	SaveModel(*DB.ModelData) (int32, error)
 	GetModelID(brand_id int32, model_name string) (int32, error)
@@ -31,7 +31,7 @@ type IDB interface {
 	PostGeneration(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
-	SaveVersion(*DB.VersionData) (int32, error)
+	PostVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {
@@ -190,7 +190,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 				torque, _ := strconv.Atoi(clean(info.Find("div:nth-child(11) > div.d2 > strong").Text()))
 				engine_id, err = db.GetEngineByParams(displacement, valves, power_hp, torque)
 				if err != nil {
-					engine_id, err = db.SaveEngine((&DB.EngineData{
+					engine_id, err = db.PostEngine((&DB.EngineData{
 						Name:         engine_name,
 						Displacement: displacement,
 						Cylinders:    cylinders,
@@ -223,7 +223,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 				if len(gear_data) != 0 {
 					gears, _ = strconv.Atoi(gear_data[0])
 				}
-				trans_data := &DB.TransmissionData{
+				trans_data := &DB.TransData{
 					BrandID:      brand_id,
 					Name:         trans_type,
 					Gears:        gears,
@@ -231,9 +231,9 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 					Acceleration: float32(math.Round(acc*100) / 100),
 				}
 
-				trans_id, err := db.GetTransmissionID(brand_id, trans_type, int32(gears))
+				trans_id, err := db.GetTransID(brand_id, trans_type, int32(gears))
 				if err != nil {
-					trans_id, err = db.SaveTransmission(trans_data)
+					trans_id, err = db.PostTrans(trans_data)
 					if err != nil {
 						log.Println(err)
 						return
@@ -242,7 +242,7 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 
 				version_id, err := db.GetVersionID(version_name, gen_id)
 				if err != nil {
-					version_id, err = db.SaveVersion(&DB.VersionData{
+					version_id, err = db.PostVersion(&DB.VersionData{
 						Name:         version_name,
 						GenerationID: gen_id,
 						EngineID:     engine_id,

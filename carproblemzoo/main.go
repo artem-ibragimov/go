@@ -20,7 +20,7 @@ type IDB interface {
 	GetModelID(brand_id int32, model_name string) (int32, error)
 	SaveModel(model *DB.ModelData) (int32, error)
 
-	SaveVersion(*DB.VersionData) (int32, error)
+	PostVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {

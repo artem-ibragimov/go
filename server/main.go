@@ -28,41 +28,59 @@ type IDB interface {
 	GetVersions(generationID int32) (map[string]string, error)
 	GetVersion(versionID int32) (*DB.VersionData, error)
 	GetVersionID(name string, generation_id int32) (int32, error)
-	SaveVersion(*DB.VersionData) (int32, error)
+	PatchVersion(id int32, version *DB.VersionData) (int32, error)
+	PostVersion(*DB.VersionData) (int32, error)
 
-	GetEngineID(name string) (int32, error)
-	SaveEngine(*DB.EngineData) (int32, error)
+	PostEngine(*DB.EngineData) (int32, error)
+	PatchEngine(id int32, engine *DB.EngineData) (int32, error)
 	GetEngines() (map[string]string, error)
 	GetEngine(engineID int32) (*DB.EngineData, error)
 
-	GetTransmissions(brandID int32) (map[string]string, error)
-	GetTransmission(id int32) (*DB.TransmissionData, error)
-	GetTransmissionID(brand_id int32, name string, gears int32) (int32, error)
-	SaveTransmission(*DB.TransmissionData) (int32, error)
+	GetTranss(brandID int32) (map[string]string, error)
+	GetTrans(id int32) (*DB.TransData, error)
+	GetTransID(brand_id int32, name string, gears int32) (int32, error)
+	PostTrans(*DB.TransData) (int32, error)
+	PatchTrans(id int32, trans *DB.TransData) (int32, error)
 }
 
 func Run(port string, db IDB) {
 	router := gin.Default()
 	data_group := router.Group("/data")
+	version := data_group.Group("/version")
+	generation := data_group.Group("/generation")
+	engine := data_group.Group("/engine")
+	transmission := data_group.Group("/transmission")
+
 	{
 		data_group.GET("/search/", CreateSearchGetter(db))
 
 		data_group.GET("/brand/", CreateBrandsListGetter(db))
 
 		data_group.GET("/model/", CreateModelsListGetter(db))
-
-		data_group.POST("/generation/:genID", CreateGenDescriptionSetter(db))
-		data_group.GET("/generation/:genID", CreateGenDescriptionGetter(db))
-		data_group.GET("/generation/", CreateGenerationsListGetter(db))
-
-		data_group.GET("/version/:versionID", CreateVersionDescriptionGetter(db))
-		data_group.GET("/version/", CreateVersionsListGetter(db))
-
-		data_group.GET("/engine/:engineID", CreateEngineDescriptionGetter(db))
-		data_group.GET("/engine/", CreateEngineListGetter(db))
-
-		data_group.GET("/transmission/:transmissionID", CreateTransmissionDescriptionGetter(db))
-		data_group.GET("/transmission/", CreateTransmissionListGetter(db))
+		{
+			generation.PATCH("/:genID", CreateGenPatcher(db))
+			generation.POST("/:genID", CreateGenPoster(db))
+			generation.GET("/:genID", CreateGenGetter(db))
+			generation.GET("/", CreateGenListGetter(db))
+		}
+		{
+			version.PATCH("/:versionID", CreateVersionPatcher(db))
+			version.POST("/:versionID", CreateVersionPoster(db))
+			version.GET("/:versionID", CreateVersionGetter(db))
+			version.GET("/", CreateVersionsListGetter(db))
+		}
+		{
+			engine.PATCH("/:engineID", CreateEnginePatcher(db))
+			engine.POST("/:engineID", CreateEnginePoster(db))
+			engine.GET("/:engineID", CreateEngineGetter(db))
+			engine.GET("/", CreateEngineListGetter(db))
+		}
+		{
+			transmission.PATCH("/:transID", CreateTransPatcher(db))
+			transmission.POST("/:transID", CreateTransPoster(db))
+			transmission.GET("/:transID", CreateTransGetter(db))
+			transmission.GET("/", CreateTransListGetter(db))
+		}
 	}
 	router.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/static")
