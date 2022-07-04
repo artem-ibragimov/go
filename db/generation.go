@@ -9,7 +9,7 @@ func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
 	return database.ExecMapRows(`SELECT id, name FROM generation WHERE model_id = $1`, model_id)
 }
 func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
-	query, err := database.db.Prepare(`SELECT name, img, start, finish FROM generation WHERE id = $1`)
+	query, err := database.db.Prepare(`SELECT name, img, start, finish, model_id FROM generation WHERE id = $1`)
 	if err != nil {
 		log.Println(err)
 	}
@@ -20,16 +20,18 @@ func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 	}
 	var name, img string
 	var start, finish int
-	err = query.QueryRow(gen_id).Scan(&name, &img, &start, &finish)
+	var model_id int32
+	err = query.QueryRow(gen_id).Scan(&name, &img, &start, &finish, &model_id)
 	if err != nil {
 		log.Fatal(err)
 		return new(GenerationData), err
 	}
 	return &GenerationData{
-		Name:   name,
-		Img:    img,
-		Start:  start,
-		Finish: finish,
+		Name:    name,
+		Img:     img,
+		Start:   start,
+		Finish:  finish,
+		ModelID: model_id,
 	}, nil
 }
 func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
@@ -55,7 +57,7 @@ func (database *DB) SearchGenerations(query string, limit uint) (map[string]stri
 // 	database.ExecRows(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
 // }
 
-func (database *DB) SaveGeneration(data *GenerationData) (int32, error) {
+func (database *DB) PostGeneration(data *GenerationData) (int32, error) {
 	return database.Exec(`INSERT INTO generation (
 		name, model_id,  img, start, finish
 		) VALUES ( $1, $2, $3, $4, $5 ) ON CONFLICT DO NOTHING RETURNING id`,
@@ -64,6 +66,28 @@ func (database *DB) SaveGeneration(data *GenerationData) (int32, error) {
 		data.Img,
 		data.Start,
 		data.Finish,
+	)
+}
+func (database *DB) PatchGeneration(id int32, data *GenerationData) (int32, error) {
+	return database.Exec(`
+	UPDATE
+		generation
+	SET 
+		name = $1, 
+		model_id = $2,
+		img = $3, 
+		start = $4,
+		finish = $5 
+	WHERE 
+		id = $6
+	RETURNING 
+		id;`,
+		data.Name,
+		data.ModelID,
+		data.Img,
+		data.Start,
+		data.Finish,
+		id,
 	)
 }
 

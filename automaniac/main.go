@@ -28,7 +28,7 @@ type IDB interface {
 
 	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
 	GetGenerationID(model_id int32, name string) (int32, error)
-	SaveGeneration(data *DB.GenerationData) (int32, error)
+	PostGeneration(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
 	SaveVersion(*DB.VersionData) (int32, error)
@@ -136,7 +136,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 			gen_id, err = db.GetGenerationByStartYear(model_id, int32(gen_star))
 			if err != nil {
 				img, _ := req.GetImg(url + model_doc.Find("#main-model-image").AttrOr("src", ""))
-				gen_id, err = db.SaveGeneration(&DB.GenerationData{
+				gen_id, err = db.PostGeneration(&DB.GenerationData{
 					Name:    gen_name,
 					ModelID: model_id,
 					Start:   gen_star,

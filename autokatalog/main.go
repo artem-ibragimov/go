@@ -31,7 +31,7 @@ type IDB interface {
 	SaveModel(*DB.ModelData) (int32, error)
 
 	GetGenerationID(model_id int32, name string) (int32, error)
-	SaveGeneration(data *DB.GenerationData) (int32, error)
+	PostGeneration(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
 	SaveVersion(*DB.VersionData) (int32, error)
@@ -181,7 +181,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 			gen_id, err := db.GetGenerationID(model_id, gen_name)
 			if err != nil {
 				gen_img, _ := req.GetImg(gen_img_url)
-				gen_id, err = db.SaveGeneration(&DB.GenerationData{
+				gen_id, err = db.PostGeneration(&DB.GenerationData{
 					Name:    gen_name,
 					ModelID: model_id,
 					Start:   gen_start,

@@ -1,6 +1,9 @@
 package server
 
 import (
+	DB "main/db"
+
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -35,5 +38,35 @@ func CreateGenDescriptionGetter(db IDB) func(ctx *gin.Context) {
 			return
 		}
 		ctx.JSON(http.StatusOK, data)
+	}
+}
+func CreateGenDescriptionSetter(db IDB) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		genID, err := strconv.Atoi(ctx.Param("genID"))
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		println(genID)
+		jsonData, err := ctx.GetRawData()
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		var gen *DB.GenerationData
+		err = json.Unmarshal(jsonData, &gen)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
+		if genID == 0 {
+			_, err = db.PostGeneration(gen)
+		} else {
+			_, err = db.PatchGeneration(int32(genID), gen)
+		}
+		if err != nil {
+			ctx.JSON(http.StatusServiceUnavailable, err.Error())
+			return
+		}
 	}
 }
