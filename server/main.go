@@ -20,7 +20,7 @@ type IDB interface {
 
 	GetGeneration(genID int32) (*DB.GenerationData, error)
 	GetGenerations(modelID int32) (map[string]string, error)
-	GetGenerationID(model_id int32, name string) (int32, error)
+	GetGenID(model_id int32, name string) (int32, error)
 	PatchGeneration(id int32, data *DB.GenerationData) (int32, error)
 	PostGeneration(data *DB.GenerationData) (int32, error)
 	SearchGenerations(query string, limit uint) (map[string]string, error)
@@ -59,13 +59,13 @@ func Run(port string, db IDB) {
 		data_group.GET("/model/", CreateModelsListGetter(db))
 		{
 			generation.PATCH("/:genID", CreateGenPatcher(db))
-			generation.POST("/:genID", CreateGenPoster(db))
+			generation.POST("/", CreateGenPoster(db))
 			generation.GET("/:genID", CreateGenGetter(db))
 			generation.GET("/", CreateGenListGetter(db))
 		}
 		{
 			version.PATCH("/:versionID", CreateVersionPatcher(db))
-			version.POST("/:versionID", CreateVersionPoster(db))
+			version.POST("/", CreateVersionPoster(db))
 			version.GET("/:versionID", CreateVersionGetter(db))
 			version.GET("/", CreateVersionsListGetter(db))
 		}

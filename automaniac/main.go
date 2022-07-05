@@ -27,7 +27,7 @@ type IDB interface {
 	GetModelID(brand_id int32, model_name string) (int32, error)
 
 	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
-	GetGenerationID(model_id int32, name string) (int32, error)
+	GetGenID(model_id int32, name string) (int32, error)
 	PostGeneration(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
@@ -131,7 +131,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 		if len(years) > 1 {
 			gen_end, _ = strconv.Atoi(years[1])
 		}
-		gen_id, err := db.GetGenerationID(model_id, gen_name)
+		gen_id, err := db.GetGenID(model_id, gen_name)
 		if err != nil {
 			gen_id, err = db.GetGenerationByStartYear(model_id, int32(gen_star))
 			if err != nil {
@@ -243,10 +243,10 @@ func parseVersion(db IDB, gen_id int32, brand_id int32, version_doc *goquery.Doc
 				version_id, err := db.GetVersionID(version_name, gen_id)
 				if err != nil {
 					version_id, err = db.PostVersion(&DB.VersionData{
-						Name:         version_name,
-						GenerationID: gen_id,
-						EngineID:     engine_id,
-						TransID:      trans_id,
+						Name:     version_name,
+						GenID:    gen_id,
+						EngineID: engine_id,
+						TransID:  trans_id,
 					})
 
 					if err != nil {

@@ -85,6 +85,5 @@ func CreateVersionPatcher(db IDB) func(ctx *gin.Context) {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return
 		}
-		ctx.JSON(http.StatusOK, versionID)
 	}
 }

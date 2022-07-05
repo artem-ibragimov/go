@@ -26,10 +26,10 @@ func (database *DB) GetVersion(version_id int32) (*VersionData, error) {
 		return new(VersionData), err
 	}
 	return &VersionData{
-		Name:         name,
-		EngineID:     engineID,
-		TransID:      transID,
-		GenerationID: generationID,
+		Name:     name,
+		EngineID: engineID,
+		TransID:  transID,
+		GenID:    generationID,
 	}, nil
 }
 
@@ -44,7 +44,7 @@ func (database *DB) PostVersion(version *VersionData) (int32, error) {
 		name, generation_id, transmission_id, engine_id
 		) VALUES ( $1, $2, $3, $4 ) ON CONFLICT DO NOTHING RETURNING id`,
 		version.Name,
-		version.GenerationID,
+		version.GenID,
 		version.TransID,
 		version.EngineID,
 	)
@@ -62,7 +62,7 @@ func (database *DB) PatchVersion(id int32, version *VersionData) (int32, error) 
 		id = $5
 	RETURNING id`,
 		version.Name,
-		version.GenerationID,
+		version.GenID,
 		version.TransID,
 		version.EngineID,
 		id,
@@ -70,8 +70,8 @@ func (database *DB) PatchVersion(id int32, version *VersionData) (int32, error) 
 }
 
 type VersionData struct {
-	Name         string
-	GenerationID int32
-	EngineID     int32
-	TransID      int32
+	Name     string
+	GenID    int32
+	EngineID int32
+	TransID  int32
 }

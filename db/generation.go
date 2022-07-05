@@ -2,7 +2,7 @@ package db
 
 import "log"
 
-func (database *DB) GetGenerationID(model_id int32, name string) (int32, error) {
+func (database *DB) GetGenID(model_id int32, name string) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE name = $1 AND model_id = $2 `, name, model_id)
 }
 func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
