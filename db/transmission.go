@@ -1,7 +1,5 @@
 package db
 
-import "log"
-
 func (database *DB) GetTransID(brandID int32, name string, gears int32) (int32, error) {
 	return database.Exec(
 		`SELECT id FROM transmission WHERE brand_id = $1 AND name = $2 AND gears = $3`,
@@ -18,12 +16,12 @@ func (database *DB) GetTranss(brandID int32) (map[string]string, error) {
 func (database *DB) GetTrans(id int32) (*TransData, error) {
 	query, err := database.db.Prepare(`SELECT brand_id, name, consumption, acceleration, gears FROM transmission WHERE id = $1`)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	var brandID int32
 	var gears int
@@ -31,8 +29,7 @@ func (database *DB) GetTrans(id int32) (*TransData, error) {
 	var consumption, acceleration float32
 	err = query.QueryRow(id).Scan(&brandID, &name, &consumption, &acceleration, &gears)
 	if err != nil {
-		log.Fatal(err)
-		return &TransData{}, err
+		return nil, err
 	}
 
 	return &TransData{

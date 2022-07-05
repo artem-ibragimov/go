@@ -1,7 +1,5 @@
 package db
 
-import "log"
-
 func (database *DB) GetGenID(model_id int32, name string) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE name = $1 AND model_id = $2 `, name, model_id)
 }
@@ -11,20 +9,19 @@ func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
 func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 	query, err := database.db.Prepare(`SELECT name, img, start, finish, model_id FROM generation WHERE id = $1`)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	var name, img string
 	var start, finish int
 	var model_id int32
 	err = query.QueryRow(gen_id).Scan(&name, &img, &start, &finish, &model_id)
 	if err != nil {
-		log.Fatal(err)
-		return new(GenerationData), err
+		return nil, err
 	}
 	return &GenerationData{
 		Name:    name,

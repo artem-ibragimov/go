@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"log"
 )
 
 func (database *DB) GetEngineID(name string) (int32, error) {
@@ -15,20 +14,19 @@ func (database *DB) GetEngines() (map[string]string, error) {
 func (database *DB) GetEngine(engineID int32) (*EngineData, error) {
 	query, err := database.db.Prepare(`SELECT name, displacement, cylinders, valves, fuel_type, power_hp, torque, img FROM engine WHERE id = $1`)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	var img interface{}
 	var name, fuel_type string
 	var displacement, cylinders, valves, power_hp, torque int
 	err = query.QueryRow(engineID).Scan(&name, &displacement, &cylinders, &valves, &fuel_type, &power_hp, &torque, &img)
 	if err != nil {
-		log.Fatal(err)
-		return new(EngineData), err
+		return nil, err
 	}
 	var img_s string
 	if img != nil {

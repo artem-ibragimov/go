@@ -261,6 +261,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 					trans_name = strings.ReplaceAll(trans_name, "Automat. manual (Doppelkupplung)", "amt-2")
 					trans_name = strings.ReplaceAll(trans_name, "Reduktionsgetriebe", "reduction")
 					gears := parseDigit(extractTag(`name":"Anzahl Gänge","value`, state))
+					trans_name = strings.ToLower(trans_name) + "-" + fmt.Sprint(gears)
 
 					trans_id, err := db.GetTransID(brand_id, trans_name, int32(gears))
 					if err != nil {

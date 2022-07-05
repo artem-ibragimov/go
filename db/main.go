@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -27,7 +26,7 @@ func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
 	var id sql.NullInt32
 	query, err := database.db.Prepare(cmd)
 	if err != nil {
-		log.Println(err)
+		return 0, err
 	}
 	defer query.Close()
 
@@ -40,12 +39,12 @@ func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
 func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) {
 	query, err := database.db.Prepare(cmd)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 	rows, err := query.Query(args...)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 
 	var results []string
@@ -53,7 +52,7 @@ func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) 
 	for rows.Next() {
 		err := rows.Scan(&s)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		results = append(results, s)
 	}
@@ -66,12 +65,12 @@ func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) 
 func (database *DB) ExecMapRows(cmd string, args ...interface{}) (map[string]string, error) {
 	query, err := database.db.Prepare(cmd)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 	rows, err := query.Query(args...)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 
 	var results map[string]string = make(map[string]string)
@@ -79,7 +78,7 @@ func (database *DB) ExecMapRows(cmd string, args ...interface{}) (map[string]str
 	for rows.Next() {
 		err := rows.Scan(&k, &v)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		results[k] = v
 	}

@@ -1,7 +1,5 @@
 package db
 
-import "log"
-
 func (database *DB) GetVersionID(name string, generation_id int32) (int32, error) {
 	return database.Exec(
 		`SELECT id FROM version WHERE name = $1 AND generation_id = $2`,
@@ -11,19 +9,18 @@ func (database *DB) GetVersionID(name string, generation_id int32) (int32, error
 func (database *DB) GetVersion(version_id int32) (*VersionData, error) {
 	query, err := database.db.Prepare(`SELECT name, transmission_id, engine_id, generation_id FROM version WHERE id = $1`)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	defer query.Close()
 
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	var name string
 	var transID, engineID, generationID int32
 	err = query.QueryRow(version_id).Scan(&name, &transID, &engineID, &generationID)
 	if err != nil {
-		log.Fatal(err)
-		return new(VersionData), err
+		return nil, err
 	}
 	return &VersionData{
 		Name:     name,
