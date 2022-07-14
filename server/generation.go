@@ -55,7 +55,7 @@ func CreateGenPoster(db IDB) func(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, err.Error())
 			return
 		}
-		genID, err := db.PostGeneration(gen)
+		genID, err := db.PostGen(gen)
 		if err != nil {
 			ctx.JSON(http.StatusServiceUnavailable, err.Error())
 			return

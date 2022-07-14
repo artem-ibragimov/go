@@ -18,7 +18,7 @@ import (
 type IDB interface {
 	GetBrandByName(string) (int32, error)
 	GetLastBrands() ([]string, error)
-	SaveBrand(string) (int32, error)
+	PostBrand(string) (int32, error)
 
 	GetEngineID(name string) (int32, error)
 	PostEngine(*DB.EngineData) (int32, error)
@@ -28,10 +28,10 @@ type IDB interface {
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
 	GetLastModelNamesByBrand(brand_id int32) ([]string, error)
-	SaveModel(*DB.ModelData) (int32, error)
+	PostModel(*DB.ModelData) (int32, error)
 
 	GetGenID(model_id int32, name string) (int32, error)
-	PostGeneration(data *DB.GenerationData) (int32, error)
+	PostGen(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
@@ -97,7 +97,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 
 	brand_id, err := db.GetBrandByName(brand_name)
 	if err != nil {
-		brand_id, err = db.SaveBrand(brand_name)
+		brand_id, err = db.PostBrand(brand_name)
 		if err != nil {
 			log.Println(err)
 			(*done)()
@@ -139,7 +139,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 		}
 		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
-			model_id, err = db.SaveModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
+			model_id, err = db.PostModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
 			if err != nil {
 				log.Println(err)
 				continue
@@ -181,7 +181,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 			gen_id, err := db.GetGenID(model_id, gen_name)
 			if err != nil {
 				gen_img, _ := req.GetImg(gen_img_url)
-				gen_id, err = db.PostGeneration(&DB.GenerationData{
+				gen_id, err = db.PostGen(&DB.GenerationData{
 					Name:    gen_name,
 					ModelID: model_id,
 					Start:   gen_start,
@@ -234,6 +234,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 						power_hp := parseDigit(extractTag(`Leistung maximal in PS \(Systemleistung\)","value`, state))
 						torque := parseDigit(strings.ReplaceAll(extractTag(`name":"Drehmoment \(Systemleistung\)","value`, state), " Nm", ""))
 						fuel_type := strings.ToLower(extractTag(`name":"Kraftstoffart","value`, state))
+						fuel_type = strings.ReplaceAll(fuel_type, "strom", "electric")
 						if strings.Contains(fuel_type, "benzin") || strings.Contains(fuel_type, "super") {
 							fuel_type = "petrol"
 						}

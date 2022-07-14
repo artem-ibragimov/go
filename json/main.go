@@ -12,10 +12,10 @@ type IDB interface {
 	SaveDefect(d *DB.Defect) (int32, error)
 
 	GetBrandByName(brand string) (int32, error)
-	SaveBrand(brand string) (int32, error)
+	PostBrand(brand string) (int32, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
-	SaveModel(model *DB.ModelData) (int32, error)
+	PostModel(model *DB.ModelData) (int32, error)
 
 	GetCountry(country string) (int32, error)
 	SaveCountry(country string) (int32, error)

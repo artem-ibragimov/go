@@ -10,11 +10,11 @@ import (
 type IDB interface {
 	GetBrandByName(string) (int32, error)
 	GetBrands() (map[string]string, error)
-	SaveBrand(string) (int32, error)
+	PostBrand(string) (int32, error)
 	SearchBrands(query string, limit uint) (map[string]string, error)
 
 	GetModelID(brand_id int32, model_name string) (int32, error)
-	SaveModel(*DB.ModelData) (int32, error)
+	PostModel(*DB.ModelData) (int32, error)
 	GetModelsByBrand(brandID int32) (map[string]string, error)
 	SearchModels(query string, limit uint) (map[string]string, error)
 
@@ -22,7 +22,7 @@ type IDB interface {
 	GetGenerations(modelID int32) (map[string]string, error)
 	GetGenID(model_id int32, name string) (int32, error)
 	PatchGeneration(id int32, data *DB.GenerationData) (int32, error)
-	PostGeneration(data *DB.GenerationData) (int32, error)
+	PostGen(data *DB.GenerationData) (int32, error)
 	SearchGenerations(query string, limit uint) (map[string]string, error)
 
 	GetVersions(generationID int32) (map[string]string, error)

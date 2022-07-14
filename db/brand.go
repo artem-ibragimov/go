@@ -15,6 +15,6 @@ func (database *DB) SearchBrands(query string, limit uint) (map[string]string, e
 	return database.ExecMapRows(`SELECT id, name FROM brand WHERE name LIKE $1 LIMIT $2`, query+"%", limit)
 }
 
-func (database *DB) SaveBrand(brand string) (int32, error) {
+func (database *DB) PostBrand(brand string) (int32, error) {
 	return database.Exec(`INSERT INTO brand (name) VALUES ($1) ON CONFLICT DO NOTHING RETURNING id`, brand)
 }

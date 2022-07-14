@@ -14,7 +14,7 @@ import (
 type IDB interface {
 	GetBrandByName(string) (int32, error)
 	GetLastBrands() ([]string, error)
-	SaveBrand(string) (int32, error)
+	PostBrand(string) (int32, error)
 
 	GetEngineID(name string) (int32, error)
 	PostEngine(*DB.EngineData) (int32, error)

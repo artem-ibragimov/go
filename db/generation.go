@@ -54,7 +54,7 @@ func (database *DB) SearchGenerations(query string, limit uint) (map[string]stri
 // 	database.ExecRows(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
 // }
 
-func (database *DB) PostGeneration(data *GenerationData) (int32, error) {
+func (database *DB) PostGen(data *GenerationData) (int32, error) {
 	return database.Exec(`INSERT INTO generation (
 		name, model_id,  img, start, finish
 		) VALUES ( $1, $2, $3, $4, $5 ) ON CONFLICT DO NOTHING RETURNING id`,

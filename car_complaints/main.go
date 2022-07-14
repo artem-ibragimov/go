@@ -9,7 +9,7 @@ import (
 )
 
 type IDB interface {
-	SaveBrand(string)
+	PostBrand(string)
 }
 
 type Problem struct {
@@ -36,7 +36,7 @@ func Parse(db IDB) {
 	}
 	for _, brand_url := range getLinks(document.Selection.Find("#container #makes")) {
 		fmt.Println("Brand: ", brand_url)
-		db.SaveBrand(strings.Trim(brand_url, "/"))
+		db.PostBrand(strings.Trim(brand_url, "/"))
 		brand_doc, err := getHTML(brand_html) //TODO getDocument
 		if err != nil {
 			fmt.Println(err)

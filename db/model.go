@@ -24,7 +24,7 @@ func (database *DB) SearchModels(query string, limit uint) (map[string]string, e
 		$1
 	LIMIT $2`, query+"%", limit)
 }
-func (database *DB) SaveModel(model *ModelData) (int32, error) {
+func (database *DB) PostModel(model *ModelData) (int32, error) {
 	return database.Exec(`INSERT INTO model (
 		name, brand_id
 		) VALUES ( $1, $2 ) ON CONFLICT DO NOTHING RETURNING id`,

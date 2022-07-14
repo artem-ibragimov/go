@@ -1,19 +1,32 @@
 package drom
 
 import (
+	"fmt"
 	"log"
 	DB "main/db"
+	"math"
+	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/exp/slices"
 )
 
 type IDB interface {
 	GetBrandByName(string) (int32, error)
 	GetLastBrands() ([]string, error)
-	SaveBrand(string) (int32, error)
+	PostBrand(string) (int32, error)
+
+	GetModelID(brand_id int32, model_name string) (int32, error)
+	GetLastModelNamesByBrand(brand_id int32) ([]string, error)
+	PostModel(*DB.ModelData) (int32, error)
 
 	GetEngineID(name string) (int32, error)
 	PostEngine(*DB.EngineData) (int32, error)
+
+	GetGenID(model_id int32, name string) (int32, error)
+	PostGen(data *DB.GenerationData) (int32, error)
 }
 
 type IReq interface {
@@ -21,11 +34,12 @@ type IReq interface {
 	GetImg(url string) (string, error)
 }
 
-const url = "https://www.drom.ru/catalog/"
+const BASE_URL = "https://www.drom.ru/"
+const CATALOG_URL = "https://www.drom.ru/catalog/"
 
 func Parse(db IDB, getReq func() IReq) {
 	req := getReq()
-	document, err := req.Get(url)
+	document, err := req.Get(CATALOG_URL)
 	if err != nil {
 		log.Fatal(err)
 		return
@@ -36,10 +50,30 @@ func Parse(db IDB, getReq func() IReq) {
 		println("Done " + brand_name)
 		// wg.Done()
 	}
-	for _, brand_url := range getLinks(document.Selection.Find(`[data-ftid="component_cars-list"]`)) {
+	parsed_brands_names, err := db.GetLastBrands()
+	if err == nil && len(parsed_brands_names) > 1 {
+		// не уверены что последний бренд спарсили до конца, поэтому выкидываем его
+		parsed_brands_names = parsed_brands_names[1:]
+	}
+	brand_urls := getLinks(document.Selection.Find(`[data-ftid="component_cars-list"]`))
+	total_brands := len(brand_urls)
+	parsed_brands_count := 0
+
+	for _, brand_url := range brand_urls {
 		// wg.Add(1)
 		// go parseBrand(db, getReq(), brand_url, &done)
+		path := strings.Split(brand_url, "/")
+		brand_name := path[len(path)-2]
+		if slices.Contains(parsed_brands_names, brand_name) {
+			// !FIXME
+			// continue
+		}
 		parseBrand(db, getReq(), brand_url, &done)
+
+		parsed_brands_count++
+		fmt.Println(parsed_brands_count,
+			"of", total_brands, " brands was parsed: ",
+			math.Round(float64(parsed_brands_count*100/total_brands)), "%")
 	}
 	// wg.Wait()
 }
@@ -51,11 +85,39 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 		(*done)(brand_url)
 		return
 	}
+
+	brand_name := brand_doc.Selection.Find(`div[data-ftid="header_breadcrumb"] div`).Last().Find("span").Text()
+	brand_name = regexp.MustCompile(`[\w|\d|-|\s]+`).FindString(strings.ToLower(brand_name))
+	brand_name = strings.TrimSpace(brand_name)
+
+	brand_id, err := db.GetBrandByName(brand_name)
+	if err != nil {
+		brand_id, err = db.PostBrand(brand_name)
+		if err != nil {
+			log.Fatalln(err)
+			return
+		}
+	}
+
 	for _, model_url := range getLinks(brand_doc.Selection.Find(`[data-ftid="component_cars-list"]`)) {
 		model_doc, err := req.Get(model_url)
 		if err != nil {
 			log.Println(err)
 			continue
+		}
+
+		model_name := model_doc.Selection.Find(`a[data-ftid="component_brand-model_title"]`).Text()
+		model_name = strings.ReplaceAll(strings.ToLower(model_name), brand_name, "")
+		model_name = regexp.MustCompile(`[\w|\d|-|\s]+`).FindString(model_name)
+		model_name = strings.TrimSpace(model_name)
+
+		model_id, err := db.GetModelID(brand_id, model_name)
+		if err != nil {
+			model_id, err = db.PostModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
+			if err != nil {
+				log.Fatalln(err)
+				return
+			}
 		}
 
 		for _, gen_url := range getLinks(model_doc.Selection.Find(`[data-ga-stats-name="generations_outlet_item"]`).First().Parent()) {
@@ -65,21 +127,59 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 				log.Println(err)
 				continue
 			}
-			println(gen_doc.Html())
-			img_el := gen_doc.Find(`a[data-drom-gallery="generation_images"] img`).First()
-			img_src, ok := img_el.Attr("src")
-			if !ok {
-				continue
-			}
-			img, err := req.GetImg(img_src)
+
+			header := strings.ToLower(gen_doc.Selection.Find("h1.b-title_type_h1").Text())
+			gen_start := parseYear(strings.Split(header, "-")[0])
+			gen_end := parseYear(strings.Split(header, "-")[1])
+			gen_name := strings.Split(header, "(")[0]
+			gen_name = strings.Join(regexp.MustCompile(`[\w|\d|-|\s]+`).FindAllString(gen_name, -1), "")
+			gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_start), "")
+			gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_end), "")
+			gen_name = regexp.MustCompile(`[\s]+`).ReplaceAllString(gen_name, " ")
+			gen_name = strings.TrimSpace(gen_name)
+			gen_id, err := db.GetGenID(model_id, gen_name)
 			if err != nil {
-				println(img) // TODO
-				continue
+				gen_img_src, ok := gen_doc.Find(`a[data-drom-gallery="generation_images"] img`).First().Attr("src")
+				if !ok {
+					continue
+				}
+				gen_img, err := req.GetImg(gen_img_src)
+				if err != nil {
+					continue
+				}
+				gen_id, err = db.PostGen(&DB.GenerationData{
+					Name:    gen_name,
+					ModelID: model_id,
+					Start:   gen_start,
+					Finish:  gen_end,
+					Img:     gen_img,
+				})
+				if err != nil {
+					continue
+				}
 			}
-			// path := strings.Split(gen_doc.Selection.Find(`div[data-ftid="header_breadcrumb"`).Text(), " ")
-			path, err := gen_doc.Selection.Find(`body div[data-ftid="header_breadcrumb"`).First().Html()
-			if len(path) < 5 || err != nil {
-				continue
+			println(gen_id)
+			for _, version_url := range getLinks(gen_doc.Selection.Find("table.b-table")) {
+				version_url = BASE_URL + version_url
+				version_doc, err := req.Get(version_url)
+				if err != nil {
+					log.Println(err)
+					continue
+				}
+
+				var data map[string]string = make(map[string]string)
+				version_doc.Find("table.b-table tr.b-table__row").Each(func(i int, s *goquery.Selection) {
+					k := s.Find("td").First().Text()
+					if k == `Название комплектации` {
+						fmt.Println(k)
+					}
+					v, err := s.Find("td").Last().Html()
+					if err != nil {
+						return
+					}
+					data[k] = v
+				})
+
 			}
 			// engine_name := strings.ReplaceAll(strings.Join(path[4:], ""), "Engine", "")
 
@@ -133,4 +233,13 @@ func getLinks(selection *goquery.Selection) []string {
 		}
 	})
 	return list
+}
+
+func parseYear(s string) int {
+	str := regexp.MustCompile(`\d{4}`).FindString(s)
+	d, err := strconv.Atoi(str)
+	if err != nil {
+		return 0
+	}
+	return d
 }

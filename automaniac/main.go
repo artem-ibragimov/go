@@ -13,7 +13,7 @@ import (
 )
 
 type IDB interface {
-	SaveBrand(string) (int32, error)
+	PostBrand(string) (int32, error)
 	GetBrandByName(string) (int32, error)
 
 	GetEngineID(string) (int32, error)
@@ -23,12 +23,12 @@ type IDB interface {
 	PostTrans(*DB.TransData) (int32, error)
 	GetTransID(int32, string, int32) (int32, error)
 
-	SaveModel(*DB.ModelData) (int32, error)
+	PostModel(*DB.ModelData) (int32, error)
 	GetModelID(brand_id int32, model_name string) (int32, error)
 
 	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
 	GetGenID(model_id int32, name string) (int32, error)
-	PostGeneration(data *DB.GenerationData) (int32, error)
+	PostGen(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
@@ -65,7 +65,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 	brand_name := strings.TrimSpace(strings.ReplaceAll(path[len(path)-1], "-", " "))
 	brand_id, err := db.GetBrandByName(brand_name)
 	if err != nil {
-		brand_id, err = db.SaveBrand(brand_name)
+		brand_id, err = db.PostBrand(brand_name)
 		if err != nil {
 			log.Println(err)
 			(*done)()
@@ -104,7 +104,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 				Name:    model_name,
 				BrandID: brand_id,
 			}
-			model_id, err = db.SaveModel(model_data)
+			model_id, err = db.PostModel(model_data)
 			if err != nil {
 				log.Println(err)
 				continue
@@ -136,7 +136,7 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 			gen_id, err = db.GetGenerationByStartYear(model_id, int32(gen_star))
 			if err != nil {
 				img, _ := req.GetImg(url + model_doc.Find("#main-model-image").AttrOr("src", ""))
-				gen_id, err = db.PostGeneration(&DB.GenerationData{
+				gen_id, err = db.PostGen(&DB.GenerationData{
 					Name:    gen_name,
 					ModelID: model_id,
 					Start:   gen_star,
