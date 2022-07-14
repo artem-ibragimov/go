@@ -297,7 +297,7 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 						}
 					}
 
-					fmt.Println(version_id)
+					fmt.Print(version_id, "\t")
 				}
 			}
 		}

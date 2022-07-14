@@ -3,8 +3,8 @@ package main
 import (
 	"log"
 	"main/db"
+	"main/drom"
 	"main/req"
-	"main/server"
 )
 
 func main() {
@@ -14,11 +14,12 @@ func main() {
 		return
 	}
 
-	server.Run("8081", db)
+	// server.Run("8081", db)
 
 	request := new(req.Req)
 	request.Init()
 
+	drom.Parse(db, func() drom.IReq { return req.New() })
 	// autokatalog.Parse(db, func() autokatalog.IReq { return req.New() })
 	// car_complaints.ParseCarComplaints(db)
 	// automaniac.Parse(db, func() automaniac.IReq { return req.New() })

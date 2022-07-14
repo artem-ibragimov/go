@@ -71,13 +71,13 @@ func Run(port string, db IDB) {
 		}
 		{
 			engine.PATCH("/:engineID", CreateEnginePatcher(db))
-			engine.POST("/:engineID", CreateEnginePoster(db))
+			engine.POST("/", CreateEnginePoster(db))
 			engine.GET("/:engineID", CreateEngineGetter(db))
 			engine.GET("/", CreateEngineListGetter(db))
 		}
 		{
 			transmission.PATCH("/:transID", CreateTransPatcher(db))
-			transmission.POST("/:transID", CreateTransPoster(db))
+			transmission.POST("/", CreateTransPoster(db))
 			transmission.GET("/:transID", CreateTransGetter(db))
 			transmission.GET("/", CreateTransListGetter(db))
 		}
