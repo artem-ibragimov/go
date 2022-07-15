@@ -8,9 +8,11 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/PuerkitoBio/goquery"
 	"golang.org/x/exp/slices"
+	"golang.org/x/text/encoding/charmap"
 )
 
 type IDB interface {
@@ -25,8 +27,14 @@ type IDB interface {
 	GetEngineID(name string) (int32, error)
 	PostEngine(*DB.EngineData) (int32, error)
 
+	GetTransID(brand_id int32, name string, gears int32) (int32, error)
+	PostTrans(*DB.TransData) (int32, error)
+
 	GetGenID(model_id int32, name string) (int32, error)
 	PostGen(data *DB.GenerationData) (int32, error)
+
+	GetVersionID(name string, generation_id int32) (int32, error)
+	PostVersion(*DB.VersionData) (int32, error)
 }
 
 type IReq interface {
@@ -45,37 +53,38 @@ func Parse(db IDB, getReq func() IReq) {
 		return
 	}
 
-	// var wg sync.WaitGroup
-	done := func(brand_name string) {
-		println("Done " + brand_name)
-		// wg.Done()
-	}
 	parsed_brands_names, err := db.GetLastBrands()
-	if err == nil && len(parsed_brands_names) > 1 {
+	if err == nil && len(parsed_brands_names) > 0 {
 		// не уверены что последний бренд спарсили до конца, поэтому выкидываем его
 		parsed_brands_names = parsed_brands_names[1:]
 	}
-	brand_urls := getLinks(document.Selection.Find(`[data-ftid="component_cars-list"]`))
+	brand_urls := getLinks(document.Find(`[data-ftid="component_cars-list"]`))
 	total_brands := len(brand_urls)
 	parsed_brands_count := 0
 
-	for _, brand_url := range brand_urls {
-		// wg.Add(1)
-		// go parseBrand(db, getReq(), brand_url, &done)
-		path := strings.Split(brand_url, "/")
-		brand_name := path[len(path)-2]
-		if slices.Contains(parsed_brands_names, brand_name) {
-			// !FIXME
-			// continue
-		}
-		parseBrand(db, getReq(), brand_url, &done)
-
+	var wg sync.WaitGroup
+	done := func(brand_name string) {
+		println("Done " + brand_name)
 		parsed_brands_count++
 		fmt.Println(parsed_brands_count,
 			"of", total_brands, " brands was parsed: ",
 			math.Round(float64(parsed_brands_count*100/total_brands)), "%")
+		wg.Done()
 	}
-	// wg.Wait()
+	for _, brand_url := range brand_urls {
+		// go parseBrand(db, getReq(), brand_url, &done)
+		path := strings.Split(brand_url, "/")
+		brand_name := path[len(path)-2]
+		if brand_name == "" {
+			continue
+		}
+		if slices.Contains(parsed_brands_names, brand_name) {
+			continue
+		}
+		wg.Add(1)
+		go parseBrand(db, getReq(), brand_url, &done)
+	}
+	wg.Wait()
 }
 
 func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
@@ -86,7 +95,7 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 		return
 	}
 
-	brand_name := brand_doc.Selection.Find(`div[data-ftid="header_breadcrumb"] div`).Last().Find("span").Text()
+	brand_name := brand_doc.Find(`div[data-ftid="header_breadcrumb"] div`).Last().Find("span").Text()
 	brand_name = regexp.MustCompile(`[\w|\d|-|\s]+`).FindString(strings.ToLower(brand_name))
 	brand_name = strings.TrimSpace(brand_name)
 
@@ -99,17 +108,31 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 		}
 	}
 
-	for _, model_url := range getLinks(brand_doc.Selection.Find(`[data-ftid="component_cars-list"]`)) {
+	parsed_model_names, err := db.GetLastModelNamesByBrand(brand_id)
+	if err == nil && len(parsed_model_names) > 1 {
+		// не уверены что последнюю модель спарсили до конца, поэтому выкидываем его
+		parsed_model_names = parsed_model_names[1:]
+	}
+	for _, model_url := range getLinks(brand_doc.Find(`[data-ftid="component_cars-list"]`)) {
 		model_doc, err := req.Get(model_url)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
-		model_name := model_doc.Selection.Find(`a[data-ftid="component_brand-model_title"]`).Text()
+		model_name, exists := model_doc.Find(`a[data-ftid="component_brand-model_title"]`).Attr("title")
+		if !exists {
+			continue
+		}
 		model_name = strings.ReplaceAll(strings.ToLower(model_name), brand_name, "")
-		model_name = regexp.MustCompile(`[\w|\d|-|\s]+`).FindString(model_name)
 		model_name = strings.TrimSpace(model_name)
+
+		if model_name == "" {
+			continue
+		}
+		if slices.Contains(parsed_model_names, model_name) {
+			continue
+		}
 
 		model_id, err := db.GetModelID(brand_id, model_name)
 		if err != nil {
@@ -120,7 +143,7 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 			}
 		}
 
-		for _, gen_url := range getLinks(model_doc.Selection.Find(`[data-ga-stats-name="generations_outlet_item"]`).First().Parent()) {
+		for _, gen_url := range getLinks(model_doc.Find(`[data-ga-stats-name="generations_outlet_item"]`).First().Parent()) {
 			gen_url = model_url + gen_url
 			gen_doc, err := req.Get(gen_url)
 			if err != nil {
@@ -128,13 +151,21 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 				continue
 			}
 
-			header := strings.ToLower(gen_doc.Selection.Find("h1.b-title_type_h1").Text())
+			header := gen_doc.Find("h1.b-title_type_h1").Text()
 			gen_start := parseYear(strings.Split(header, "-")[0])
+			if gen_start < 2000 {
+				continue
+			}
 			gen_end := parseYear(strings.Split(header, "-")[1])
+			header = strings.ToLower(
+				strings.ReplaceAll(decodeWindows1251(header), " - технические характеристики и комплектации", ""),
+			)
 			gen_name := strings.Split(header, "(")[0]
+			gen_name = strings.ReplaceAll(gen_name, "поколение", "generation")
+			gen_name = strings.ReplaceAll(gen_name, "рестайлинг", "restyle")
 			gen_name = strings.Join(regexp.MustCompile(`[\w|\d|-|\s]+`).FindAllString(gen_name, -1), "")
-			gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_start), "")
-			gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_end), "")
+			// gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_start), "")
+			// gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_end), "")
 			gen_name = regexp.MustCompile(`[\s]+`).ReplaceAllString(gen_name, " ")
 			gen_name = strings.TrimSpace(gen_name)
 			gen_id, err := db.GetGenID(model_id, gen_name)
@@ -158,8 +189,11 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 					continue
 				}
 			}
-			println(gen_id)
-			for _, version_url := range getLinks(gen_doc.Selection.Find("table.b-table")) {
+
+			for _, version_url := range getLinks(gen_doc.Find("table.b-table_text-left")) {
+				if version_url == "" || version_url == "#" || strings.Contains(version_url, "engine") {
+					continue
+				}
 				version_url = BASE_URL + version_url
 				version_doc, err := req.Get(version_url)
 				if err != nil {
@@ -167,57 +201,98 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 					continue
 				}
 
-				var data map[string]string = make(map[string]string)
+				version := DB.VersionData{GenID: gen_id}
+				engine := DB.EngineData{}
+				trans := DB.TransData{BrandID: brand_id}
 				version_doc.Find("table.b-table tr.b-table__row").Each(func(i int, s *goquery.Selection) {
-					k := s.Find("td").First().Text()
-					if k == `Название комплектации` {
-						fmt.Println(k)
-					}
-					v, err := s.Find("td").Last().Html()
-					if err != nil {
+					k := decodeWindows1251(s.Find("td").First().Text())
+					v := decodeWindows1251(s.Find("td").Last().Text())
+					if k == v {
 						return
 					}
-					data[k] = v
+					if k == `Название комплектации` {
+						version.Name = v
+					}
+					if k == `Тип трансмиссии` {
+						name := strings.ReplaceAll(v, "МКПП ", "manual-")
+						name = strings.ReplaceAll(name, "РКПП ", "amt-")
+						name = strings.ReplaceAll(name, "Вариатор", "cvt")
+						name = strings.ReplaceAll(name, "АКПП ", "auto-")
+						name = strings.ReplaceAll(name, "Редуктор ", "reduction")
+						trans.Name = name
+						trans.Gears = parseDigit(v)
+					}
+					if k == `Время разгона 0-100 км/ч, с` {
+						trans.Acceleration = parseFloat(v)
+					}
+					if k == `Расход топлива в городском цикле, л/100 км` || k == `Расход топлива в смешанном цикле, л/100 км` {
+						trans.Consumtion = parseFloat(v)
+					}
+					if k == `Марка двигателя` {
+						engine.Name = v
+					}
+					if k == `Объем двигателя, куб.см` {
+						engine.Displacement = parseDigit(v)
+					}
+					if k == `Используемое топливо` {
+						if strings.Contains(v, "Бензин") {
+							engine.Fuel_type = "petrol"
+						}
+						if strings.Contains(v, "Дизель") {
+							engine.Fuel_type = "diesel"
+						}
+						if strings.Contains(v, "Электричество") {
+							engine.Fuel_type = "electric"
+						}
+					}
+
+					if k == `Максимальный крутящий момент, Н*м (кг*м) при об./мин.` {
+						engine.Torque = parseDigit(v)
+					}
+					if k == `Максимальная мощность, л.с. (кВт) при об./мин.` {
+						engine.Power_hp = parseDigit(v)
+					}
+					if k == `Количество клапанов на цилиндр` {
+						engine.Valves = parseDigit(v)
+					}
+					if k == `Тип двигателя` {
+						engine.Cylinders = parseDigit(v)
+					}
 				})
 
+				if version.Name == "" {
+					continue
+				}
+				engine_id, err := db.GetEngineID(engine.Name)
+				if err != nil {
+					engine_id, err = db.PostEngine(&engine)
+					if err != nil {
+						log.Fatalln(err)
+						continue
+					}
+				}
+				trans_id, err := db.GetTransID(brand_id, trans.Name, int32(trans.Gears))
+				if err != nil {
+					trans_id, err = db.PostTrans(&trans)
+					if err != nil {
+						log.Fatalln(err)
+						continue
+					}
+				}
+
+				version.EngineID = engine_id
+				version.TransID = trans_id
+
+				_, err = db.GetVersionID(version.Name, gen_id)
+				if err != nil {
+					version_id, err := db.PostVersion(&version)
+					fmt.Print(version_id, "\t")
+					if err != nil {
+						log.Fatalln(err)
+						continue
+					}
+				}
 			}
-			// engine_name := strings.ReplaceAll(strings.Join(path[4:], ""), "Engine", "")
-
-			// // img_url, _ := model_doc.Selection.Find("body > div.content-main > div > div > div:nth-child(2) > div.content-left > div:nth-child(3) > div.eng-right-block > img").Attr("src")
-			// // img, _ := req.GetImg(url + img_url)
-
-			// specs := model_doc.Selection.Find("#Specs").Parent()
-			// fuel_type := strings.ToLower(specs.Find("div:nth-child(5) > div.spec-table-value").Text())
-			// if strings.Contains(fuel_type, "gasoline") {
-			// 	fuel_type = "petrol"
-			// }
-			// cylinders, _ := strconv.Atoi(regexp.MustCompile(`[0-9]{1,2}`).FindString(specs.Find("div:nth-child(8) > div.spec-table-value").Text()))
-			// valves_per_cylinder, _ := strconv.Atoi(regexp.MustCompile(`[0-9]{1}`).FindString(specs.Find("div:nth-child(9) > div.spec-table-value").Text()))
-			// displacement_str := regexp.MustCompile(`[\d|,]+`).FindString(specs.Find("div:nth-child(13) > div.spec-table-value").Text())
-			// displacement_str = strings.ReplaceAll(displacement_str, ",", "")
-			// displacement, _ := strconv.Atoi(displacement_str)
-			// power := specs.Find("div:nth-child(16) > div.spec-table-value").Text()
-			// power = regexp.MustCompile(`[0-9]{2,3}`).FindString(power)
-			// power_hp, _ := strconv.Atoi(power)
-			// torque_str := specs.Find("div:nth-child(17) > div.spec-table-value").Text()
-			// torque_str = regexp.MustCompile(`[0-9]{2,3}`).FindString(torque_str)
-			// torque, _ := strconv.Atoi(torque_str)
-
-			// engine_id, err := db.PostEngine(&DB.EngineData{
-			// 	Name:         engine_name,
-			// 	Displacement: displacement,
-			// 	Valves:       valves_per_cylinder * cylinders,
-			// 	Cylinders:    cylinders,
-			// 	Fuel_type:    fuel_type,
-			// 	Power_hp:     power_hp,
-			// 	Torque:       torque,
-			// 	Img:          img,
-			// })
-			// if err != nil {
-			// 	log.Println(err)
-			// }
-			// log.Println(engine_id)
-			// (*done)(brand_url)
 		}
 	}
 }
@@ -242,4 +317,32 @@ func parseYear(s string) int {
 		return 0
 	}
 	return d
+}
+
+func decodeWindows1251(ba string) string {
+	dec := charmap.Windows1251.NewDecoder()
+	out, _ := dec.String(clean(ba))
+	return out
+}
+
+func clean(s string) string {
+	space := regexp.MustCompile(`[\s|\n]+`)
+	return strings.TrimSpace(space.ReplaceAllString(s, " "))
+}
+
+func parseDigit(s string) int {
+	str := regexp.MustCompile(`\d+`).FindString(s)
+	d, err := strconv.Atoi(str)
+	if err != nil {
+		return 0
+	}
+	return d
+}
+func parseFloat(s string) float32 {
+	str := regexp.MustCompile(`[\d|\.]+`).FindString(strings.ReplaceAll(s, ",", "."))
+	d, err := strconv.ParseFloat(str, 32)
+	if err != nil {
+		return 0
+	}
+	return float32(d)
 }
