@@ -31,6 +31,7 @@ type IDB interface {
 	PostTrans(*DB.TransData) (int32, error)
 
 	GetGenID(model_id int32, name string) (int32, error)
+	GetLastGenNamesByModel(model_id int32) ([]string, error)
 	PostGen(data *DB.GenerationData) (int32, error)
 
 	GetVersionID(name string, generation_id int32) (int32, error)
@@ -64,46 +65,42 @@ func Parse(db IDB, getReq func() IReq) {
 
 	var wg sync.WaitGroup
 	done := func(brand_name string) {
-		println("Done " + brand_name)
 		parsed_brands_count++
-		fmt.Println(parsed_brands_count,
+		println("Done "+brand_name, parsed_brands_count,
 			"of", total_brands, " brands was parsed: ",
 			math.Round(float64(parsed_brands_count*100/total_brands)), "%")
 		wg.Done()
 	}
 	for _, brand_url := range brand_urls {
-		// go parseBrand(db, getReq(), brand_url, &done)
 		path := strings.Split(brand_url, "/")
-		brand_name := path[len(path)-2]
+		brand_name := strings.TrimSpace(path[len(path)-2])
 		if brand_name == "" {
 			continue
 		}
 		if slices.Contains(parsed_brands_names, brand_name) {
+			parsed_brands_count++
 			continue
 		}
 		wg.Add(1)
-		go parseBrand(db, getReq(), brand_url, &done)
+		parseBrand(db, getReq(), brand_url, brand_name, &done)
 	}
 	wg.Wait()
 }
 
-func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
+func parseBrand(db IDB, req IReq, brand_url string, brand_name string, done *func(string)) {
 	brand_doc, err := req.Get(brand_url)
 	if err != nil {
 		log.Fatal(err)
-		(*done)(brand_url)
+		(*done)(brand_name)
 		return
 	}
-
-	brand_name := brand_doc.Find(`div[data-ftid="header_breadcrumb"] div`).Last().Find("span").Text()
-	brand_name = regexp.MustCompile(`[\w|\d|-|\s]+`).FindString(strings.ToLower(brand_name))
-	brand_name = strings.TrimSpace(brand_name)
 
 	brand_id, err := db.GetBrandByName(brand_name)
 	if err != nil {
 		brand_id, err = db.PostBrand(brand_name)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatal(err)
+			(*done)(brand_name)
 			return
 		}
 	}
@@ -113,23 +110,20 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 		// не уверены что последнюю модель спарсили до конца, поэтому выкидываем его
 		parsed_model_names = parsed_model_names[1:]
 	}
-	for _, model_url := range getLinks(brand_doc.Find(`[data-ftid="component_cars-list"]`)) {
+
+	model_urls := getLinks(brand_doc.Find(`div[data-ftid="component_cars-list"]`))
+	if len(model_urls) == 0 {
+		fmt.Println(brand_doc.Html())
+	}
+	for _, model_url := range model_urls {
 		model_doc, err := req.Get(model_url)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 
-		model_name, exists := model_doc.Find(`a[data-ftid="component_brand-model_title"]`).Attr("title")
-		if !exists {
-			continue
-		}
-		model_name = strings.ReplaceAll(strings.ToLower(model_name), brand_name, "")
-		model_name = strings.TrimSpace(model_name)
-
-		if model_name == "" {
-			continue
-		}
+		p := strings.Split(model_url, "/")
+		model_name := strings.ReplaceAll(p[len(p)-2], "_", " ")
 		if slices.Contains(parsed_model_names, model_name) {
 			continue
 		}
@@ -139,11 +133,18 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 			model_id, err = db.PostModel(&DB.ModelData{Name: model_name, BrandID: brand_id})
 			if err != nil {
 				log.Fatalln(err)
-				return
+				continue
 			}
 		}
 
-		for _, gen_url := range getLinks(model_doc.Find(`[data-ga-stats-name="generations_outlet_item"]`).First().Parent()) {
+		parsed_gen_names, err := db.GetLastGenNamesByModel(model_id)
+		if err == nil && len(parsed_gen_names) > 0 {
+			// не уверены что последний поколение спарсили до конца, поэтому выкидываем его
+			parsed_gen_names = parsed_gen_names[1:]
+		}
+
+		gen_urls := getLinks(model_doc.Find(`[data-ga-stats-name="generations_outlet_item"]`).First().Parent())
+		for _, gen_url := range gen_urls {
 			gen_url = model_url + gen_url
 			gen_doc, err := req.Get(gen_url)
 			if err != nil {
@@ -163,11 +164,16 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 			gen_name := strings.Split(header, "(")[0]
 			gen_name = strings.ReplaceAll(gen_name, "поколение", "generation")
 			gen_name = strings.ReplaceAll(gen_name, "рестайлинг", "restyle")
+			gen_name = strings.ReplaceAll(gen_name, brand_name, "")
+			gen_name = strings.ReplaceAll(gen_name, model_name, "")
 			gen_name = strings.Join(regexp.MustCompile(`[\w|\d|-|\s]+`).FindAllString(gen_name, -1), "")
-			// gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_start), "")
-			// gen_name = strings.ReplaceAll(gen_name, fmt.Sprintf("%v", gen_end), "")
 			gen_name = regexp.MustCompile(`[\s]+`).ReplaceAllString(gen_name, " ")
 			gen_name = strings.TrimSpace(gen_name)
+
+			if slices.Contains(parsed_gen_names, gen_name) {
+				continue
+			}
+
 			gen_id, err := db.GetGenID(model_id, gen_name)
 			if err != nil {
 				gen_img_src, ok := gen_doc.Find(`a[data-drom-gallery="generation_images"] img`).First().Attr("src")
@@ -189,8 +195,8 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 					continue
 				}
 			}
-
-			for _, version_url := range getLinks(gen_doc.Find("table.b-table_text-left")) {
+			version_urls := getLinks(gen_doc.Find("table.b-table_text-left"))
+			for _, version_url := range version_urls {
 				if version_url == "" || version_url == "#" || strings.Contains(version_url, "engine") {
 					continue
 				}
@@ -207,11 +213,11 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 				version_doc.Find("table.b-table tr.b-table__row").Each(func(i int, s *goquery.Selection) {
 					k := decodeWindows1251(s.Find("td").First().Text())
 					v := decodeWindows1251(s.Find("td").Last().Text())
-					if k == v {
+					if k == v || v == "" || k == "" {
 						return
 					}
 					if k == `Название комплектации` {
-						version.Name = v
+						version.Name = strings.Join(regexp.MustCompile(`[\w|\d|-|\s]+`).FindAllString(v, -1), "")
 					}
 					if k == `Тип трансмиссии` {
 						name := strings.ReplaceAll(v, "МКПП ", "manual-")
@@ -285,16 +291,17 @@ func parseBrand(db IDB, req IReq, brand_url string, done *func(string)) {
 
 				_, err = db.GetVersionID(version.Name, gen_id)
 				if err != nil {
-					version_id, err := db.PostVersion(&version)
-					fmt.Print(version_id, "\t")
+					id, err := db.PostVersion(&version)
 					if err != nil {
 						log.Fatalln(err)
 						continue
 					}
+					fmt.Println("#", id, brand_name, "|", model_name, "|", gen_name, "|", version.Name)
 				}
 			}
 		}
 	}
+	(*done)(brand_name)
 }
 
 func getLinks(selection *goquery.Selection) []string {

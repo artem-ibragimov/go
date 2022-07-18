@@ -8,8 +8,8 @@ import (
 
 type IDB interface {
 	GetDefectCategory(category string) (int32, error)
-	SaveDefectCategory(category string) (int32, error)
-	SaveDefect(d *DB.Defect) (int32, error)
+	PostDefectCategory(category string) (int32, error)
+	PostDefect(d *DB.Defect) (int32, error)
 
 	GetBrandByName(brand string) (int32, error)
 	PostBrand(brand string) (int32, error)

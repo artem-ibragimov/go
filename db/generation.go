@@ -3,9 +3,15 @@ package db
 func (database *DB) GetGenID(model_id int32, name string) (int32, error) {
 	return database.Exec(`SELECT id FROM generation WHERE name = $1 AND model_id = $2 `, name, model_id)
 }
+
+func (database *DB) GetLastGenNamesByModel(model_id int32) ([]string, error) {
+	return database.ExecRows(`SELECT name FROM generation WHERE model_id = $1 ORDER BY id DESC`, model_id)
+}
+
 func (database *DB) GetGenerations(model_id int32) (map[string]string, error) {
 	return database.ExecMapRows(`SELECT id, name FROM generation WHERE model_id = $1`, model_id)
 }
+
 func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 	query, err := database.db.Prepare(`SELECT name, img, start, finish, model_id FROM generation WHERE id = $1`)
 	if err != nil {
@@ -32,7 +38,20 @@ func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 	}, nil
 }
 func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
-	return database.Exec(`SELECT id FROM generation WHERE model_id = $1 AND start = $2`, model_id, start)
+	return database.Exec(`
+		SELECT
+			id
+		FROM 
+			generation
+		WHERE 
+			model_id = $1
+		AND 
+			start > $2
+		ORDER BY
+			start
+		LIMIT
+			1`,
+		model_id, start)
 }
 
 func (database *DB) SearchGenerations(query string, limit uint) (map[string]string, error) {

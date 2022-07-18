@@ -1,10 +1,10 @@
 package db
 
-func (database *DB) SaveDefect(d *Defect) (int32, error) {
+func (database *DB) PostDefect(d *Defect) (int32, error) {
 	return database.Exec(`INSERT INTO defect (
 		brand_id, model_id, description,
-		miles, cost, country_id,
-		rating, year, freq,
+		mileage, cost, country_id,
+		rating, age, freq,
 		major_category_id, minor_category_id, category_id
 		) 
 		VALUES (
@@ -14,8 +14,8 @@ func (database *DB) SaveDefect(d *Defect) (int32, error) {
 			$10, $11, $12
 		) ON CONFLICT DO NOTHING RETURNING id`,
 		d.BrandID, d.ModelID, d.Desc,
-		d.Miles, d.Cost, d.Country_ID,
-		d.Rating, d.Year, d.Freq,
+		d.Mileage, d.Cost, d.Country_ID,
+		d.Rating, d.Age, d.Freq,
 		d.MajorCategoryID, d.MinorCategoryID, d.CategoryID,
 	)
 }
@@ -23,14 +23,16 @@ func (database *DB) SaveDefect(d *Defect) (int32, error) {
 type Defect struct {
 	BrandID         int32
 	ModelID         int32
-	Year            int
+	GenID           int32
+	VersionID       int32
+	Age             int
 	MajorCategoryID int32
 	MinorCategoryID int32
 	CategoryID      int32
 	Country_ID      int32
-	Cost            string
+	Cost            float32
 	Rating          float32
-	Miles           int
+	Mileage         int
 	Freq            int
 	Desc            string
 }

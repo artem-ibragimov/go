@@ -12,8 +12,8 @@ import (
 
 type IDB interface {
 	GetDefectCategory(category string) (int32, error)
-	SaveDefectCategory(category string) (int32, error)
-	SaveDefect(d *DB.Defect) (int32, error)
+	PostDefectCategory(category string) (int32, error)
+	PostDefect(d *DB.Defect) (int32, error)
 
 	GetBrandByName(brand string) (int32, error)
 	PostBrand(brand string) (int32, error)
@@ -34,9 +34,9 @@ func Parse(db IDB) {
 	csvReader := csv.NewReader(f)
 	csvReader.Comma = ';'
 
-	country_id, err := db.GetCountry("USA")
+	country_id, err := db.GetCountry("🇺🇸")
 	if err != nil {
-		country_id, err = db.SaveCountry("USA")
+		country_id, err = db.SaveCountry("🇺🇸")
 		if err != nil {
 			log.Fatal(err)
 			return
@@ -69,7 +69,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 
 	major_category_id, err := db.GetDefectCategory(defect.MajorCategory)
 	if err != nil {
-		major_category_id, err = db.SaveDefectCategory(defect.MajorCategory)
+		major_category_id, err = db.PostDefectCategory(defect.MajorCategory)
 		if err != nil {
 			return 0, err
 		}
@@ -80,7 +80,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 	if defect.MinorCategory != defect.MajorCategory {
 		minor_category_id, err = db.GetDefectCategory(defect.MinorCategory)
 		if err != nil {
-			minor_category_id, err = db.SaveDefectCategory(defect.MinorCategory)
+			minor_category_id, err = db.PostDefectCategory(defect.MinorCategory)
 			if err != nil {
 				return 0, err
 			}
@@ -92,7 +92,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 	if defect.Category != defect.MinorCategory {
 		category_id, err = db.GetDefectCategory(defect.Category)
 		if err != nil {
-			category_id, err = db.SaveDefectCategory(defect.Category)
+			category_id, err = db.PostDefectCategory(defect.Category)
 			if err != nil {
 				return 0, err
 			}
@@ -120,16 +120,16 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		}
 	}
 
-	_, err = db.SaveDefect(&DB.Defect{
+	_, err = db.PostDefect(&DB.Defect{
 		BrandID:         brand_id,
 		ModelID:         model_id,
-		Year:            defect.Year,
+		Age:             defect.Year,
 		MajorCategoryID: major_category_id,
 		MinorCategoryID: minor_category_id,
 		CategoryID:      category_id,
 		Cost:            "0",
 		Rating:          0,
-		Miles:           defect.Miles,
+		Mileage:         defect.Miles,
 		Freq:            defect.Freq,
 		Desc:            defect.Desc,
 		Country_ID:      country_id,
@@ -170,8 +170,8 @@ func (c *Defect) Init(v []string) {
 	c.MinorCategory = categories[1]
 	c.Category = categories[2]
 
-	miles, _ := strconv.ParseUint(v[5], 10, 32)
-	c.Miles = int(miles)
+	mileage, _ := strconv.ParseUint(v[5], 10, 32)
+	c.Miles = int(mileage)
 
 	freq, _ := strconv.ParseUint(v[6], 10, 32)
 	c.Freq = int(freq)

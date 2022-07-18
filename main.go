@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
+	"main/carproblemzoo"
 	"main/db"
-	"main/drom"
 	"main/req"
 )
 
@@ -19,13 +19,13 @@ func main() {
 	request := new(req.Req)
 	request.Init()
 
-	drom.Parse(db, func() drom.IReq { return req.New() })
+	// drom.Parse(db, func() drom.IReq { return req.New() })
 	// autokatalog.Parse(db, func() autokatalog.IReq { return req.New() })
+	carproblemzoo.Parse(db, func() carproblemzoo.IReq { return req.New() })
 	// car_complaints.ParseCarComplaints(db)
 	// automaniac.Parse(db, func() automaniac.IReq { return req.New() })
 	// motorreviewer.Parse(db, func() motorreviewer.IReq { return req.New() })
 	// nhtsa.Parse(db)
-	// carproblemzoo.Parse(db, func() carproblemzoo.IReq { return req.New() })
 	log.Println("Done.")
 	db.Close()
 }

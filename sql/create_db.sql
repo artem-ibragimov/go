@@ -97,7 +97,7 @@ CREATE TABLE public.defect (
     brand_id integer NOT NULL,
     model_id integer NOT NULL,
     country_id integer NOT NULL,
-    miles integer,
+    mileage integer,
     description text,
     cost numeric,
     rating numeric,
