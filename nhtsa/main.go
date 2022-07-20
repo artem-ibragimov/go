@@ -119,15 +119,16 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 			return 0, err
 		}
 	}
-
 	_, err = db.PostDefect(&DB.Defect{
-		BrandID:         brand_id,
-		ModelID:         model_id,
-		Age:             defect.Year,
+		BrandID: brand_id,
+		ModelID: model_id,
+		// TODO
+		// Age: ,
+		Year:            defect.Year,
 		MajorCategoryID: major_category_id,
 		MinorCategoryID: minor_category_id,
 		CategoryID:      category_id,
-		Cost:            "0",
+		Cost:            0,
 		Rating:          0,
 		Mileage:         defect.Miles,
 		Freq:            defect.Freq,

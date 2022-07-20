@@ -33,7 +33,7 @@ type IDB interface {
 	GetGenID(model_id int32, name string) (int32, error)
 	PostGen(data *DB.GenerationData) (int32, error)
 
-	GetVersionID(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, gen_id int32) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
 }
 

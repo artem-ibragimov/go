@@ -26,11 +26,11 @@ type IDB interface {
 	PostModel(*DB.ModelData) (int32, error)
 	GetModelID(brand_id int32, model_name string) (int32, error)
 
-	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
+	GetGenByStartYear(model_id int32, start int) (int32, error)
 	GetGenID(model_id int32, name string) (int32, error)
 	PostGen(data *DB.GenerationData) (int32, error)
 
-	GetVersionID(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, gen_id int32) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
 }
 
@@ -116,8 +116,8 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 			continue
 		}
 		years := regexp.MustCompile(`\d{4}`).FindAllString(header, -1)
-		gen_star, _ := strconv.Atoi(years[0])
-		if gen_star < 2000 {
+		gen_start, _ := strconv.Atoi(years[0])
+		if gen_start < 2000 {
 			continue
 		}
 		subheader := strings.ToLower(strings.Split(model_doc.Find("#modeli-auto-detaljnije > div:nth-child(1) > div.predlog-auto-naslov > div").Text(), ",")[0])
@@ -133,13 +133,13 @@ func parseBrandURL(db IDB, req IReq, brand_url string, done *func()) {
 		}
 		gen_id, err := db.GetGenID(model_id, gen_name)
 		if err != nil {
-			gen_id, err = db.GetGenerationByStartYear(model_id, int32(gen_star))
+			gen_id, err = db.GetGenByStartYear(model_id, gen_start)
 			if err != nil {
 				img, _ := req.GetImg(url + model_doc.Find("#main-model-image").AttrOr("src", ""))
 				gen_id, err = db.PostGen(&DB.GenerationData{
 					Name:    gen_name,
 					ModelID: model_id,
-					Start:   gen_star,
+					Start:   gen_start,
 					Finish:  gen_end,
 					Img:     img,
 				})

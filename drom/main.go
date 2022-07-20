@@ -34,7 +34,7 @@ type IDB interface {
 	GetLastGenNamesByModel(model_id int32) ([]string, error)
 	PostGen(data *DB.GenerationData) (int32, error)
 
-	GetVersionID(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, gen_id int32) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
 }
 
@@ -210,7 +210,7 @@ func parseBrand(db IDB, req IReq, brand_url string, brand_name string, done *fun
 				version := DB.VersionData{GenID: gen_id}
 				engine := DB.EngineData{}
 				trans := DB.TransData{BrandID: brand_id}
-				version_doc.Find("table.b-table tr.b-table__row").Each(func(i int, s *goquery.Selection) {
+				version_doc.Find("table.b-table tr.b-table__row").Each(func(_ int, s *goquery.Selection) {
 					k := decodeWindows1251(s.Find("td").First().Text())
 					v := decodeWindows1251(s.Find("td").Last().Text())
 					if k == v || v == "" || k == "" {

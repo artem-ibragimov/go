@@ -37,7 +37,7 @@ func (database *DB) GetGeneration(gen_id int32) (*GenerationData, error) {
 		ModelID: model_id,
 	}, nil
 }
-func (database *DB) GetGenerationByStartYear(model_id int32, start int32) (int32, error) {
+func (database *DB) GetGenByStartYear(model_id int32, start int) (int32, error) {
 	return database.Exec(`
 		SELECT
 			id

@@ -27,7 +27,7 @@ type IDB interface {
 
 	GetVersions(generationID int32) (map[string]string, error)
 	GetVersion(versionID int32) (*DB.VersionData, error)
-	GetVersionID(name string, generation_id int32) (int32, error)
+	GetVersionID(name string, gen_id int32) (int32, error)
 	PatchVersion(id int32, version *DB.VersionData) (int32, error)
 	PostVersion(*DB.VersionData) (int32, error)
 
@@ -41,6 +41,8 @@ type IDB interface {
 	GetTransID(brand_id int32, name string, gears int32) (int32, error)
 	PostTrans(*DB.TransData) (int32, error)
 	PatchTrans(id int32, trans *DB.TransData) (int32, error)
+
+	GetDefectsAgesByBrand(brand_id int32) (map[string]string, error)
 }
 
 func Run(port string, db IDB) {
@@ -50,6 +52,7 @@ func Run(port string, db IDB) {
 	generation := data_group.Group("/generation")
 	engine := data_group.Group("/engine")
 	transmission := data_group.Group("/transmission")
+	defect := data_group.Group("/defect")
 
 	{
 		data_group.GET("/search/", CreateSearchGetter(db))
@@ -80,6 +83,9 @@ func Run(port string, db IDB) {
 			transmission.POST("/", CreateTransPoster(db))
 			transmission.GET("/:transID", CreateTransGetter(db))
 			transmission.GET("/", CreateTransListGetter(db))
+		}
+		{
+			defect.GET("/", CreateDefectsGetter(db))
 		}
 	}
 	router.GET("/", func(c *gin.Context) {

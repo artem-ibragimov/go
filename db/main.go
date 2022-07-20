@@ -22,6 +22,7 @@ func (database *DB) Close() error {
 	return database.db.Close()
 }
 
+// выполняет запрос и возвращает id
 func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
 	var id sql.NullInt32
 	query, err := database.db.Prepare(cmd)
@@ -36,6 +37,8 @@ func (database *DB) Exec(cmd string, args ...interface{}) (int32, error) {
 	}
 	return id.Int32, nil
 }
+
+// возвращает список строк (выборка по одному столбцу)
 func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) {
 	query, err := database.db.Prepare(cmd)
 	if err != nil {
@@ -62,6 +65,8 @@ func (database *DB) ExecRows(cmd string, args ...interface{}) ([]string, error) 
 	}
 	return results, nil
 }
+
+// возращает hashmap, выборка по двум столбцам
 func (database *DB) ExecMapRows(cmd string, args ...interface{}) (map[string]string, error) {
 	query, err := database.db.Prepare(cmd)
 	if err != nil {

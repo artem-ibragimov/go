@@ -3,16 +3,17 @@ package carproblemzoo
 import (
 	"log"
 	DB "main/db"
-	"math"
 	"regexp"
 	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/exp/slices"
 )
 
 type IDB interface {
+	GetLastYearsDefect(brand_id int32, model_id int32) ([]string, error)
 	PostDefect(d *DB.Defect) (int32, error)
 
 	GetBrandByName(string) (int32, error)
@@ -21,7 +22,7 @@ type IDB interface {
 	GetModelID(brand_id int32, model_name string) (int32, error)
 	PostModel(model *DB.ModelData) (int32, error)
 
-	GetGenerationByStartYear(model_id int32, start int32) (int32, error)
+	GetGenByStartYear(model_id int32, start int) (int32, error)
 
 	PostVersion(*DB.VersionData) (int32, error)
 
@@ -30,6 +31,8 @@ type IDB interface {
 
 	GetDefectCategory(category string) (int32, error)
 	PostDefectCategory(category string) (int32, error)
+
+	PostSales(data *DB.SaleData) (int32, error)
 }
 
 type IReq interface {
@@ -62,9 +65,7 @@ func Parse(db IDB, getReq func() IReq) {
 	var wg sync.WaitGroup
 	done := func(brand_name string) {
 		parsed_brands_count++
-		println("Done "+brand_name, parsed_brands_count,
-			"of", total_brands, " brands was parsed: ",
-			math.Round(float64(parsed_brands_count*100/total_brands)), "%")
+		println(brand_name, "is done", parsed_brands_count, "of", total_brands)
 		wg.Done()
 	}
 
@@ -74,13 +75,17 @@ func Parse(db IDB, getReq func() IReq) {
 			log.Println(err)
 			continue
 		}
-		brand_name := strings.ToLower(
-			strings.Split(
-				brand_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > h1").Text(),
-				" - ")[0],
+		brand_name := strings.TrimSpace(
+			strings.ReplaceAll(
+				strings.ToLower(
+					strings.Split(
+						brand_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > h1").Text(),
+						" - ")[0],
+				),
+				"motor", ""),
 		)
 		wg.Add(1)
-		parseBrand(db, getReq(), brand_name, brand_doc, country_id, &done)
+		go parseBrand(db, getReq(), brand_name, brand_doc, country_id, &done)
 	}
 	wg.Wait()
 }
@@ -120,20 +125,39 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 			}
 		}
 
+		parsed_years, err := db.GetLastYearsDefect(brand_id, model_id)
+		if err == nil && len(parsed_years) > 1 {
+			// не уверены что последний год спарсили до конца, поэтому выкидываем его
+			parsed_years = parsed_years[1:]
+		}
 		model_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > div:nth-child(15) > div.panel-body > table").Find("tr").Each(
 			func(i int, s *goquery.Selection) {
 				if i == 0 {
 					return
 				}
+				model_year := strings.TrimSpace(s.Find("a").Text())
+				if slices.Contains(parsed_years, model_year) {
+					return
+				}
+				year := parseDigit(model_year)
+				sales := parseDigit(s.Find("td:nth-child(3)").Text())
+				gen_id, _ := db.GetGenByStartYear(model_id, year)
+				if gen_id != 0 {
+					_, err = db.PostSales(&DB.SaleData{
+						GenID:     gen_id,
+						CountryID: country_id,
+						Year:      year,
+						Amount:    sales,
+					})
+					if err != nil {
+						log.Println(err)
+						return
+					}
+				}
 				year_url, ok := s.Find("a").Attr("href")
 				if !ok {
 					return
 				}
-				model_year := parseDigit(s.Find("a").Text())
-				sales := parseDigit(s.Find("td:nth-child(3)").Text())
-				println(model_year, model_id, sales)
-				gen_id, _ := db.GetGenerationByStartYear(model_id, int32(model_year))
-
 				year_url = model_url + year_url
 
 				year_doc, err := req.Get(year_url)
@@ -142,6 +166,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 					return
 				}
 
+				year_url = strings.ReplaceAll(year_url, "index.php#ppmy", "")
 				for _, major_cat_url := range getLinks(year_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > div:nth-child(6) > div.panel-body")) {
 					major_cat_url = year_url + major_cat_url
 					major_cat_doc, err := req.Get(major_cat_url)
@@ -149,9 +174,8 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 						log.Println(err)
 						continue
 					}
-
 					for _, minor_cat_url := range getLinks(major_cat_doc.Selection.Find("body > div.container > div.row > div.col-md-8 > div.panel.panel-info > div.panel-body > table")) {
-						minor_cat_url = strings.ReplaceAll(year_url, "index.php#ppmy", "") + minor_cat_url
+						minor_cat_url = year_url + minor_cat_url
 						minor_cat_doc, err := req.Get(minor_cat_url)
 						if err != nil {
 							log.Println(err)
@@ -169,13 +193,16 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 						}
 						minor_cat_id := major_cat_id
 
-						parse_defect := func(i int, s *goquery.Selection) {
+						parse_defect := func(_ int, s *goquery.Selection) {
 							date := s.Find("div.pull-right.faildate-float").Text()
-							year := parseYear(date)
+							defect_year := parseYear(date)
 							text := clean(s.Find("p.ptext_list").Text())
 							var age int
 							if year != 0 {
-								age = year - model_year
+								age = defect_year - year
+							}
+							if age < 0 {
+								age = 0
 							}
 							_, err = db.PostDefect(&DB.Defect{
 								BrandID:         brand_id,
@@ -184,12 +211,14 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 								MajorCategoryID: major_cat_id,
 								MinorCategoryID: minor_cat_id,
 								CategoryID:      minor_cat_id,
-								Country_ID:      country_id,
+								CountryID:       country_id,
 								Desc:            text,
 								Age:             age,
+								Year:            defect_year,
 							})
 							if err != nil {
 								log.Println(err)
+								return
 							}
 						}
 
@@ -259,6 +288,3 @@ func parseYear(s string) int {
 	}
 	return d
 }
-
-// TODO
-// sales

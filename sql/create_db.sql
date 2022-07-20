@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.2
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 14.4
+-- Dumped by pg_dump version 14.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -15,6 +15,22 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA public;
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS 'standard public schema';
+
 
 SET default_tablespace = '';
 
@@ -105,6 +121,9 @@ CREATE TABLE public.defect (
     minor_category_id integer NOT NULL,
     category_id integer NOT NULL,
     freq integer,
+    gen_id integer,
+    version_id integer,
+    age integer NOT NULL,
     year integer NOT NULL
 );
 
@@ -282,6 +301,43 @@ ALTER SEQUENCE public.model_id_seq OWNED BY public.model.id;
 
 
 --
+-- Name: sales; Type: TABLE; Schema: public; Owner: artem
+--
+
+CREATE TABLE public.sales (
+    id integer NOT NULL,
+    gen_id integer NOT NULL,
+    year integer NOT NULL,
+    country_id integer NOT NULL,
+    amount integer NOT NULL
+);
+
+
+ALTER TABLE public.sales OWNER TO artem;
+
+--
+-- Name: sale_id_seq; Type: SEQUENCE; Schema: public; Owner: artem
+--
+
+CREATE SEQUENCE public.sale_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sale_id_seq OWNER TO artem;
+
+--
+-- Name: sale_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: artem
+--
+
+ALTER SEQUENCE public.sale_id_seq OWNED BY public.sales.id;
+
+
+--
 -- Name: transmission; Type: TABLE; Schema: public; Owner: artem
 --
 
@@ -326,8 +382,8 @@ ALTER SEQUENCE public.transmissions_id_seq OWNED BY public.transmission.id;
 CREATE TABLE public.version (
     id integer NOT NULL,
     name character varying NOT NULL,
-    generation_id integer NOT NULL,
-    transmission_id integer,
+    gen_id integer NOT NULL,
+    trans_id integer,
     engine_id integer
 );
 
@@ -406,6 +462,13 @@ ALTER TABLE ONLY public.model ALTER COLUMN id SET DEFAULT nextval('public.model_
 
 
 --
+-- Name: sales id; Type: DEFAULT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.sales ALTER COLUMN id SET DEFAULT nextval('public.sale_id_seq'::regclass);
+
+
+--
 -- Name: transmission id; Type: DEFAULT; Schema: public; Owner: artem
 --
 
@@ -452,14 +515,6 @@ ALTER TABLE ONLY public.country
 
 
 --
--- Name: defect defect_brand_id_description_model_id_key; Type: CONSTRAINT; Schema: public; Owner: artem
---
-
-ALTER TABLE ONLY public.defect
-    ADD CONSTRAINT defect_brand_id_description_model_id_key UNIQUE (brand_id, description, model_id);
-
-
---
 -- Name: defect_category defect_category_name_key; Type: CONSTRAINT; Schema: public; Owner: artem
 --
 
@@ -473,6 +528,14 @@ ALTER TABLE ONLY public.defect_category
 
 ALTER TABLE ONLY public.defect_category
     ADD CONSTRAINT defect_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: defect defect_description_key; Type: CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.defect
+    ADD CONSTRAINT defect_description_key UNIQUE (description);
 
 
 --
@@ -532,6 +595,14 @@ ALTER TABLE ONLY public.model
 
 
 --
+-- Name: sales sale_pkey; Type: CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sale_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: transmission transmissions_pkey; Type: CONSTRAINT; Schema: public; Owner: artem
 --
 
@@ -544,7 +615,7 @@ ALTER TABLE ONLY public.transmission
 --
 
 ALTER TABLE ONLY public.version
-    ADD CONSTRAINT version_name_genaration_id_transmission_id_engine_id_key UNIQUE (name, generation_id, transmission_id, engine_id);
+    ADD CONSTRAINT version_name_genaration_id_transmission_id_engine_id_key UNIQUE (name, gen_id, trans_id, engine_id);
 
 
 --
@@ -564,6 +635,14 @@ ALTER TABLE ONLY public.defect
 
 
 --
+-- Name: defect defect_gen_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.defect
+    ADD CONSTRAINT defect_gen_id_fkey FOREIGN KEY (gen_id) REFERENCES public.generation(id) NOT VALID;
+
+
+--
 -- Name: defect defect_major_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
 --
 
@@ -577,6 +656,14 @@ ALTER TABLE ONLY public.defect
 
 ALTER TABLE ONLY public.defect
     ADD CONSTRAINT defect_minor_category_id_fkey FOREIGN KEY (minor_category_id) REFERENCES public.defect_category(id) NOT VALID;
+
+
+--
+-- Name: defect defect_version_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.defect
+    ADD CONSTRAINT defect_version_id_fkey FOREIGN KEY (version_id) REFERENCES public.version(id) NOT VALID;
 
 
 --
@@ -620,6 +707,22 @@ ALTER TABLE ONLY public.model
 
 
 --
+-- Name: sales sale_country_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sale_country_id_fkey FOREIGN KEY (country_id) REFERENCES public.country(id);
+
+
+--
+-- Name: sales sale_generation_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
+--
+
+ALTER TABLE ONLY public.sales
+    ADD CONSTRAINT sale_generation_id_fkey FOREIGN KEY (gen_id) REFERENCES public.generation(id);
+
+
+--
 -- Name: transmission transmission_brand_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: artem
 --
 
@@ -640,7 +743,7 @@ ALTER TABLE ONLY public.version
 --
 
 ALTER TABLE ONLY public.version
-    ADD CONSTRAINT version_generation_id_fkey FOREIGN KEY (generation_id) REFERENCES public.generation(id) ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT version_generation_id_fkey FOREIGN KEY (gen_id) REFERENCES public.generation(id) ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -648,7 +751,7 @@ ALTER TABLE ONLY public.version
 --
 
 ALTER TABLE ONLY public.version
-    ADD CONSTRAINT version_transmission_id_fkey FOREIGN KEY (transmission_id) REFERENCES public.transmission(id) ON DELETE CASCADE NOT VALID;
+    ADD CONSTRAINT version_transmission_id_fkey FOREIGN KEY (trans_id) REFERENCES public.transmission(id) ON DELETE CASCADE NOT VALID;
 
 
 --
