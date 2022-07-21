@@ -133,7 +133,7 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 		Mileage:         defect.Miles,
 		Freq:            defect.Freq,
 		Desc:            defect.Desc,
-		Country_ID:      country_id,
+		CountryID:       country_id,
 	})
 	return 0, err
 }

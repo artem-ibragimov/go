@@ -144,6 +144,8 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 				gen_id, _ := db.GetGenByStartYear(model_id, year)
 				if gen_id != 0 {
 					_, err = db.PostSales(&DB.SaleData{
+						BrandID:   brand_id,
+						ModelID:   model_id,
 						GenID:     gen_id,
 						CountryID: country_id,
 						Year:      year,
@@ -182,7 +184,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 							continue
 						}
 
-						major_cat := minor_cat_doc.Find("body > div.container > div.row > div.col-md-8 > nav > ol > li.breadcrumb-item").Last().Text()
+						major_cat := minor_cat_doc.Find("ol.breadcrumb > li.breadcrumb-item").Last().Text()
 						major_cat_id, err := db.GetDefectCategory(major_cat)
 						if err != nil {
 							major_cat_id, err = db.PostDefectCategory(major_cat)
@@ -196,13 +198,16 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 						parse_defect := func(_ int, s *goquery.Selection) {
 							date := s.Find("div.pull-right.faildate-float").Text()
 							defect_year := parseYear(date)
+							if defect_year == 0 {
+								return
+							}
 							text := clean(s.Find("p.ptext_list").Text())
 							var age int
 							if year != 0 {
 								age = defect_year - year
 							}
 							if age < 0 {
-								age = 0
+								age = -age
 							}
 							_, err = db.PostDefect(&DB.Defect{
 								BrandID:         brand_id,

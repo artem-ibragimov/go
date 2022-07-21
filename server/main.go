@@ -16,14 +16,14 @@ type IDB interface {
 	GetModelID(brand_id int32, model_name string) (int32, error)
 	PostModel(*DB.ModelData) (int32, error)
 	GetModelsByBrand(brandID int32) (map[string]string, error)
-	SearchModels(query string, limit uint) (map[string]string, error)
+	SearchModels(brand_id string, query string, limit uint) (map[string]string, error)
 
 	GetGeneration(genID int32) (*DB.GenerationData, error)
 	GetGenerations(modelID int32) (map[string]string, error)
 	GetGenID(model_id int32, name string) (int32, error)
 	PatchGeneration(id int32, data *DB.GenerationData) (int32, error)
 	PostGen(data *DB.GenerationData) (int32, error)
-	SearchGenerations(query string, limit uint) (map[string]string, error)
+	SearchGenerations(model_id string, query string, limit uint) (map[string]string, error)
 
 	GetVersions(generationID int32) (map[string]string, error)
 	GetVersion(versionID int32) (*DB.VersionData, error)
@@ -43,6 +43,8 @@ type IDB interface {
 	PatchTrans(id int32, trans *DB.TransData) (int32, error)
 
 	GetDefectsAgesByBrand(brand_id int32) (map[string]string, error)
+	GetDefectsAgesByModel(model_id int32) (map[string]string, error)
+	GetDefectsAgesByGen(gen_id int32) (map[string]string, error)
 }
 
 func Run(port string, db IDB) {

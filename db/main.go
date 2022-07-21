@@ -83,7 +83,7 @@ func (database *DB) ExecMapRows(cmd string, args ...interface{}) (map[string]str
 	for rows.Next() {
 		err := rows.Scan(&k, &v)
 		if err != nil {
-			return nil, err
+			continue
 		}
 		results[k] = v
 	}

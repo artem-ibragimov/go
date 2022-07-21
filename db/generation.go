@@ -54,19 +54,48 @@ func (database *DB) GetGenByStartYear(model_id int32, start int) (int32, error) 
 		model_id, start)
 }
 
-func (database *DB) SearchGenerations(query string, limit uint) (map[string]string, error) {
-	return database.ExecMapRows(`
-	SELECT 
-	generation.id, model.name || ' ' || generation.name 
-	FROM 
-		generation 
-	LEFT JOIN 
-		model ON model.id = generation.model_id 
-	WHERE 
-		generation.name 
-	LIKE 
-		$1
-	LIMIT $2`, query+"%", limit)
+func (database *DB) SearchGenerations(model_id string, query string, limit uint) (map[string]string, error) {
+	if model_id == "0" {
+		return database.ExecMapRows(`
+		SELECT 
+			generation.id, model.name || ' ' || generation.name 
+		FROM 
+			generation 
+		LEFT JOIN 
+			model ON model.id = generation.model_id 
+		WHERE 
+			generation.name 
+		LIKE 
+			$1
+		LIMIT $2`,
+			"%"+query+"%", limit)
+	}
+	results, err := database.ExecMapRows(`
+		SELECT 
+			generation.id, model.name || ' ' || generation.name 
+		FROM 
+			generation 
+		LEFT JOIN 
+			model ON model.id = generation.model_id 
+		WHERE 
+			model_id=$1 AND generation.name LIKE $2
+		LIMIT $3`,
+		model_id, "%"+query+"%", limit)
+
+	if len(results) == 0 || err != nil {
+		results, err = database.ExecMapRows(`
+		SELECT 
+			generation.id, model.name || ' ' || generation.name 
+		FROM 
+			generation 
+		LEFT JOIN 
+			model ON model.id = generation.model_id 
+		WHERE 
+			model_id=$1 OR generation.name LIKE $2
+		LIMIT $3`,
+			model_id, "%"+query+"%", limit)
+	}
+	return results, err
 }
 
 // func (database *DB) GetGenerationStartByYear(model_id int32, year int32) (int32, error) {
