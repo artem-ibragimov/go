@@ -9,6 +9,7 @@ import (
 
 func CreateDefectsGetter(db IDB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+		norm := ctx.Query("norm") == "true"
 		brandID := ctx.Query("brandID")
 		if brandID != "" {
 			brandID, err := strconv.Atoi(brandID)
@@ -21,7 +22,7 @@ func CreateDefectsGetter(db IDB) func(ctx *gin.Context) {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
 				}
-				data, err := db.GetDefectsAgesByBrand(int32(brandID))
+				data, err := db.GetDefectsAgesByBrand(int32(brandID), norm)
 				if err != nil {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
@@ -43,7 +44,7 @@ func CreateDefectsGetter(db IDB) func(ctx *gin.Context) {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
 				}
-				data, err := db.GetDefectsAgesByModel(int32(modelID))
+				data, err := db.GetDefectsAgesByModel(int32(modelID), norm)
 				if err != nil {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
@@ -65,7 +66,7 @@ func CreateDefectsGetter(db IDB) func(ctx *gin.Context) {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
 				}
-				data, err := db.GetDefectsAgesByGen(int32(genID))
+				data, err := db.GetDefectsAgesByGen(int32(genID), norm)
 				if err != nil {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return

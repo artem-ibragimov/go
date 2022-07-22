@@ -42,9 +42,9 @@ type IDB interface {
 	PostTrans(*DB.TransData) (int32, error)
 	PatchTrans(id int32, trans *DB.TransData) (int32, error)
 
-	GetDefectsAgesByBrand(brand_id int32) (map[string]string, error)
-	GetDefectsAgesByModel(model_id int32) (map[string]string, error)
-	GetDefectsAgesByGen(gen_id int32) (map[string]string, error)
+	GetDefectsAgesByBrand(brand_id int32, norm bool) (map[string]string, error)
+	GetDefectsAgesByModel(model_id int32, norm bool) (map[string]string, error)
+	GetDefectsAgesByGen(gen_id int32, norm bool) (map[string]string, error)
 }
 
 func Run(port string, db IDB) {

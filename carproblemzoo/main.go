@@ -198,7 +198,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 						parse_defect := func(_ int, s *goquery.Selection) {
 							date := s.Find("div.pull-right.faildate-float").Text()
 							defect_year := parseYear(date)
-							if defect_year == 0 {
+							if defect_year == 0 || year == 0 {
 								return
 							}
 							text := clean(s.Find("p.ptext_list").Text())

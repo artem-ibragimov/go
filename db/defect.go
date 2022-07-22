@@ -6,9 +6,10 @@ func (database *DB) GetLastYearsDefect(brand_id int32, model_id int32) ([]string
 	return database.ExecRows(`SELECT year FROM defect WHERE brand_id=$1 AND model_id=$2 GROUP BY year ORDER BY year DESC`, brand_id, model_id)
 }
 
-func (database *DB) GetDefectsAgesByBrand(brand_id int32) (map[string]string, error) {
-	return database.ExecMapRows(
-		`SELECT
+func (database *DB) GetDefectsAgesByBrand(brand_id int32, norm bool) (map[string]string, error) {
+	if norm {
+		return database.ExecMapRows(
+			`SELECT
 			age,
 			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
 		FROM
@@ -21,11 +22,27 @@ func (database *DB) GetDefectsAgesByBrand(brand_id int32) (map[string]string, er
 			age
 		ORDER BY
 			age`, brand_id)
-}
-
-func (database *DB) GetDefectsAgesByModel(model_id int32) (map[string]string, error) {
+	}
 	return database.ExecMapRows(
 		`SELECT
+			age,
+			count(id)::decimal as n
+		FROM
+			defect
+		WHERE
+			brand_id=$1
+		AND
+			age>=0
+		GROUP BY
+			age
+		ORDER BY
+			age`, brand_id)
+}
+
+func (database *DB) GetDefectsAgesByModel(model_id int32, norm bool) (map[string]string, error) {
+	if norm {
+		return database.ExecMapRows(
+			`SELECT
 			age,
 			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
 		FROM
@@ -38,12 +55,43 @@ func (database *DB) GetDefectsAgesByModel(model_id int32) (map[string]string, er
 			age
 		ORDER BY
 			age`, model_id)
-}
-func (database *DB) GetDefectsAgesByGen(gen_id int32) (map[string]string, error) {
+	}
 	return database.ExecMapRows(
 		`SELECT
 			age,
+			count(id)::decimal as n
+		FROM
+			defect
+		WHERE
+		model_id=$1
+		AND
+			age>=0
+		GROUP BY
+			age
+		ORDER BY
+			age`, model_id)
+}
+func (database *DB) GetDefectsAgesByGen(gen_id int32, norm bool) (map[string]string, error) {
+	if norm {
+		return database.ExecMapRows(
+			`SELECT
+			age,
 			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
+		FROM
+			defect
+		WHERE
+		gen_id=$1
+		AND
+			age>=0
+		GROUP BY
+			age
+		ORDER BY
+			age`, gen_id)
+	}
+	return database.ExecMapRows(
+		`SELECT
+			age,
+			count(id)::decimal as n
 		FROM
 			defect
 		WHERE
