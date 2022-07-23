@@ -3,3 +3,4 @@ src/pkg/*
 *.xlsx
 *.csv
 *.exe
+.env

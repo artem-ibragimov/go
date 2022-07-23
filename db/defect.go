@@ -18,6 +18,8 @@ func (database *DB) GetDefectsAgesByBrand(brand_id int32, norm bool) (map[string
 			brand_id=$1
 		AND
 			age>=0
+		AND 
+			age<=22
 		GROUP BY
 			age
 		ORDER BY
@@ -33,10 +35,52 @@ func (database *DB) GetDefectsAgesByBrand(brand_id int32, norm bool) (map[string
 			brand_id=$1
 		AND
 			age>=0
+		AND 
+			age<=22
 		GROUP BY
 			age
 		ORDER BY
 			age`, brand_id)
+}
+func (database *DB) GetDefectsTypesByBrand(brand_id int32, norm bool) (map[string]string, error) {
+	if norm {
+		return database.ExecMapRows(
+			`SELECT
+			defect_category.name,
+			COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
+			FROM
+			defect
+		LEFT JOIN
+			defect_category on defect.major_category_id=defect_category.id
+		WHERE
+			brand_id=$1
+		AND
+			defect.age>=0
+		AND 
+			defect.age<=22
+		GROUP BY
+			defect_category.name
+		ORDER BY n DESC
+		LIMIT 5`, brand_id)
+	}
+	return database.ExecMapRows(
+		`SELECT
+			defect_category.name,
+			count(defect.id)::decimal as n
+		FROM
+			defect
+		LEFT JOIN
+			defect_category on defect.major_category_id=defect_category.id
+		WHERE
+			brand_id=$1
+		AND
+			defect.age>=0
+		AND 
+			defect.age<=22
+		GROUP BY
+			defect_category.name
+		ORDER BY n DESC
+		LIMIT 5`, brand_id)
 }
 
 func (database *DB) GetDefectsAgesByModel(model_id int32, norm bool) (map[string]string, error) {

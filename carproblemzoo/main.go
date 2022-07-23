@@ -209,6 +209,9 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 							if age < 0 {
 								age = -age
 							}
+							if age > 22 {
+								return
+							}
 							_, err = db.PostDefect(&DB.Defect{
 								BrandID:         brand_id,
 								ModelID:         model_id,

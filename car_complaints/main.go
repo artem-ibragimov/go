@@ -9,7 +9,7 @@ import (
 )
 
 type IDB interface {
-	PostBrand(string)
+	PostBrand(string) (int32, error)
 }
 
 type Problem struct {
