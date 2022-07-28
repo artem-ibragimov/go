@@ -2,6 +2,7 @@ package nhtsa
 
 import (
 	"encoding/csv"
+	"fmt"
 	"io"
 	"log"
 	DB "main/db"
@@ -12,6 +13,7 @@ import (
 
 type IDB interface {
 	GetDefectCategory(category string) (int32, error)
+	FindDefectCategory(category string) string
 	PostDefectCategory(category string) (int32, error)
 	PostDefect(d *DB.Defect) (int32, error)
 
@@ -23,6 +25,8 @@ type IDB interface {
 
 	GetCountry(country string) (int32, error)
 	SaveCountry(country string) (int32, error)
+
+	GetGenByStartYear(model_id int32, start int) (int32, error)
 }
 
 func Parse(db IDB) {
@@ -59,53 +63,25 @@ func Parse(db IDB) {
 			defect.Category != "" {
 			_, err = storeDefect(db, country_id, defect)
 			if err != nil {
-				log.Fatal(err)
+				fmt.Println(err)
 			}
 		}
 	}
 }
 
 func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
-
-	major_category_id, err := db.GetDefectCategory(defect.MajorCategory)
+	category := db.FindDefectCategory(defect.Category)
+	major_category_id, err := db.GetDefectCategory(category)
 	if err != nil {
-		major_category_id, err = db.PostDefectCategory(defect.MajorCategory)
+		major_category_id, err = db.PostDefectCategory(category)
 		if err != nil {
 			return 0, err
-		}
-	}
-
-	var minor_category_id = major_category_id
-
-	if defect.MinorCategory != defect.MajorCategory {
-		minor_category_id, err = db.GetDefectCategory(defect.MinorCategory)
-		if err != nil {
-			minor_category_id, err = db.PostDefectCategory(defect.MinorCategory)
-			if err != nil {
-				return 0, err
-			}
-		}
-	}
-
-	var category_id = minor_category_id
-
-	if defect.Category != defect.MinorCategory {
-		category_id, err = db.GetDefectCategory(defect.Category)
-		if err != nil {
-			category_id, err = db.PostDefectCategory(defect.Category)
-			if err != nil {
-				return 0, err
-			}
 		}
 	}
 
 	brand_id, err := db.GetBrandByName(defect.BrandName)
 	if err != nil {
-		brand_id, err = db.PostBrand(defect.BrandName)
-		log.Println("Saved", defect.BrandName)
-		if err != nil {
-			return 0, err
-		}
+		return 0, err
 	}
 
 	model_id, err := db.GetModelID(brand_id, defect.ModelName)
@@ -119,57 +95,48 @@ func storeDefect(db IDB, country_id int32, defect *Defect) (int32, error) {
 			return 0, err
 		}
 	}
+	gen_id, _ := db.GetGenByStartYear(model_id, defect.ModelYear)
 	_, err = db.PostDefect(&DB.Defect{
-		BrandID: brand_id,
-		ModelID: model_id,
-		// TODO
-		// Age: ,
-		Year:            defect.Year,
-		MajorCategoryID: major_category_id,
-		MinorCategoryID: minor_category_id,
-		CategoryID:      category_id,
-		Cost:            0,
-		Rating:          0,
-		Mileage:         defect.Miles,
-		Freq:            defect.Freq,
-		Desc:            defect.Desc,
-		CountryID:       country_id,
+		BrandID:    brand_id,
+		ModelID:    model_id,
+		GenID:      gen_id,
+		Age:        defect.Year - int(defect.ModelYear),
+		Year:       defect.Year,
+		CategoryID: major_category_id,
+		Cost:       0,
+		Rating:     0,
+		Mileage:    defect.Miles,
+		Freq:       defect.Freq,
+		Desc:       defect.Desc,
+		CountryID:  country_id,
 	})
 	return 0, err
 }
 
 type Defect struct {
-	BrandName     string
-	ModelName     string
-	ModelYear     int32
-	Year          int
-	MajorCategory string
-	MinorCategory string
-	Category      string
-	Miles         int
-	Freq          int
-	Desc          string
+	BrandName string
+	ModelName string
+	ModelYear int
+	Year      int
+	Category  string
+	Miles     int
+	Freq      int
+	Desc      string
 }
 
 func (c *Defect) Init(v []string) {
 	c.BrandName = strings.ToLower(v[0])
 	c.ModelName = strings.ToLower(v[1])
 	year, _ := strconv.ParseInt(v[2], 10, 32)
-	c.ModelYear = int32(year)
+	c.ModelYear = int(year)
 	if len(v[3]) > 3 {
 		c.Year, _ = strconv.Atoi(v[3][:4])
 	}
 	categories := removeEmptyStrings(strings.Split(strings.ToLower(v[4]), ":"))
-	if l := len(categories); l < 3 {
-		if l == 0 {
-			return
-		}
-		add := []string{categories[0], categories[0]}
-		categories = append(add, categories...)
+	if len(categories) == 0 {
+		return
 	}
-	c.MajorCategory = categories[0]
-	c.MinorCategory = categories[1]
-	c.Category = categories[2]
+	c.Category = categories[0]
 
 	mileage, _ := strconv.ParseUint(v[5], 10, 32)
 	c.Miles = int(mileage)

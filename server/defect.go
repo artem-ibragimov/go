@@ -3,13 +3,26 @@ package server
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
+func CreateDefectsCategoriesGetter(db IDB) func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		data, err := db.GetDefectCategories()
+		if err != nil {
+			ctx.JSON(http.StatusServiceUnavailable, err.Error())
+			return
+		}
+		ctx.JSON(http.StatusOK, data)
+	}
+}
+
 func CreateDefectsAgeGetter(db IDB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		norm := ctx.Query("norm") == "true"
+		categories := strings.Split(ctx.Query("categories"), ",")
 		brandID := ctx.Query("brandID")
 		if brandID != "" {
 			brandID, err := strconv.Atoi(brandID)
@@ -22,7 +35,7 @@ func CreateDefectsAgeGetter(db IDB) func(ctx *gin.Context) {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
 				}
-				data, err := db.GetDefectsAgesByBrand(int32(brandID), norm)
+				data, err := db.GetDefectsAgesByBrand(int32(brandID), categories, norm)
 				if err != nil {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
@@ -77,7 +90,7 @@ func CreateDefectsAgeGetter(db IDB) func(ctx *gin.Context) {
 		}
 	}
 }
-func CreateDefectsTypeGetter(db IDB) func(ctx *gin.Context) {
+func CreateDefectsMileageGetter(db IDB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		norm := ctx.Query("norm") == "true"
 		brandID := ctx.Query("brandID")
@@ -92,7 +105,7 @@ func CreateDefectsTypeGetter(db IDB) func(ctx *gin.Context) {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return
 				}
-				data, err := db.GetDefectsTypesByBrand(int32(brandID), norm)
+				data, err := db.GetDefectsMileageByBrand(int32(brandID), norm)
 				if err != nil {
 					ctx.JSON(http.StatusServiceUnavailable, err.Error())
 					return

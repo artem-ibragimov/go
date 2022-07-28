@@ -33,6 +33,7 @@ type IDB interface {
 	PostDefectCategory(category string) (int32, error)
 
 	PostSales(data *DB.SaleData) (int32, error)
+	FindDefectCategory(category string) string
 }
 
 type IReq interface {
@@ -184,7 +185,7 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 							continue
 						}
 
-						major_cat := minor_cat_doc.Find("ol.breadcrumb > li.breadcrumb-item").Last().Text()
+						major_cat := db.FindDefectCategory(minor_cat_doc.Find("ol.breadcrumb > li.breadcrumb-item").Last().Text())
 						major_cat_id, err := db.GetDefectCategory(major_cat)
 						if err != nil {
 							major_cat_id, err = db.PostDefectCategory(major_cat)
@@ -193,7 +194,6 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 								continue
 							}
 						}
-						minor_cat_id := major_cat_id
 
 						parse_defect := func(_ int, s *goquery.Selection) {
 							date := s.Find("div.pull-right.faildate-float").Text()
@@ -213,16 +213,14 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 								return
 							}
 							_, err = db.PostDefect(&DB.Defect{
-								BrandID:         brand_id,
-								ModelID:         model_id,
-								GenID:           gen_id,
-								MajorCategoryID: major_cat_id,
-								MinorCategoryID: minor_cat_id,
-								CategoryID:      minor_cat_id,
-								CountryID:       country_id,
-								Desc:            text,
-								Age:             age,
-								Year:            defect_year,
+								BrandID:    brand_id,
+								ModelID:    model_id,
+								GenID:      gen_id,
+								CategoryID: major_cat_id,
+								CountryID:  country_id,
+								Desc:       text,
+								Age:        age,
+								Year:       defect_year,
 							})
 							if err != nil {
 								log.Println(err)
@@ -237,16 +235,6 @@ func parseBrand(db IDB, req IReq, brand_name string, brand_doc *goquery.Document
 							if err != nil {
 								log.Println(err)
 								continue
-							}
-
-							minor_cat := minor_cat_doc.Find("body > div.container > div.row > div.col-md-8 > nav > ol > li.breadcrumb-item").Last().Text()
-							minor_cat_id, err = db.GetDefectCategory(minor_cat)
-							if err != nil {
-								minor_cat_id, err = db.PostDefectCategory(minor_cat)
-								if err != nil {
-									log.Println(err)
-									continue
-								}
 							}
 
 							cat_doc.Selection.Find("#div_pslist > div.problem-item").Each(parse_defect)

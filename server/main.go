@@ -42,8 +42,10 @@ type IDB interface {
 	PostTrans(*DB.TransData) (int32, error)
 	PatchTrans(id int32, trans *DB.TransData) (int32, error)
 
-	GetDefectsAgesByBrand(brand_id int32, norm bool) (map[string]string, error)
-	GetDefectsTypesByBrand(brand_id int32, norm bool) (map[string]string, error)
+	GetDefectCategories() (map[string]string, error)
+
+	GetDefectsAgesByBrand(brand_id int32, categories []string, norm bool) (map[string]string, error)
+	GetDefectsMileageByBrand(brand_id int32, norm bool) (map[string]string, error)
 	GetDefectsAgesByModel(model_id int32, norm bool) (map[string]string, error)
 	GetDefectsAgesByGen(gen_id int32, norm bool) (map[string]string, error)
 }
@@ -88,8 +90,9 @@ func Run(port string, db IDB) {
 			transmission.GET("/", CreateTransListGetter(db))
 		}
 		{
+			defect.GET("/categories", CreateDefectsCategoriesGetter(db))
+			defect.GET("/mileage", CreateDefectsMileageGetter(db))
 			defect.GET("/age", CreateDefectsAgeGetter(db))
-			defect.GET("/type", CreateDefectsTypeGetter(db))
 		}
 	}
 	router.GET("/", func(c *gin.Context) {
