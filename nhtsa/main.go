@@ -139,7 +139,7 @@ func (c *Defect) Init(v []string) {
 	c.Category = categories[0]
 
 	mileage, _ := strconv.ParseUint(v[5], 10, 32)
-	c.Miles = int(mileage)
+	c.Miles = (int(mileage)/25000 + 1) * 25000
 
 	freq, _ := strconv.ParseUint(v[6], 10, 32)
 	c.Freq = int(freq)

@@ -12,7 +12,6 @@ import (
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/exp/slices"
 )
 
 type IDB interface {
@@ -58,11 +57,11 @@ func Parse(db IDB, getReq func() IReq) {
 		return
 	}
 	brand_names := extractTags("slug", state)
-	parsed_brands_names, err := db.GetLastBrands()
-	if err == nil && len(parsed_brands_names) > 1 {
-		// не уверены что последний бренд спарсили до конца, поэтому выкидываем его
-		parsed_brands_names = parsed_brands_names[1:]
-	}
+	// parsed_brands_names, err := db.GetLastBrands()
+	// if err == nil && len(parsed_brands_names) > 1 {
+	// 	// не уверены что последний бренд спарсили до конца, поэтому выкидываем его
+	// 	parsed_brands_names = parsed_brands_names[1:]
+	// }
 	total_brands := len(brand_names)
 	parsed_brands_count := 0
 	var wg sync.WaitGroup
@@ -74,9 +73,9 @@ func Parse(db IDB, getReq func() IReq) {
 			math.Round(float64(parsed_brands_count*100/total_brands)), "%")
 	}
 	for _, brand_name := range brand_names {
-		if slices.Contains(parsed_brands_names, brand_name) {
-			continue
-		}
+		// if slices.Contains(parsed_brands_names, brand_name) {
+		// 	continue
+		// }
 		wg.Add(1)
 		go parseBrand(db, getReq(), brand_name, &done)
 	}
@@ -113,16 +112,16 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 	}
 	model_slugs := extractTags("slug", state)
 	model_names := extractTags("name", state)
-	parsed_model_names, err := db.GetLastModelNamesByBrand(brand_id)
-	if err == nil && len(parsed_model_names) > 1 {
-		// не уверены что последнюю модель спарсили до конца, поэтому выкидываем его
-		parsed_model_names = parsed_model_names[1:]
-	}
+	// parsed_model_names, err := db.GetLastModelNamesByBrand(brand_id)
+	// if err == nil && len(parsed_model_names) > 1 {
+	// 	// не уверены что последнюю модель спарсили до конца, поэтому выкидываем его
+	// 	parsed_model_names = parsed_model_names[1:]
+	// }
 	var model_slug string
 	for i, model_name := range model_names {
-		if slices.Contains(parsed_model_names, model_name) {
-			continue
-		}
+		// if slices.Contains(parsed_model_names, model_name) {
+		// 	continue
+		// }
 		model_slug = model_slugs[i]
 		model_url := brand_url + "/" + model_slug
 		// fmt.Println("Model: ", model_url)
@@ -304,10 +303,6 @@ func parseBrand(db IDB, req IReq, brand_name string, done *func()) {
 		}
 	}
 	(*done)()
-}
-
-func getHTML(html string) (*goquery.Document, error) {
-	return goquery.NewDocumentFromReader(strings.NewReader(html))
 }
 
 func extractTags(tag string, s string) []string {

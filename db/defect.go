@@ -12,7 +12,7 @@ func (database *DB) GetLastYearsDefect(brand_id int32, model_id int32) ([]string
 func (database *DB) GetDefectsAgesByBrand(brand_id int32, categories []string, norm bool) (map[string]string, error) {
 	y := "count(id)::decimal as n"
 	if norm {
-		y = " count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000  as n"
+		y = " count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 1000  as n"
 	}
 	with_categories := ""
 	if len(categories) > 1 || len(categories) == 1 && categories[0] != "" {
@@ -29,7 +29,7 @@ func (database *DB) GetDefectsAgesByBrand(brand_id int32, categories []string, n
 func (database *DB) GetDefectsMileageByBrand(brand_id int32, norm bool) (map[string]string, error) {
 	y := "count(id)::decimal as n"
 	if norm {
-		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n"
+		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 1000, 0) as n"
 	}
 	return database.ExecMapRows(
 		`SELECT mileage,`+y+`
@@ -44,7 +44,7 @@ func (database *DB) GetDefectsAgesByModel(model_id int32, norm bool) (map[string
 		return database.ExecMapRows(
 			`SELECT
 			age,
-			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
+			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 1000, 0) as n
 		FROM
 			defect
 		WHERE
@@ -74,7 +74,7 @@ func (database *DB) GetDefectsAgesByModel(model_id int32, norm bool) (map[string
 func (database *DB) GetDefectsMileageByModel(model_id int32, norm bool) (map[string]string, error) {
 	y := "count(id)::decimal as n"
 	if norm {
-		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE model_id=$1) * 100000, 0) as n"
+		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE model_id=$1) * 1000, 0) as n"
 	}
 	return database.ExecMapRows(
 		`SELECT mileage,`+y+`
@@ -89,7 +89,7 @@ func (database *DB) GetDefectsAgesByGen(gen_id int32, norm bool) (map[string]str
 		return database.ExecMapRows(
 			`SELECT
 			age,
-			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 100000, 0) as n
+			COALESCE( count(id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE brand_id=$1) * 1000, 0) as n
 		FROM
 			defect
 		WHERE
@@ -119,7 +119,7 @@ func (database *DB) GetDefectsAgesByGen(gen_id int32, norm bool) (map[string]str
 func (database *DB) GetDefectsMileageByGen(gen_id int32, norm bool) (map[string]string, error) {
 	y := "count(id)::decimal as n"
 	if norm {
-		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE gen_id=$1) * 100000, 0) as n"
+		y = "COALESCE( count(defect.id)::decimal / (SELECT SUM(amount) as total FROM sales WHERE gen_id=$1) * 1000, 0) as n"
 	}
 	return database.ExecMapRows(
 		`SELECT mileage,`+y+`
