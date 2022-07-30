@@ -9,7 +9,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-const RESULT_LIMIT = 10
+const RESULT_LIMIT = 6
 
 func CreateSearchGetter(db IDB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
@@ -60,16 +60,8 @@ func CreateSearchGetter(db IDB) func(ctx *gin.Context) {
 		}
 
 		var data map[string]map[string]string = make(map[string]map[string]string, 3)
-		if len(generations) != 0 {
-			data["gens"] = generations
-			ctx.JSON(http.StatusOK, data)
-			return
-		}
-		if len(models) != 0 {
-			data["models"] = models
-			ctx.JSON(http.StatusOK, data)
-			return
-		}
+		data["gens"] = generations
+		data["models"] = models
 		data["brands"] = brands
 		// TODO если одна модель возвращать все поколения
 		ctx.JSON(http.StatusOK, data)

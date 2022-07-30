@@ -124,7 +124,10 @@ func parseBrand(db IDB, req IReq, brand_url string, brand_name string, done *fun
 
 		p := strings.Split(model_url, "/")
 		model_name := strings.Split(strings.ReplaceAll(p[len(p)-2], "_", " "), " ")[0]
-		if slices.Contains(parsed_model_names, model_name) {
+		model_name = strings.ReplaceAll(model_name, brand_name, "")
+		model_name = strings.TrimSpace(model_name)
+
+		if model_name == "" || slices.Contains(parsed_model_names, model_name) {
 			continue
 		}
 

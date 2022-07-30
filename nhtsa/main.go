@@ -127,6 +127,9 @@ type Defect struct {
 func (c *Defect) Init(v []string) {
 	c.BrandName = strings.ToLower(v[0])
 	c.ModelName = strings.ToLower(v[1])
+	c.ModelName = strings.ReplaceAll(c.ModelName, c.BrandName, "")
+	c.ModelName = strings.TrimSpace(c.ModelName)
+
 	year, _ := strconv.ParseInt(v[2], 10, 32)
 	c.ModelYear = int(year)
 	if len(v[3]) > 3 {
