@@ -96,8 +96,8 @@ func Run(port string, db IDB) {
 		}
 	}
 	router.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusMovedPermanently, "/static")
+		c.Redirect(http.StatusMovedPermanently, "/static/")
 	})
-	router.Static("/static", "./server/static/index.html")
+	router.Static("/static/", "./server/static/")
 	router.Run(":" + port)
 }
